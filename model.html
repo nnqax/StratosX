@@ -110,17 +110,17 @@
     .content-wrapper {
       position: relative;
       z-index: 2;
-      margin-top: 120px; /* Space for navbar + margin */
-      padding: 20px;
+      margin-top: 75px; /* Reduced to 75px (navbar height + 5px gap) */
+      padding: 5px; /* Reduced padding */
       display: flex;
-      gap: 20px;
+      gap: 10px;
       pointer-events: none;
     }
 
     .cards-container {
       display: flex;
       flex-direction: column;
-      gap: 16px;
+      gap: 10px; /* Reduced gap */
       width: 360px;
       pointer-events: auto;
     }
@@ -129,12 +129,12 @@
       background: rgba(255, 255, 255, 0.03);
       backdrop-filter: blur(6px);
       border-radius: 12px;
-      padding: 16px;
+      padding: 12px; /* Reduced padding */
       border: 1px solid rgba(255, 255, 255, 0.03);
     }
 
     h3 {
-      margin: 0 0 12px;
+      margin: 0 0 8px; /* Reduced margin */
       color: var(--neon);
       font-size: 16px;
     }
@@ -142,8 +142,8 @@
     input,
     select,
     button {
-      padding: 10px;
-      border-radius: 10px;
+      padding: 8px; /* Reduced padding */
+      border-radius: 8px;
       border: none;
     }
 
@@ -180,16 +180,16 @@
 
     .kpi-row {
       display: flex;
-      gap: 8px;
+      gap: 6px; /* Reduced gap */
       flex-wrap: wrap;
-      margin-top: 12px;
+      margin-top: 8px; /* Reduced margin */
     }
 
     .kpi {
       flex: 1;
       min-width: 100px;
-      padding: 8px;
-      border-radius: 8px;
+      padding: 6px; /* Reduced padding */
+      border-radius: 6px;
       background: rgba(255, 255, 255, 0.02);
       text-align: center;
     }
@@ -201,21 +201,21 @@
     }
 
     .small {
-      font-size: 13px;
+      font-size: 12px; /* Slightly smaller */
       color: #bfeff6;
     }
 
     .chart-wrap {
-      height: 160px;
+      height: 140px; /* Reduced height */
       display: flex;
       align-items: center;
       justify-content: center;
     }
 
     #status {
-      font-size: 13px;
+      font-size: 12px; /* Slightly smaller */
       color: #bfeff6;
-      margin-top: 8px;
+      margin-top: 6px; /* Reduced margin */
     }
 
     .footer {
@@ -229,7 +229,7 @@
 
     /* RTL adjustments */
     body[dir="rtl"] .content-wrapper {
-      margin-right: 20px;
+      margin-right: 5px;
       margin-left: auto;
     }
 
@@ -239,6 +239,11 @@
 
     body[dir="rtl"] select {
       background-position: left 10px center;
+    }
+
+    /* Fix for Arabic text rendering */
+    [dir="rtl"] {
+      font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     }
   </style>
 </head>
@@ -270,14 +275,14 @@
   <div class="cards-container">
     <div class="card">
       <h3 data-en="Search City" data-ar="ابحث عن مدينة">Search City</h3>
-      <div style="display:flex;gap:8px;align-items:center">
+      <div style="display:flex;gap:6px;align-items:center">
         <input id="cityInput" type="text" 
                data-en-placeholder="e.g. Cairo, London, New York" 
                data-ar-placeholder="مثل القاهرة، لندن، نيويورك"
                placeholder="e.g. Cairo, London, New York">
         <button id="checkBtn" data-en="Check" data-ar="تحقق">Check</button>
       </div>
-      <div style="display:flex;gap:8px;margin-top:8px">
+      <div style="display:flex;gap:6px;margin-top:6px">
         <select id="ageSelect">
           <option value="adult" data-en="Adult" data-ar="بالغ">Adult</option>
           <option value="child" data-en="Child" data-ar="طفل">Child</option>
@@ -313,8 +318,8 @@
 
     <div class="card">
       <h3 data-en="Overview" data-ar="نظرة عامة">Overview</h3>
-      <div class="chart-wrap"><canvas id="aqiDonut" width="220" height="160"></canvas></div>
-      <div id="adviceText" style="margin-top:8px;color:#e8fbff" data-en="Advice will appear here when you check a city." data-ar="ستظهر النصائح هنا عند التحقق من مدينة.">Advice will appear here when you check a city.</div>
+      <div class="chart-wrap"><canvas id="aqiDonut" width="200" height="140"></canvas></div>
+      <div id="adviceText" style="margin-top:6px;color:#e8fbff" data-en="Advice will appear here when you check a city." data-ar="ستظهر النصائح هنا عند التحقق من مدينة.">Advice will appear here when you check a city.</div>
     </div>
   </div>
 </div>
