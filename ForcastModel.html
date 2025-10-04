@@ -1,0 +1,1032 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Air Quality Forecast</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --bg1:#00030a;
+      --bg2:#001022;
+      --card: rgba(255,255,255,0.04);
+      --accent1:#60a5fa;
+      --accent2:#2563eb;
+      --green:#21c07a;
+      --yellow:#f5c84b;
+      --red:#ff6b6b;
+      --muted:#9fb7d9;
+      --glass: rgba(255,255,255,0.03);
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%;margin:0;padding:0;font-family:"Poppins", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;color:#eaf6ff}
+    body{
+      background: radial-gradient(circle at 10% 10%, #02102a 0%, var(--bg1) 40%, var(--bg2) 100%);
+      overflow:auto;
+      -webkit-font-smoothing:antialiased;
+      padding:28px;
+    }
+
+    /* Header */
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px 20px;
+      position: absolute;
+      top: 10px;
+      left: 0;
+      width: 100%;
+      z-index: 10;
+    }
+
+    .container {
+      max-width: 1000px;
+      margin: 0 auto;
+      width: 100%;
+      border-radius: 100px;
+      padding: 12px 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: relative;
+      background: rgba(255, 255, 255, 0.15);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+    }
+
+    header .logo img {
+      height: 40px;
+      width: auto;
+    }
+
+    header nav {
+      display: flex;
+      align-items: center;
+    }
+
+    header nav a {
+      margin: 0 8px;
+      text-decoration: none;
+      color: #f9fafb;
+      font-weight: 500;
+      font-size: 0.85rem;
+      transition: color 0.3s;
+      padding: 5px 0;
+    }
+
+    header nav a:hover {
+      color: #84cc16;
+    }
+
+    header .cta {
+      background: #000;
+      color: #fff;
+      padding: 8px 16px;
+      border-radius: 30px;
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 0.8rem;
+      transition: 0.4s;
+      margin-left: 8px;
+    }
+
+    header .cta:hover {
+      background: linear-gradient(270deg, #2563eb, #9333ea, #2563eb);
+      background-size: 600% 600%;
+      animation: gradientFlow 4s ease infinite;
+    }
+
+    .lang-toggle {
+      background: rgba(255, 255, 255, 0.2);
+      color: #fff;
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      padding: 6px 12px;
+      border-radius: 20px;
+      cursor: pointer;
+      font-weight: 500;
+      font-size: 0.8rem;
+      margin-left: 8px;
+      transition: all 0.3s ease;
+    }
+
+    .lang-toggle:hover {
+      background: rgba(255, 255, 255, 0.3);
+    }
+
+    /* Mobile Navigation */
+    .mobile-menu-toggle {
+      display: none;
+      background: transparent;
+      border: none;
+      color: white;
+      font-size: 1.5rem;
+      cursor: pointer;
+      margin-left: 10px;
+      transition: transform 0.3s ease;
+      z-index: 1000;
+    }
+
+    .mobile-menu-toggle.active {
+      transform: rotate(90deg);
+    }
+
+    .mobile-nav {
+      display: none;
+      position: absolute;
+      top: 100%;
+      left: 50%;
+      transform: translateX(-50%) translateY(-20px);
+      width: 90%;
+      max-width: 400px;
+      background: rgba(255, 255, 255, 0.15);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      border-radius: 24px;
+      padding: 24px;
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+      z-index: 999;
+      opacity: 0;
+      visibility: hidden;
+      transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .mobile-nav.active {
+      display: block;
+      opacity: 1;
+      visibility: visible;
+      transform: translateX(-50%) translateY(0);
+    }
+
+    .mobile-nav::before {
+      content: '';
+      position: absolute;
+      top: -10px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 0;
+      height: 0;
+      border-left: 10px solid transparent;
+      border-right: 10px solid transparent;
+      border-bottom: 10px solid rgba(255, 255, 255, 0.15);
+      filter: drop-shadow(0 -2px 2px rgba(0, 0, 0, 0.1));
+    }
+
+    .mobile-nav a {
+      display: block;
+      color: white;
+      text-decoration: none;
+      padding: 16px 20px;
+      margin: 8px 0;
+      border-radius: 16px;
+      font-weight: 500;
+      font-size: 1rem;
+      text-align: center;
+      transition: all 0.3s ease;
+      background: rgba(255, 255, 255, 0.1);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .mobile-nav a::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+      transition: left 0.5s ease;
+    }
+
+    .mobile-nav a:hover::before {
+      left: 100%;
+    }
+
+    .mobile-nav a:hover {
+      background: rgba(255, 255, 255, 0.2);
+      border-color: rgba(255, 255, 255, 0.3);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+    }
+
+    .mobile-nav a:last-child {
+      margin-bottom: 0;
+    }
+
+    /* Overlay for mobile menu */
+    .mobile-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.5);
+      backdrop-filter: blur(5px);
+      -webkit-backdrop-filter: blur(5px);
+      z-index: 998;
+      opacity: 0;
+      visibility: hidden;
+      transition: all 0.3s ease;
+    }
+
+    .mobile-overlay.active {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    @keyframes gradientFlow {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    /* stars */
+    .sky{position:fixed;inset:0;pointer-events:none;z-index:0;overflow:hidden}
+    .star{position:absolute;background:#fff;border-radius:50%;box-shadow:0 0 6px rgba(255,255,255,0.6);opacity:0.9}
+    @keyframes fall{from{transform:translateY(-130vh)} to{transform:translateY(130vh)}}
+
+    .wrap{position:relative;z-index:2;max-width:1100px;margin:0 auto;margin-top: 80px;}
+
+    .page-header {
+      margin-bottom: 24px;
+    }
+
+    h1{margin:0;font-size:24px;font-weight:700;margin-bottom:8px;}
+    .desc{color:var(--muted);font-size:16px;line-height:1.5;}
+
+    .controls.card{
+      display:flex;gap:12px;align-items:center;flex-wrap:wrap;padding:20px;margin-bottom:20px;
+      background: var(--card);
+      border-radius: 16px;
+      backdrop-filter: blur(6px);
+      box-shadow: 0 8px 30px rgba(2,6,23,0.6);
+    }
+
+    .search-container {
+      display: flex;
+      gap: 12px;
+      align-items: center;
+      flex-wrap: wrap;
+      flex: 1;
+    }
+
+    /* Enhanced Input Field */
+    input[type="text"]{
+      padding: 12px 16px;
+      border-radius: 16px; /* More rounded corners */
+      border: 1px solid rgba(255,255,255,0.1);
+      background: rgba(255,255,255,0.05);
+      color: #eaf6ff;
+      flex: 1;
+      min-width: 250px;
+      font-size: 14px;
+      transition: all 0.3s ease;
+      font-family: "Poppins", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+      box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    input[type="text"]:focus {
+      outline: none;
+      border-color: var(--accent1);
+      box-shadow: 0 0 0 2px rgba(96, 165, 250, 0.2), inset 0 2px 4px rgba(0, 0, 0, 0.1);
+      background: rgba(255,255,255,0.08);
+    }
+
+    input[type="text"]::placeholder {
+      color: var(--muted);
+      font-weight: 400;
+    }
+
+    .search-btn {
+      padding: 12px 24px;
+      border-radius: 12px;
+      border: none;
+      cursor: pointer;
+      background: linear-gradient(90deg, var(--accent1), var(--accent2));
+      color: white;
+      font-weight: 600;
+      font-size: 14px;
+      transition: all 0.3s ease;
+    }
+
+    .search-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(37, 99, 235, 0.4);
+    }
+
+    .clear-btn {
+      padding: 12px 20px;
+      border-radius: 12px;
+      border: 1px solid rgba(255,255,255,0.1);
+      cursor: pointer;
+      background: transparent;
+      color: var(--muted);
+      font-weight: 600;
+      font-size: 14px;
+      transition: all 0.3s ease;
+    }
+
+    .clear-btn:hover {
+      background: rgba(255,255,255,0.05);
+      color: #eaf6ff;
+    }
+
+    .small{font-size:13px;color:var(--muted)}
+
+    main{display:grid;grid-template-columns: 1fr 380px;gap:20px;align-items:start}
+    @media(max-width:980px){main{grid-template-columns:1fr}}
+
+    .panel.card{
+      background: var(--card);
+      padding: 20px;
+      border-radius: 16px;
+      backdrop-filter: blur(6px);
+      box-shadow: 0 8px 30px rgba(2,6,23,0.6);
+    }
+
+    .result-area .city{
+      font-weight:800;
+      font-size:20px;
+      margin-bottom: 16px;
+      color: #eaf6ff;
+    }
+
+    .grid{
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 16px;
+      margin-top: 16px;
+    }
+
+    .day{
+      padding: 16px;
+      border-radius: 12px;
+      background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      border: 1px solid rgba(255,255,255,0.05);
+      transition: all 0.3s ease;
+    }
+
+    .day:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+    }
+
+    .day small{
+      color: var(--muted);
+      display: block;
+      margin-bottom: 8px;
+      font-size: 12px;
+    }
+
+    .day-value {
+      font-size: 18px;
+      font-weight: 700;
+      margin: 8px 0;
+      color: #eaf6ff;
+    }
+
+    .bar{
+      height: 10px;
+      background: rgba(255,255,255,0.04);
+      border-radius: 8px;
+      overflow: hidden;
+      margin: 12px 0;
+    }
+
+    .bar .fill{
+      height: 100%;
+      background: linear-gradient(90deg, var(--accent1), var(--accent2));
+      border-radius: 8px;
+    }
+
+    .advice{
+      margin-top: 12px;
+      padding: 10px 12px;
+      border-radius: 8px;
+      font-weight: 600;
+      font-size: 13px;
+      line-height: 1.4;
+    }
+
+    .adv-green{
+      background: rgba(33,192,122,0.1);
+      color: var(--green);
+      border: 1px solid rgba(33,192,122,0.2);
+    }
+
+    .adv-yellow{
+      background: rgba(245,200,75,0.1);
+      color: var(--yellow);
+      border: 1px solid rgba(245,200,75,0.2);
+    }
+
+    .adv-red{
+      background: rgba(255,107,107,0.1);
+      color: var(--red);
+      border: 1px solid rgba(255,107,107,0.2);
+    }
+
+    /* sidebar */
+    .sidebar .card-title{
+      font-weight:800;
+      margin-bottom: 12px;
+      font-size: 18px;
+      color: #eaf6ff;
+    }
+
+    .chart{
+      height: 150px;
+      background: linear-gradient(180deg, rgba(255,255,255,0.01), rgba(255,255,255,0.02));
+      border-radius: 12px;
+      padding: 12px;
+      margin-bottom: 16px;
+    }
+
+    .explain{
+      font-size: 13px;
+      color: var(--muted);
+      line-height: 1.5;
+    }
+
+    footer{
+      margin-top: 24px;
+      color: var(--muted);
+      text-align: center;
+      font-size: 13px;
+      padding: 16px;
+    }
+
+    /* Media Queries for Responsive Design */
+    @media (max-width: 1024px) {
+      .container {
+        padding: 10px 15px;
+      }
+
+      header nav a {
+        margin: 0 6px;
+        font-size: 0.8rem;
+      }
+
+      .search-container {
+        width: 100%;
+      }
+
+      input[type="text"] {
+        min-width: 100%;
+      }
+    }
+
+    @media (max-width: 768px) {
+      header {
+        padding: 10px 15px;
+      }
+
+      .container {
+        border-radius: 50px;
+        padding: 8px 15px;
+      }
+
+      header .logo img {
+        height: 35px;
+      }
+
+      header nav {
+        display: none;
+      }
+
+      .mobile-menu-toggle {
+        display: block;
+      }
+
+      .mobile-nav {
+        width: 85%;
+      }
+
+      .mobile-nav a {
+        padding: 14px 16px;
+        font-size: 0.95rem;
+      }
+
+      .page-header {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      .grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 480px) {
+      header {
+        padding: 8px 10px;
+      }
+
+      .container {
+        padding: 6px 12px;
+        border-radius: 40px;
+      }
+
+      header .logo img {
+        height: 30px;
+      }
+
+      .mobile-nav {
+        width: 90%;
+        padding: 20px;
+        border-radius: 20px;
+      }
+
+      .mobile-nav a {
+        padding: 12px 14px;
+        font-size: 0.9rem;
+        margin: 6px 0;
+      }
+
+      .controls.card {
+        padding: 16px;
+      }
+
+      .search-container {
+        gap: 8px;
+      }
+
+      .search-btn, .clear-btn {
+        padding: 10px 16px;
+        font-size: 13px;
+      }
+    }
+
+    /* Animation for menu items */
+    @keyframes slideIn {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .mobile-nav.active a {
+      animation: slideIn 0.4s ease forwards;
+    }
+
+    .mobile-nav.active a:nth-child(1) { animation-delay: 0.1s; }
+    .mobile-nav.active a:nth-child(2) { animation-delay: 0.15s; }
+    .mobile-nav.active a:nth-child(3) { animation-delay: 0.2s; }
+    .mobile-nav.active a:nth-child(4) { animation-delay: 0.25s; }
+    .mobile-nav.active a:nth-child(5) { animation-delay: 0.3s; }
+    .mobile-nav.active a:nth-child(6) { animation-delay: 0.35s; }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="container">
+      <a href="Index.html">
+        <div class="logo">
+          <img src="StratosX_logo.png" alt="StratosX Logo">
+        </div>
+      </a>
+      <nav>
+        <a href="Index.html" data-en="Home" data-ar="الرئيسية">Home</a>
+        <a href="#" data-en="Forecast" data-ar="التوقعات">Forecast</a>
+        <a href="#" data-en="Health" data-ar="الصحة">Health</a>
+        <a href="#" data-en="Tips" data-ar="النصائح">Tips</a>
+        <a href="#" data-en="Alerts" data-ar="التنبيهات">Alerts</a>
+        <a href="#" data-en="Future Impact" data-ar="التأثير المستقبلي">Future Impact</a>
+      </nav>
+      <div style="display: flex; align-items: center;">
+        <a href="model.html" class="cta" data-en="Get Started" data-ar="ابدأ الآن">Get Started</a>
+        <button class="lang-toggle" id="langToggle" data-lang="en">العربية</button>
+        <button class="mobile-menu-toggle" id="mobileMenuToggle">☰</button>
+      </div>
+    </div>
+    <div class="mobile-nav" id="mobileNav">
+      <a href="Index.html" data-en="Home" data-ar="الرئيسية">Home</a>
+      <a href="#" data-en="Forecast" data-ar="التوقعات">Forecast</a>
+      <a href="#" data-en="Health" data-ar="الصحة">Health</a>
+      <a href="#" data-en="Tips" data-ar="النصائح">Tips</a>
+      <a href="#" data-en="Alerts" data-ar="التنبيهات">Alerts</a>
+      <a href="#" data-en="Future Impact" data-ar="التأثير المستقبلي">Future Impact</a>
+    </div>
+    <div class="mobile-overlay" id="mobileOverlay"></div>
+  </header>
+
+  <div class="sky" id="sky"></div>
+
+  <div class="wrap">
+    <div class="page-header">
+      <h1 id="title">Air Quality & Wind Forecast — Future Impact</h1>
+      <div class="desc" id="subtitle">Tool estimating future air quality using wind forecasts and real data.</div>
+    </div>
+
+    <div class="controls card">
+      <div class="search-container">
+        <input id="city" type="text" placeholder="e.g. Cairo or القاهرة" />
+        <button id="searchBtn" class="search-btn">Show</button>
+        <button id="clearBtn" class="clear-btn">Clear</button>
+        <div style="flex:1"></div>
+        <div class="small" id="sourceText">Source: OpenWeather · Uses API key</div>
+      </div>
+    </div>
+
+    <main>
+      <section class="panel card result-area" id="mainPanel">
+        <div id="result">
+          <div class="small" id="initialMessage">Nothing displayed yet — Start by typing a city name and clicking "Show".</div>
+        </div>
+      </section>
+
+      <aside class="panel card sidebar" id="sidePanel">
+        <div class="card-title" id="summaryTitle">Quick Summary</div>
+        <div class="chart" id="chart">
+          <div class="small" id="chartMessage">Chart will appear here after search</div>
+        </div>
+        <div class="explain" id="explain">
+          Explanation: We use wind forecasts (each day) + current air quality status (AQI) if available to formulate a simple recommendation.
+        </div>
+      </aside>
+    </main>
+
+    <footer id="footer">This tool helps plan outdoor activities; for competitions use ensemble models for higher accuracy.</footer>
+  </div>
+
+<script>
+/* stars */
+(function createStars(){
+  const sky = document.getElementById('sky');
+  const n = 110;
+  for(let i=0;i<n;i++){
+    const s = document.createElement('div');
+    s.className='star';
+    const size = 1 + Math.random()*2.5;
+    s.style.width = size+'px';
+    s.style.height = size+'px';
+    s.style.left = (Math.random()*100) + 'vw';
+    s.style.top = (Math.random()*100) + 'vh';
+    s.style.opacity = 0.4 + Math.random()*0.8;
+    s.style.animation = 'fall ' + (30 + Math.random()*60) + 's linear infinite';
+    s.style.animationDelay = (-Math.random()*80) + 's';
+    sky.appendChild(s);
+  }
+})();
+
+/* ---------- language toggle ---------- */
+document.addEventListener('DOMContentLoaded', function () {
+  const langToggle = document.getElementById('langToggle');
+  const mobileMenuToggle = document.getElementById('mobileMenuToggle');
+  const mobileNav = document.getElementById('mobileNav');
+  const mobileOverlay = document.getElementById('mobileOverlay');
+  let currentLang = 'en';
+  let isMenuOpen = false;
+
+  function toggleLanguage() {
+    currentLang = currentLang === 'en' ? 'ar' : 'en';
+
+    // Update all text elements
+    document.querySelectorAll('[data-en]').forEach(element => {
+      element.textContent = element.getAttribute(currentLang === 'en' ? 'data-en' : 'data-ar');
+    });
+
+    // Update toggle button text
+    langToggle.textContent = currentLang === 'en' ? 'العربية' : 'English';
+
+    // Set direction
+    document.body.dir = currentLang === 'en' ? 'ltr' : 'rtl';
+
+    // Update the forecast app language
+    setLang(currentLang);
+  }
+
+  function toggleMobileMenu() {
+    isMenuOpen = !isMenuOpen;
+
+    if (isMenuOpen) {
+      mobileNav.classList.add('active');
+      mobileOverlay.classList.add('active');
+      mobileMenuToggle.classList.add('active');
+      mobileMenuToggle.innerHTML = '✕';
+      document.body.style.overflow = 'hidden';
+    } else {
+      mobileNav.classList.remove('active');
+      mobileOverlay.classList.remove('active');
+      mobileMenuToggle.classList.remove('active');
+      mobileMenuToggle.innerHTML = '☰';
+      document.body.style.overflow = '';
+    }
+  }
+
+  function closeMobileMenu() {
+    if (isMenuOpen) {
+      toggleMobileMenu();
+    }
+  }
+
+  langToggle.addEventListener('click', function (e) {
+    e.preventDefault();
+    toggleLanguage();
+  });
+
+  mobileMenuToggle.addEventListener('click', function (e) {
+    e.preventDefault();
+    toggleMobileMenu();
+  });
+
+  mobileOverlay.addEventListener('click', closeMobileMenu);
+
+  // Close mobile menu when clicking on menu items
+  mobileNav.querySelectorAll('a').forEach(link => {
+    link.addEventListener('click', closeMobileMenu);
+  });
+
+  // Close mobile menu when clicking outside
+  document.addEventListener('click', function(event) {
+    if (isMenuOpen &&
+        !event.target.closest('.container') &&
+        !event.target.closest('.mobile-nav') &&
+        !event.target.closest('.mobile-menu-toggle')) {
+      closeMobileMenu();
+    }
+  });
+
+  // Close mobile menu on escape key
+  document.addEventListener('keydown', function(event) {
+    if (event.key === 'Escape' && isMenuOpen) {
+      closeMobileMenu();
+    }
+  });
+});
+
+/* ---------- forecast logic ---------- */
+const API_KEY = "1a0ee291bbd28c6d16b9d6ab5192ea5d";
+
+const t = {
+  ar: {
+    title: "توقع جودة الهواء والرياح — Future Impact",
+    subtitle: "نظام لتنبؤ جودة الهواء المستقبَلة باستخدام بيانات الرياح والتنبؤات الحقيقية.",
+    placeholder: "مثلاً: القاهرة",
+    search: "عرض النسبة",
+    clear: "مسح",
+    noCity: "من فضلك اكتب اسم المدينة.",
+    loading: "جارٍ تحميل البيانات... 🌬️",
+    notFound: "لم نتمكن من العثور على المدينة. حاولي كتابة اسم آخر.",
+    noData: "لا توجد بيانات كافية للتنبؤ.",
+    aqiInfo: "مؤشر جودة الهواء (AQI) الحالي: ",
+    chartTitle: "تغير سرعة الرياح (م/ث)",
+    explanation: "نستخدم توقعات الرياح لتقدير إمكانية تشتت الملوثات: رياح أقوى → تشتت أفضل.",
+    footer: "تهدف هذه الأداة لدعم قرارات الخروج والنشاطات الخارجية.",
+    source: "المصدر: OpenWeather · يستخدم مفتاح API",
+    initialMessage: "لا يوجد شيء معروض بعد — ابدأ بكتابة اسم المدينة ثم انقر على \"عرض النسبة\".",
+    summaryTitle: "ملخص سريع",
+    chartMessage: "سيظهر الرسم البياني هنا بعد البحث",
+    direction: "الاتجاه: ",
+    airQuality: "جودة الهواء (تقديري): ",
+    noChartData: "لا توجد بيانات للرسم البياني"
+  },
+  en: {
+    title: "Air Quality & Wind Forecast — Future Impact",
+    subtitle: "Tool estimating future air quality using wind forecasts and real data.",
+    placeholder: "e.g. Cairo",
+    search: "Show",
+    clear: "Clear",
+    noCity: "Please enter a city.",
+    loading: "Loading data... 🌬️",
+    notFound: "City not found. Try another name.",
+    noData: "Not enough forecast data.",
+    aqiInfo: "Current AQI: ",
+    chartTitle: "Wind speed change (m/s)",
+    explanation: "We use wind forecasts to estimate pollutant dispersion: stronger winds → better dispersion.",
+    footer: "This tool helps plan outdoor activities; for competitions use ensemble models for higher accuracy.",
+    source: "Source: OpenWeather · Uses API key",
+    initialMessage: "Nothing displayed yet — Start by typing a city name and clicking \"Show\".",
+    summaryTitle: "Quick Summary",
+    chartMessage: "Chart will appear here after search",
+    direction: "Direction: ",
+    airQuality: "Air quality (estimated): ",
+    noChartData: "No data to display"
+  }
+};
+
+let lang = 'en';
+function setLang(l){
+  lang = l;
+  const L = t[l];
+  document.getElementById('title').textContent = L.title;
+  document.getElementById('subtitle').textContent = L.subtitle;
+  document.getElementById('city').placeholder = L.placeholder;
+  document.getElementById('searchBtn').textContent = L.search;
+  document.getElementById('clearBtn').textContent = L.clear;
+  document.getElementById('explain').textContent = L.explanation;
+  document.getElementById('footer').textContent = L.footer;
+  document.getElementById('sourceText').textContent = L.source;
+  document.getElementById('initialMessage').textContent = L.initialMessage;
+  document.getElementById('summaryTitle').textContent = L.summaryTitle;
+  document.getElementById('chartMessage').textContent = L.chartMessage;
+}
+
+/* main actions */
+document.getElementById('searchBtn').addEventListener('click', ()=>getForCity(document.getElementById('city').value.trim()));
+document.getElementById('clearBtn').addEventListener('click', ()=>{
+  document.getElementById('city').value='';
+  document.getElementById('result').innerHTML = '<div class="small">'+ t[lang].noCity +'</div>';
+  document.getElementById('chart').innerHTML = '<div class="small">'+ t[lang].chartMessage +'</div>';
+});
+
+async function getForCity(city){
+  const result = document.getElementById('result');
+  const chart = document.getElementById('chart');
+  if(!city){
+    result.innerHTML = '<div class="small">'+ t[lang].noCity +'</div>';
+    return;
+  }
+  result.innerHTML = '<div class="small">'+ t[lang].loading +'</div>';
+  chart.innerHTML = '<div class="small">'+ t[lang].loading +'</div>';
+
+  try{
+    // geocode
+    const geoUrl = 'https://api.openweathermap.org/geo/1.0/direct?q=' + encodeURIComponent(city) + '&limit=1&appid=' + API_KEY;
+    const geoRes = await fetch(geoUrl);
+    const geo = await geoRes.json();
+    if(!geo || !geo[0]){
+      result.innerHTML = '<div class="small">'+ t[lang].notFound +'</div>';
+      chart.innerHTML = '<div class="small">'+ t[lang].chartMessage +'</div>';
+      return;
+    }
+    const { lat, lon, name, country } = geo[0];
+
+    // forecast
+    const forecastUrl = 'https://api.openweathermap.org/data/2.5/forecast?lat='+lat+'&lon='+lon+'&appid='+API_KEY+'&units=metric';
+    const forecastRes = await fetch(forecastUrl);
+    const fdata = await forecastRes.json();
+    if(!forecastRes.ok){
+      result.innerHTML = '<div class="small">Error: ' + (fdata.message || forecastRes.status) + '</div>';
+      chart.innerHTML = '<div class="small">'+ t[lang].chartMessage +'</div>';
+      return;
+    }
+    if(!fdata.list || !fdata.list.length){
+      result.innerHTML = '<div class="small">'+ t[lang].noData +'</div>';
+      chart.innerHTML = '<div class="small">'+ t[lang].chartMessage +'</div>';
+      return;
+    }
+
+    // current AQI (may be missing)
+    let aqi = null;
+    try{
+      const aqiUrl = 'https://api.openweathermap.org/data/2.5/air_pollution?lat='+lat+'&lon='+lon+'&appid='+API_KEY;
+      const aqiRes = await fetch(aqiUrl);
+      const aqidata = await aqiRes.json();
+      if(aqiRes.ok && aqidata.list && aqidata.list[0] && aqidata.list[0].main && typeof aqidata.list[0].main.aqi !== 'undefined'){
+        aqi = aqidata.list[0].main.aqi; // 1..5
+      }
+    }catch(e){ console.warn('AQI fetch failed', e); }
+
+    // extract daily samples (every 8 entries ~ 24h)
+    const days = [];
+    for(let i=0;i<fdata.list.length;i+=8){
+      const it = fdata.list[i];
+      const date = new Date(it.dt*1000);
+      const speed = it.wind && it.wind.speed ? it.wind.speed : 0; // m/s
+      const deg = it.wind && it.wind.deg ? it.wind.deg : null;
+      days.push({date, speed, deg});
+    }
+
+    // compute simple AQI forecast heuristic per day using wind
+    // stronger wind => better dispersion => lower "pollution risk"
+    // we create a score: base = current AQI (if exists) mapped, else assume 3 (moderate)
+    // adjust by wind: adjusted = base - windFactor (windFactor from 0..2)
+    const baseAQI = (aqi !== null) ? mapOpenAQItoIndex(aqi) : 3; // 1..5 mapped to 1..5, default 3
+    const dayCards = [];
+    const speeds = [];
+
+    for(const d of days){
+      speeds.push(d.speed);
+      const windFactor = Math.min(2, Math.floor(d.speed/6)); // every ~6 m/s reduces risk step
+      let est = baseAQI - windFactor;
+      if(est < 1) est = 1;
+      if(est > 5) est = 5;
+      // map est to advice
+      let level='green', text='', cls='adv-green';
+      if(est >=4){
+        level='red';
+        cls='adv-red';
+        text = (lang==='ar')? 'في تلوث مرتفع — يفضل عدم الخروج' : 'High pollution — avoid outdoor activities';
+      }
+      else if(est ===3){
+        level='yellow';
+        cls='adv-yellow';
+        text = (lang==='ar')? 'في تلوث بسيط — خُذ حذرك' : 'Moderate pollution — be cautious';
+      }
+      else {
+        level='green';
+        cls='adv-green';
+        text = (lang==='ar')? 'الجو رايق ومناسب للخروج' : 'Good air — fine to go out';
+      }
+
+      // also consider strong wind case (very windy)
+      if(d.speed >= 15){
+        cls='adv-red';
+        text = (lang==='ar')? 'رياح شديدة — يفضل البقاء بالداخل' : 'Strong winds — stay indoors';
+        level='red';
+      }
+
+      const percent = Math.min(100, Math.round((d.speed/30)*100));
+      const dir = d.deg===null ? '-' : degToCompass(d.deg, lang);
+      dayCards.push({date:d.date, speed:d.speed, percent, dir, cls, text, level});
+    }
+
+    // build HTML
+    const cityHtml = '<div class="city">'+escapeHtml(name)+', '+escapeHtml(country)+'</div>';
+    const gridHtml = dayCards.map(dc => `
+      <div class="day">
+        <small>${formatDate(dc.date, lang)}</small>
+        <div class="day-value">${dc.speed.toFixed(1)} m/s</div>
+        <div class="small">${t[lang].direction} ${dc.dir}</div>
+        <div class="bar"><div class="fill" style="width:${dc.percent}%;"></div></div>
+        <div class="small" style="margin-top:6px">${t[lang].airQuality} ${dc.percent}%</div>
+        <div class="advice ${dc.cls}">${dc.text}${aqi!==null ? ' · '+t[lang].aqiInfo + aqi : ''}</div>
+      </div>
+    `).join('');
+
+    result.innerHTML = cityHtml + '<div class="grid">'+gridHtml+'</div>';
+
+    // draw a simple sparkline chart in sidebar
+    drawChart(speeds, t[lang].chartTitle, lang);
+
+  }catch(e){
+    console.error(e);
+    document.getElementById('result').innerHTML = '<div class="small">'+ t[lang].noData +'</div>';
+    document.getElementById('chart').innerHTML = '<div class="small">'+ t[lang].noChartData +'</div>';
+  }
+}
+
+/* helpers */
+function mapOpenAQItoIndex(openAqi){
+  // openweather AQI: 1 Good, 2 Fair, 3 Moderate, 4 Poor, 5 Very Poor
+  // return same scale (1..5)
+  return Math.max(1, Math.min(5, Math.round(openAqi)));
+}
+
+function degToCompass(num, lang='en'){
+  if(typeof num!=='number') return '-';
+  const val = Math.floor((num/22.5)+0.5);
+  const compass_ar = ["شمال","شمال-شمال شرق","شمال شرق","شرق-شمال شرق","شرق","شرق-جنوب شرق","جنوب شرق","جنوب-جنوب شرق","جنوب","جنوب-جنوب غرب","جنوب غرب","غرب-جنوب غرب","غرب","غرب-شمال غرب","شمال غرب","شمال-شمال غرب"];
+  const compass_en = ["N","NNE","NE","ENE","E","ESE","SE","SSE","S","SSW","SW","WSW","W","WNW","NW","NNW"];
+  return (lang==='ar'?compass_ar[val%16]:compass_en[val%16]) || '-';
+}
+
+function formatDate(dt, lang='en'){
+  if(lang==='ar') return dt.toLocaleDateString('ar-EG', {weekday:'short', day:'numeric', month:'short'});
+  return dt.toLocaleDateString('en-US', {weekday:'short', day:'numeric', month:'short'});
+}
+
+function escapeHtml(s){
+  return String(s).replace(/[&<>"']/g,function(m){
+    return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]
+  });
+}
+
+/* simple sparkline chart */
+function drawChart(values, title, lang='en'){
+  const el = document.getElementById('chart');
+  if(!values || !values.length){
+    el.innerHTML = '<div class="small">'+ t[lang].noChartData +'</div>';
+    return;
+  }
+  const max = Math.max(...values, 1);
+  const w = 340, h = 130, pad = 8;
+  let svg = `<svg width="100%" viewBox="0 0 ${w} ${h}" xmlns="http://www.w3.org/2000/svg">`;
+  // background
+  svg += `<defs><linearGradient id="g" x1="0" x2="0" y1="0" y2="1"><stop offset="0" stop-color="#60a5fa"/><stop offset="1" stop-color="#2563eb"/></linearGradient></defs>`;
+  // polyline
+  const step = (w - pad*2) / (values.length-1 || 1);
+  const points = values.map((v,i)=> {
+    const x = pad + i*step;
+    const y = h - pad - (v/max)*(h - pad*2);
+    return `${x},${y}`;
+  }).join(' ');
+  svg += `<polyline fill="none" stroke="url(#g)" stroke-width="3" points="${points}" stroke-linecap="round" stroke-linejoin="round"/>`;
+  // dots
+  values.forEach((v,i)=>{
+    const x = pad + i*step;
+    const y = h - pad - (v/max)*(h - pad*2);
+    svg += `<circle cx="${x}" cy="${y}" r="3.5" fill="#fff" />`;
+  });
+  // title
+  svg += `<text x="${pad}" y="${14}" font-size="12" fill="#cfe6ff">${title}</text>`;
+  svg += `</svg>`;
+  el.innerHTML = svg;
+}
+
+/* init */
+setLang('en');
+
+</script>
+</body>
+</html>
