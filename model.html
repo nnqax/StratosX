@@ -110,17 +110,17 @@
     .content-wrapper {
       position: relative;
       z-index: 2;
-      margin-top: 75px; /* Navbar height (65px) + 5px gap */
-      padding: 5px; /* Minimal padding */
+      margin-top: 120px; /* Space for navbar + margin */
+      padding: 20px;
       display: flex;
-      gap: 10px;
+      gap: 20px;
       pointer-events: none;
     }
 
     .cards-container {
       display: flex;
       flex-direction: column;
-      gap: 8px; /* Minimal gap between cards */
+      gap: 16px;
       width: 360px;
       pointer-events: auto;
     }
@@ -129,12 +129,12 @@
       background: rgba(255, 255, 255, 0.03);
       backdrop-filter: blur(6px);
       border-radius: 12px;
-      padding: 12px; /* Minimal padding */
+      padding: 16px;
       border: 1px solid rgba(255, 255, 255, 0.03);
     }
 
     h3 {
-      margin: 0 0 8px; /* Minimal margin */
+      margin: 0 0 12px;
       color: var(--neon);
       font-size: 16px;
     }
@@ -142,8 +142,8 @@
     input,
     select,
     button {
-      padding: 8px; /* Reduced padding */
-      border-radius: 8px;
+      padding: 10px;
+      border-radius: 10px;
       border: none;
     }
 
@@ -180,16 +180,16 @@
 
     .kpi-row {
       display: flex;
-      gap: 6px; /* Minimal gap */
+      gap: 8px;
       flex-wrap: wrap;
-      margin-top: 8px; /* Minimal margin */
+      margin-top: 12px;
     }
 
     .kpi {
       flex: 1;
       min-width: 100px;
-      padding: 6px; /* Minimal padding */
-      border-radius: 6px;
+      padding: 8px;
+      border-radius: 8px;
       background: rgba(255, 255, 255, 0.02);
       text-align: center;
     }
@@ -201,21 +201,21 @@
     }
 
     .small {
-      font-size: 12px; /* Slightly smaller */
+      font-size: 13px;
       color: #bfeff6;
     }
 
     .chart-wrap {
-      height: 140px; /* Reduced height */
+      height: 160px;
       display: flex;
       align-items: center;
       justify-content: center;
     }
 
     #status {
-      font-size: 12px; /* Slightly smaller */
+      font-size: 13px;
       color: #bfeff6;
-      margin-top: 6px; /* Minimal margin */
+      margin-top: 8px;
     }
 
     .footer {
@@ -229,7 +229,7 @@
 
     /* RTL adjustments */
     body[dir="rtl"] .content-wrapper {
-      margin-right: 5px;
+      margin-right: 20px;
       margin-left: auto;
     }
 
@@ -247,11 +247,13 @@
 
 <header>
   <div class="container">
+    <a href="Index.html">
     <div class="logo">
       <img src="StratosX_logo.png" alt="StratosX Logo">
     </div>
+    </a>
     <nav>
-      <a href="#" data-en="Home" data-ar="الرئيسية">Home</a>
+      <a href="Index.html" data-en="Home" data-ar="الرئيسية">Home</a>
       <a href="#" data-en="Forecast" data-ar="التوقعات">Forecast</a>
       <a href="#" data-en="Health" data-ar="الصحة">Health</a>
       <a href="#" data-en="Tips" data-ar="النصائح">Tips</a>
@@ -268,14 +270,14 @@
   <div class="cards-container">
     <div class="card">
       <h3 data-en="Search City" data-ar="ابحث عن مدينة">Search City</h3>
-      <div style="display:flex;gap:6px;align-items:center">
+      <div style="display:flex;gap:8px;align-items:center">
         <input id="cityInput" type="text" 
                data-en-placeholder="e.g. Cairo, London, New York" 
                data-ar-placeholder="مثل القاهرة، لندن، نيويورك"
                placeholder="e.g. Cairo, London, New York">
         <button id="checkBtn" data-en="Check" data-ar="تحقق">Check</button>
       </div>
-      <div style="display:flex;gap:6px;margin-top:6px">
+      <div style="display:flex;gap:8px;margin-top:8px">
         <select id="ageSelect">
           <option value="adult" data-en="Adult" data-ar="بالغ">Adult</option>
           <option value="child" data-en="Child" data-ar="طفل">Child</option>
@@ -311,8 +313,8 @@
 
     <div class="card">
       <h3 data-en="Overview" data-ar="نظرة عامة">Overview</h3>
-      <div class="chart-wrap"><canvas id="aqiDonut" width="200" height="140"></canvas></div>
-      <div id="adviceText" style="margin-top:6px;color:#e8fbff" data-en="Advice will appear here when you check a city." data-ar="ستظهر النصائح هنا عند التحقق من مدينة.">Advice will appear here when you check a city.</div>
+      <div class="chart-wrap"><canvas id="aqiDonut" width="220" height="160"></canvas></div>
+      <div id="adviceText" style="margin-top:8px;color:#e8fbff" data-en="Advice will appear here when you check a city." data-ar="ستظهر النصائح هنا عند التحقق من مدينة.">Advice will appear here when you check a city.</div>
     </div>
   </div>
 </div>
