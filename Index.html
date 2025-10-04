@@ -212,4 +212,43 @@
   </header>
 
   <section class="hero">
-    <div class="
+    <div class="overlay"></div>
+    <div class="hero-content">
+      <h1 data-en="Air Coach – Your Smart Air Companion" data-ar="Air Coach – مدربك الذكي للهواء">
+        Air Coach – Your Smart Air Companion
+      </h1>
+      <p data-en="Air Quality Forecast – Personalized Health Tips – Real-time Alerts to Protect You Anywhere." data-ar="توقع جودة الهواء – نصائح صحية مخصصة – تنبيهات لحمايتك في كل مكان.">
+        Air Quality Forecast – Personalized Health Tips – Real-time Alerts to Protect You Anywhere.
+      </p>
+      <a href="#" class="btn" data-en="Check Air Quality Now" data-ar="شوف جودة الهواء الآن">Check Air Quality Now</a>
+    </div>
+  </section>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      const langToggle = document.getElementById('langToggle');
+      let currentLang = 'en';
+
+      function toggleLanguage() {
+        currentLang = currentLang === 'en' ? 'ar' : 'en';
+
+        // Update all text elements
+        document.querySelectorAll('[data-en]').forEach(element => {
+          element.textContent = element.getAttribute(currentLang === 'en' ? 'data-en' : 'data-ar');
+        });
+
+        // Update toggle button text
+        langToggle.textContent = currentLang === 'en' ? 'العربية' : 'English';
+
+        // Set direction
+        document.body.dir = currentLang === 'en' ? 'ltr' : 'rtl';
+      }
+
+      langToggle.addEventListener('click', function (e) {
+        e.preventDefault();
+        toggleLanguage();
+      });
+    });
+  </script>
+</body>
+</html>
