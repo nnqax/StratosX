@@ -14,43 +14,50 @@
       --neon: #00d9ff;
     }
 
-    body {
+    * {
       margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
       font-family: 'Inter', Arial, sans-serif;
       background: #050615;
       color: #fff;
       overflow-x: hidden;
+      transition: all 0.3s ease;
     }
 
-    /* Navbar */
+    /* Navbar - Using your exact styling */
     header {
+      display: flex;
+      justify-content: center;
+      padding: 10px 40px;
       position: fixed;
       top: 10px;
       left: 0;
       width: 100%;
       z-index: 20;
-      display: flex;
-      justify-content: center;
-      pointer-events: auto;
     }
 
     .container {
-      max-width: 900px;
+      max-width: 1000px;
       width: 100%;
       border-radius: 100px;
-      padding: 8px 24px;
+      padding: 12px 30px;
       display: flex;
       justify-content: space-between;
       align-items: center;
       background: rgba(255, 255, 255, 0.15);
       backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
       border: 1px solid rgba(255, 255, 255, 0.2);
       box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
       font-family: 'Poppins', sans-serif;
     }
 
     .logo img {
-      height: 40px;
+      height: 50px;
       width: auto;
     }
 
@@ -60,13 +67,13 @@
     }
 
     nav a {
-      margin: 0 8px;
+      margin: 0 10px;
       text-decoration: none;
       color: #f9fafb;
       font-weight: 500;
-      font-size: 0.8rem;
+      font-size: 0.85rem;
       transition: color 0.3s;
-      padding: 4px 0;
+      padding: 5px 0;
     }
 
     nav a:hover {
@@ -77,11 +84,11 @@
       background: rgba(255, 255, 255, 0.2);
       color: #fff;
       border: 1px solid rgba(255, 255, 255, 0.3);
-      padding: 4px 12px;
+      padding: 6px 14px;
       border-radius: 20px;
       cursor: pointer;
       font-weight: 500;
-      font-size: 0.75rem;
+      font-size: 0.8rem;
       margin-left: 10px;
       transition: all 0.3s ease;
     }
@@ -103,7 +110,7 @@
     .content-wrapper {
       position: relative;
       z-index: 2;
-      margin-top: 80px; /* Space for navbar */
+      margin-top: 120px; /* Space for navbar + margin */
       padding: 20px;
       display: flex;
       gap: 20px;
@@ -219,10 +226,24 @@
       font-size: 13px;
       z-index: 2;
     }
+
+    /* RTL adjustments */
+    body[dir="rtl"] .content-wrapper {
+      margin-right: 20px;
+      margin-left: auto;
+    }
+
+    body[dir="rtl"] .cards-container {
+      text-align: right;
+    }
+
+    body[dir="rtl"] select {
+      background-position: left 10px center;
+    }
   </style>
 </head>
 
-<body>
+<body dir="ltr">
 
 <header>
   <div class="container">
@@ -246,52 +267,120 @@
 <div class="content-wrapper">
   <div class="cards-container">
     <div class="card">
-      <h3>Search City</h3>
+      <h3 data-en="Search City" data-ar="ابحث عن مدينة">Search City</h3>
       <div style="display:flex;gap:8px;align-items:center">
-        <input id="cityInput" type="text" placeholder="e.g. Cairo, London, New York">
-        <button id="checkBtn">Check</button>
+        <input id="cityInput" type="text" 
+               data-en-placeholder="e.g. Cairo, London, New York" 
+               data-ar-placeholder="مثل القاهرة، لندن، نيويورك"
+               placeholder="e.g. Cairo, London, New York">
+        <button id="checkBtn" data-en="Check" data-ar="تحقق">Check</button>
       </div>
       <div style="display:flex;gap:8px;margin-top:8px">
         <select id="ageSelect">
-          <option value="adult">Adult</option>
-          <option value="child">Child</option>
-          <option value="elderly">Elderly</option>
-          <option value="infant">Infant</option>
+          <option value="adult" data-en="Adult" data-ar="بالغ">Adult</option>
+          <option value="child" data-en="Child" data-ar="طفل">Child</option>
+          <option value="elderly" data-en="Elderly" data-ar="مسن">Elderly</option>
+          <option value="infant" data-en="Infant" data-ar="رضيع">Infant</option>
         </select>
         <select id="healthSelect">
-          <option value="healthy">Healthy</option>
-          <option value="asthma">Asthma</option>
-          <option value="allergy">Allergy</option>
-          <option value="lung">Lung disease</option>
-          <option value="heart">Heart condition</option>
+          <option value="healthy" data-en="Healthy" data-ar="صحي">Healthy</option>
+          <option value="asthma" data-en="Asthma" data-ar="ربو">Asthma</option>
+          <option value="allergy" data-en="Allergy" data-ar="حساسية">Allergy</option>
+          <option value="lung" data-en="Lung disease" data-ar="مرض رئوي">Lung disease</option>
+          <option value="heart" data-en="Heart condition" data-ar="حالة قلبية">Heart condition</option>
         </select>
       </div>
 
       <div class="kpi-row">
-        <div class="kpi"><div class="num" id="kpiAqi">—</div><div class="small">Current AQI</div></div>
-        <div class="kpi"><div class="num" id="kpiCity">—</div><div class="small">City</div></div>
-        <div class="kpi"><div class="num" id="kpiTime">—</div><div class="small">Last update</div></div>
+        <div class="kpi">
+          <div class="num" id="kpiAqi">—</div>
+          <div class="small" data-en="Current AQI" data-ar="مؤشر جودة الهواء الحالي">Current AQI</div>
+        </div>
+        <div class="kpi">
+          <div class="num" id="kpiCity">—</div>
+          <div class="small" data-en="City" data-ar="المدينة">City</div>
+        </div>
+        <div class="kpi">
+          <div class="num" id="kpiTime">—</div>
+          <div class="small" data-en="Last update" data-ar="آخر تحديث">Last update</div>
+        </div>
       </div>
 
-      <div id="status" class="small">Loading global heatmap data...</div>
+      <div id="status" class="small" data-en="Loading global heatmap data..." data-ar="جاري تحميل خريطة الحرارة العالمية...">Loading global heatmap data...</div>
     </div>
 
     <div class="card">
-      <h3>Overview</h3>
+      <h3 data-en="Overview" data-ar="نظرة عامة">Overview</h3>
       <div class="chart-wrap"><canvas id="aqiDonut" width="220" height="160"></canvas></div>
-      <div id="adviceText" style="margin-top:8px;color:#e8fbff">Advice will appear here when you check a city.</div>
+      <div id="adviceText" style="margin-top:8px;color:#e8fbff" data-en="Advice will appear here when you check a city." data-ar="ستظهر النصائح هنا عند التحقق من مدينة.">Advice will appear here when you check a city.</div>
     </div>
   </div>
 </div>
 
-<div class="footer">Powered by OpenWeather • API key embedded</div>
+<div class="footer" data-en="Powered by OpenWeather • API key embedded" data-ar="مدعوم من OpenWeather • مفتاح API مضمن">Powered by OpenWeather • API key embedded</div>
 
 <!-- JavaScript Logic -->
 <script>
   const API_KEY = "1a0ee291bbd28c6d16b9d6ab5192ea5d";
+  
+  // Translation dictionaries for dynamic content
+  const translations = {
+    en: {
+      excellent: "Excellent",
+      good: "Good", 
+      moderate: "Moderate",
+      unhealthy: "Unhealthy",
+      veryUnhealthy: "Very Unhealthy",
+      hazardous: "Hazardous",
+      safeAdvice: "Safe for all activities.",
+      goodAdvice: "Good — avoid very intense outdoor exercise.",
+      moderateAdvice: "Moderate — sensitive groups should limit time outside.",
+      unhealthyAdvice: "Unhealthy — wear N95/FFP2 and avoid long exposure.",
+      veryUnhealthyAdvice: "Very Unhealthy — stay indoors when possible.",
+      hazardousAdvice: "Hazardous — avoid going outside.",
+      extraCaution: "Extra caution for",
+      condition: "Condition:",
+      adult: "adult",
+      child: "child", 
+      elderly: "elderly",
+      infant: "infant",
+      healthy: "healthy",
+      asthma: "asthma",
+      allergy: "allergy",
+      lung: "lung disease",
+      heart: "heart condition"
+    },
+    ar: {
+      excellent: "ممتاز",
+      good: "جيد",
+      moderate: "معتدل", 
+      unhealthy: "غير صحي",
+      veryUnhealthy: "غير صحي جداً",
+      hazardous: "خطير",
+      safeAdvice: "آمن لجميع الأنشطة.",
+      goodAdvice: "جيد — تجنب التمارين الخارجية المكثفة جداً.",
+      moderateAdvice: "معتدل — يجب على الفئات الحساسة تقليل الوقت في الخارج.",
+      unhealthyAdvice: "غير صحي — ارتدِ قناع N95/FFP2 وتجنب التعرض الطويل.",
+      veryUnhealthyAdvice: "غير صحي جداً — ابق في الداخل عندما يكون ذلك ممكناً.",
+      hazardousAdvice: "خطير — تجنب الخروج إلى الخارج.",
+      extraCaution: "حذر إضافي لـ",
+      condition: "الحالة:",
+      adult: "بالغ",
+      child: "طفل",
+      elderly: "مسن", 
+      infant: "رضيع",
+      healthy: "صحي",
+      asthma: "ربو",
+      allergy: "حساسية",
+      lung: "مرض رئوي",
+      heart: "حالة قلبية"
+    }
+  };
+
   function mapIndexToNumeric(i) {
     return { 1: 50, 2: 100, 3: 150, 4: 200, 5: 320 }[i] || 0;
   }
+  
   function getAQIColor(a) {
     if (a <= 50) return "#00e400";
     if (a <= 100) return "#ffeb00";
@@ -300,24 +389,31 @@
     if (a <= 300) return "#8f3f97";
     return "#7e0023";
   }
-  function getAQILabel(a) {
-    if (a <= 50) return "Excellent";
-    if (a <= 100) return "Good";
-    if (a <= 150) return "Moderate";
-    if (a <= 200) return "Unhealthy";
-    if (a <= 300) return "Very Unhealthy";
-    return "Hazardous";
+  
+  function getAQILabel(a, lang) {
+    const t = translations[lang];
+    if (a <= 50) return t.excellent;
+    if (a <= 100) return t.good;
+    if (a <= 150) return t.moderate;
+    if (a <= 200) return t.unhealthy;
+    if (a <= 300) return t.veryUnhealthy;
+    return t.hazardous;
   }
-  function buildAdvice(a, age, health) {
-    let out = getAQILabel(a) + ": ";
-    if (a <= 50) out += "Safe for all activities.";
-    else if (a <= 100) out += "Good — avoid very intense outdoor exercise.";
-    else if (a <= 150) out += "Moderate — sensitive groups should limit time outside.";
-    else if (a <= 200) out += "Unhealthy — wear N95/FFP2 and avoid long exposure.";
-    else if (a <= 300) out += "Very Unhealthy — stay indoors when possible.";
-    else out += "Hazardous — avoid going outside.";
-    if (age !== 'adult') out += " Extra caution for " + age + ".";
-    if (health !== 'healthy') out += " Condition: " + health + ".";
+  
+  function buildAdvice(a, age, health, lang) {
+    const t = translations[lang];
+    let out = getAQILabel(a, lang) + ": ";
+    
+    if (a <= 50) out += t.safeAdvice;
+    else if (a <= 100) out += t.goodAdvice;
+    else if (a <= 150) out += t.moderateAdvice;
+    else if (a <= 200) out += t.unhealthyAdvice;
+    else if (a <= 300) out += t.veryUnhealthyAdvice;
+    else out += t.hazardousAdvice;
+    
+    if (age !== 'adult') out += ` ${t.extraCaution} ${t[age]}.`;
+    if (health !== 'healthy') out += ` ${t.condition} ${t[health]}.`;
+    
     return out;
   }
 
@@ -348,10 +444,59 @@
     .pointRadius(0.25);
 
   let heatPoints = [];
+  let currentLang = 'en';
+
+  // Language toggle functionality
+  const langToggle = document.getElementById('langToggle');
+
+  function toggleLanguage() {
+    currentLang = currentLang === 'en' ? 'ar' : 'en';
+    
+    // Update body direction
+    document.body.dir = currentLang === 'en' ? 'ltr' : 'rtl';
+    
+    // Update all elements with data-en and data-ar attributes
+    document.querySelectorAll('[data-en]').forEach(element => {
+      element.textContent = element.getAttribute(currentLang === 'en' ? 'data-en' : 'data-ar');
+    });
+    
+    // Update input placeholders
+    document.querySelectorAll('[data-en-placeholder]').forEach(input => {
+      input.placeholder = input.getAttribute(currentLang === 'en' ? 'data-en-placeholder' : 'data-ar-placeholder');
+    });
+    
+    // Update select options
+    document.querySelectorAll('select option').forEach(option => {
+      if (option.hasAttribute('data-en')) {
+        option.textContent = option.getAttribute(currentLang === 'en' ? 'data-en' : 'data-ar');
+      }
+    });
+    
+    // Update button text
+    langToggle.textContent = currentLang === 'en' ? 'العربية' : 'English';
+    
+    // Update any dynamic advice text if it exists
+    const adviceText = document.getElementById('adviceText');
+    if (adviceText && adviceText.hasAttribute('data-custom-advice')) {
+      const aqi = parseInt(document.getElementById('kpiAqi').textContent);
+      const age = document.getElementById('ageSelect').value;
+      const health = document.getElementById('healthSelect').value;
+      
+      if (!isNaN(aqi)) {
+        adviceText.textContent = buildAdvice(aqi, age, health, currentLang);
+      }
+    }
+  }
+
+  langToggle.addEventListener('click', toggleLanguage);
 
   async function fetchGlobalAQI() {
     const status = document.getElementById('status');
-    status.textContent = 'Fetching AQI for ' + CITY_LIST.length + ' cities...';
+    const statusText = currentLang === 'en' 
+      ? 'Fetching AQI for ' + CITY_LIST.length + ' cities...' 
+      : 'جاري جلب مؤشر جودة الهواء لـ ' + CITY_LIST.length + ' مدينة...';
+    status.textContent = statusText;
+    
     heatPoints = [];
     for (const c of CITY_LIST) {
       try {
@@ -369,7 +514,11 @@
       await new Promise(r => setTimeout(r, 250));
     }
     globeInstance.pointsData(heatPoints);
-    status.textContent = 'Loaded ' + heatPoints.length + ' cities.';
+    
+    const loadedText = currentLang === 'en' 
+      ? 'Loaded ' + heatPoints.length + ' cities.' 
+      : 'تم تحميل ' + heatPoints.length + ' مدينة.';
+    status.textContent = loadedText;
   }
 
   function updateDonutAndAdvice(aqi, cityName, age, health) {
@@ -392,13 +541,19 @@
     document.getElementById('kpiAqi').textContent = aqi;
     document.getElementById('kpiCity').textContent = cityName;
     document.getElementById('kpiTime').textContent = new Date().toLocaleTimeString();
-    document.getElementById('adviceText').textContent = buildAdvice(aqi, age, health);
+    
+    const adviceText = document.getElementById('adviceText');
+    adviceText.textContent = buildAdvice(aqi, age, health, currentLang);
+    adviceText.setAttribute('data-custom-advice', 'true');
   }
 
   async function geocodeAndZoom(city, age, health) {
     const gres = await fetch(`https://api.openweathermap.org/geo/1.0/direct?q=${encodeURIComponent(city)}&limit=1&appid=${API_KEY}`);
     const gdata = await gres.json();
-    if (!gdata || !gdata.length) return alert("City not found");
+    if (!gdata || !gdata.length) {
+      const alertText = currentLang === 'en' ? "City not found" : "المدينة غير موجودة";
+      return alert(alertText);
+    }
     const lat = gdata[0].lat, lon = gdata[0].lon;
     const res = await fetch(`https://api.openweathermap.org/data/2.5/air_pollution?lat=${lat}&lon=${lon}&appid=${API_KEY}`);
     const data = await res.json();
@@ -420,19 +575,6 @@
 
   fetchGlobalAQI();
   setInterval(fetchGlobalAQI, 60000);
-
-  // Language toggle
-  const langToggle = document.getElementById('langToggle');
-  let currentLang = 'en';
-
-  langToggle.addEventListener('click', () => {
-    currentLang = currentLang === 'en' ? 'ar' : 'en';
-    document.body.dir = currentLang === 'en' ? 'ltr' : 'rtl';
-    document.querySelectorAll('nav a').forEach(link => {
-      link.textContent = link.getAttribute(currentLang === 'en' ? 'data-en' : 'data-ar');
-    });
-    langToggle.textContent = currentLang === 'en' ? 'العربية' : 'English';
-  });
 </script>
 
 </body>
