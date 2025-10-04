@@ -348,7 +348,10 @@
       asthma: "asthma",
       allergy: "allergy",
       lung: "lung disease",
-      heart: "heart condition"
+      heart: "heart condition",
+      fetchingCities: (count) => `Fetching AQI for ${count} cities...`,
+      loadedCities: (count) => `Loaded ${count} cities.`,
+      cityNotFound: "City not found"
     },
     ar: {
       excellent: "ممتاز",
@@ -373,9 +376,14 @@
       asthma: "ربو",
       allergy: "حساسية",
       lung: "مرض رئوي",
-      heart: "حالة قلبية"
+      heart: "حالة قلبية",
+      fetchingCities: (count) => `جاري جلب مؤشر جودة الهواء لـ ${count} مدينة...`,
+      loadedCities: (count) => `تم تحميل ${count} مدينة.`,
+      cityNotFound: "المدينة غير موجودة"
     }
   };
+
+  let currentLang = 'en';
 
   function mapIndexToNumeric(i) {
     return { 1: 50, 2: 100, 3: 150, 4: 200, 5: 320 }[i] || 0;
@@ -444,31 +452,33 @@
     .pointRadius(0.25);
 
   let heatPoints = [];
-  let currentLang = 'en';
 
   // Language toggle functionality
   const langToggle = document.getElementById('langToggle');
 
-  function toggleLanguage() {
-    currentLang = currentLang === 'en' ? 'ar' : 'en';
+  function updateLanguage(lang) {
+    currentLang = lang;
     
     // Update body direction
     document.body.dir = currentLang === 'en' ? 'ltr' : 'rtl';
     
     // Update all elements with data-en and data-ar attributes
     document.querySelectorAll('[data-en]').forEach(element => {
-      element.textContent = element.getAttribute(currentLang === 'en' ? 'data-en' : 'data-ar');
+      const text = element.getAttribute(currentLang === 'en' ? 'data-en' : 'data-ar');
+      element.textContent = text;
     });
     
     // Update input placeholders
     document.querySelectorAll('[data-en-placeholder]').forEach(input => {
-      input.placeholder = input.getAttribute(currentLang === 'en' ? 'data-en-placeholder' : 'data-ar-placeholder');
+      const placeholder = input.getAttribute(currentLang === 'en' ? 'data-en-placeholder' : 'data-ar-placeholder');
+      input.placeholder = placeholder;
     });
     
     // Update select options
     document.querySelectorAll('select option').forEach(option => {
       if (option.hasAttribute('data-en')) {
-        option.textContent = option.getAttribute(currentLang === 'en' ? 'data-en' : 'data-ar');
+        const text = option.getAttribute(currentLang === 'en' ? 'data-en' : 'data-ar');
+        option.textContent = text;
       }
     });
     
@@ -488,14 +498,16 @@
     }
   }
 
+  function toggleLanguage() {
+    const newLang = currentLang === 'en' ? 'ar' : 'en';
+    updateLanguage(newLang);
+  }
+
   langToggle.addEventListener('click', toggleLanguage);
 
   async function fetchGlobalAQI() {
     const status = document.getElementById('status');
-    const statusText = currentLang === 'en' 
-      ? 'Fetching AQI for ' + CITY_LIST.length + ' cities...' 
-      : 'جاري جلب مؤشر جودة الهواء لـ ' + CITY_LIST.length + ' مدينة...';
-    status.textContent = statusText;
+    status.textContent = translations[currentLang].fetchingCities(CITY_LIST.length);
     
     heatPoints = [];
     for (const c of CITY_LIST) {
@@ -515,10 +527,7 @@
     }
     globeInstance.pointsData(heatPoints);
     
-    const loadedText = currentLang === 'en' 
-      ? 'Loaded ' + heatPoints.length + ' cities.' 
-      : 'تم تحميل ' + heatPoints.length + ' مدينة.';
-    status.textContent = loadedText;
+    status.textContent = translations[currentLang].loadedCities(heatPoints.length);
   }
 
   function updateDonutAndAdvice(aqi, cityName, age, health) {
@@ -551,8 +560,8 @@
     const gres = await fetch(`https://api.openweathermap.org/geo/1.0/direct?q=${encodeURIComponent(city)}&limit=1&appid=${API_KEY}`);
     const gdata = await gres.json();
     if (!gdata || !gdata.length) {
-      const alertText = currentLang === 'en' ? "City not found" : "المدينة غير موجودة";
-      return alert(alertText);
+      alert(translations[currentLang].cityNotFound);
+      return;
     }
     const lat = gdata[0].lat, lon = gdata[0].lon;
     const res = await fetch(`https://api.openweathermap.org/data/2.5/air_pollution?lat=${lat}&lon=${lon}&appid=${API_KEY}`);
@@ -573,6 +582,7 @@
     geocodeAndZoom(city, age, health);
   }
 
+  // Initialize the page
   fetchGlobalAQI();
   setInterval(fetchGlobalAQI, 60000);
 </script>
