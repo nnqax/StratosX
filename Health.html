@@ -1,0 +1,1349 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>StratosX – Health & Air Quality</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="icon" type="image/png" href="Xfavicon.png">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Poppins', sans-serif;
+    }
+
+    body {
+      background: #0a0f1c;
+      color: #e5e7eb;
+      overflow-x: hidden;
+      transition: all 0.3s ease;
+    }
+
+    body[dir="rtl"] .hero-content {
+      text-align: right !important;
+    }
+
+    body[dir="ltr"] .hero-content {
+      text-align: left !important;
+    }
+
+    /* Header with Glass Morphism */
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px 20px;
+      position: fixed;
+      top: 10px;
+      left: 0;
+      width: 100%;
+      z-index: 100;
+    }
+
+    .container {
+      max-width: 1000px;
+      margin: 0 auto;
+      width: 100%;
+      border-radius: 100px;
+      padding: 12px 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: relative;
+      background: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(15px);
+      -webkit-backdrop-filter: blur(15px);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+    }
+
+    header .logo img {
+      height: 40px;
+      width: auto;
+    }
+
+    header nav {
+      display: flex;
+      align-items: center;
+    }
+
+    header nav a {
+      margin: 0 8px;
+      text-decoration: none;
+      color: #e5e7eb;
+      font-weight: 500;
+      font-size: 0.85rem;
+      transition: color 0.3s;
+      padding: 5px 0;
+    }
+
+    header nav a:hover {
+      color: #60a5fa; /* Blue hover color */
+    }
+
+    header .cta {
+      background: #000; /* Black Get Started button */
+      color: #fff;
+      padding: 8px 16px;
+      border-radius: 30px;
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 0.8rem;
+      transition: 0.4s;
+      margin-left: 8px;
+    }
+
+    header .cta:hover {
+      background: linear-gradient(270deg, #2563eb, #9333ea, #2563eb);
+      background-size: 600% 600%;
+      animation: gradientFlow 4s ease infinite;
+    }
+
+    .lang-toggle {
+      background: rgba(255, 255, 255, 0.1);
+      color: #e5e7eb;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      padding: 6px 12px;
+      border-radius: 20px;
+      cursor: pointer;
+      font-weight: 500;
+      font-size: 0.8rem;
+      margin-left: 8px;
+      transition: all 0.3s ease;
+    }
+
+    .lang-toggle:hover {
+      background: rgba(255, 255, 255, 0.2);
+    }
+
+    /* Mobile Navigation */
+    .mobile-menu-toggle {
+      display: none;
+      background: transparent;
+      border: none;
+      color: white;
+      font-size: 1.5rem;
+      cursor: pointer;
+      margin-left: 10px;
+      transition: transform 0.3s ease;
+      z-index: 1000;
+    }
+
+    .mobile-menu-toggle.active {
+      transform: rotate(90deg);
+    }
+
+    .mobile-nav {
+      display: none;
+      position: absolute;
+      top: 100%;
+      left: 50%;
+      transform: translateX(-50%) translateY(-20px);
+      width: 90%;
+      max-width: 400px;
+      background: rgba(255, 255, 255, 0.15);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      border-radius: 24px;
+      padding: 24px;
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+      z-index: 999;
+      opacity: 0;
+      visibility: hidden;
+      transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .mobile-nav.active {
+      display: block;
+      opacity: 1;
+      visibility: visible;
+      transform: translateX(-50%) translateY(0);
+    }
+
+    .mobile-nav::before {
+      content: '';
+      position: absolute;
+      top: -10px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 0;
+      height: 0;
+      border-left: 10px solid transparent;
+      border-right: 10px solid transparent;
+      border-bottom: 10px solid rgba(255, 255, 255, 0.15);
+      filter: drop-shadow(0 -2px 2px rgba(0, 0, 0, 0.1));
+    }
+
+    .mobile-nav a {
+      display: block;
+      color: white;
+      text-decoration: none;
+      padding: 16px 20px;
+      margin: 8px 0;
+      border-radius: 16px;
+      font-weight: 500;
+      font-size: 1rem;
+      text-align: center;
+      transition: all 0.3s ease;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .mobile-nav a::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+      transition: left 0.5s ease;
+    }
+
+    .mobile-nav a:hover::before {
+      left: 100%;
+    }
+
+    .mobile-nav a:hover {
+      background: rgba(255, 255, 255, 0.1);
+      border-color: rgba(255, 255, 255, 0.2);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+      color: #60a5fa; /* Blue hover color for mobile */
+    }
+
+    .mobile-nav a:last-child {
+      margin-bottom: 0;
+    }
+
+    /* Overlay for mobile menu */
+    .mobile-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.7);
+      backdrop-filter: blur(5px);
+      -webkit-backdrop-filter: blur(5px);
+      z-index: 998;
+      opacity: 0;
+      visibility: hidden;
+      transition: all 0.3s ease;
+    }
+
+    .mobile-overlay.active {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    @keyframes gradientFlow {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    /* Hero Section */
+    .hero {
+      position: relative;
+      height: 100vh;
+      min-height: 600px;
+      background: linear-gradient(rgba(10, 15, 28, 0.7), rgba(10, 15, 28, 0.8)),
+                  url('Patient.jpg') no-repeat center/cover;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 120px 20px 60px;
+      text-align: center;
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 2;
+      max-width: 800px;
+      color: #fff;
+      width: 100%;
+    }
+
+    .hero h1 {
+      font-size: 3.5rem;
+      font-weight: 700;
+      margin-bottom: 20px;
+      line-height: 1.2;
+      letter-spacing: -0.5px;
+      text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+    }
+
+    .hero p {
+      font-size: 1.3rem;
+      margin-bottom: 30px;
+      opacity: 0.9;
+      line-height: 1.5;
+      text-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+    }
+
+    .scroll-indicator {
+      position: absolute;
+      bottom: 30px;
+      left: 50%;
+      transform: translateX(-50%);
+      color: rgba(255, 255, 255, 0.7);
+      font-size: 1.2rem;
+      animation: bounce 2s infinite;
+    }
+
+    @keyframes bounce {
+      0%, 20%, 50%, 80%, 100% {
+        transform: translateX(-50%) translateY(0);
+      }
+      40% {
+        transform: translateX(-50%) translateY(-10px);
+      }
+      60% {
+        transform: translateX(-50%) translateY(-5px);
+      }
+    }
+
+    /* Content Sections */
+    .section {
+      padding: 100px 20px;
+      max-width: 1200px;
+      margin: 0 auto;
+      opacity: 0;
+      transform: translateY(30px);
+      transition: all 0.8s ease;
+    }
+
+    .section.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .section-title {
+      font-size: 2.5rem;
+      font-weight: 700;
+      margin-bottom: 40px;
+      text-align: center;
+      color: #f9fafb;
+      position: relative;
+    }
+
+    .section-title::after {
+      content: '';
+      position: absolute;
+      bottom: -10px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 80px;
+      height: 4px;
+      background: linear-gradient(90deg, #2563eb, #84cc16);
+      border-radius: 2px;
+    }
+
+    .section-subtitle {
+      font-size: 1.2rem;
+      margin-bottom: 50px;
+      text-align: center;
+      color: #9ca3af;
+      max-width: 800px;
+      margin-left: auto;
+      margin-right: auto;
+      line-height: 1.6;
+    }
+
+    /* NASA TEMPO Section */
+    .nasa-section {
+      background: rgba(30, 41, 59, 0.8);
+      border-radius: 16px;
+      padding: 50px;
+      margin-bottom: 80px;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      backdrop-filter: blur(10px);
+    }
+
+    .nasa-header {
+      text-align: center;
+      margin-bottom: 40px;
+    }
+
+    .nasa-logo {
+      height: 60px;
+      margin-bottom: 20px;
+    }
+
+    .pollutant-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+      gap: 30px;
+      margin-bottom: 40px;
+    }
+
+    .pollutant-card {
+      background: rgba(15, 23, 42, 0.6);
+      border-radius: 12px;
+      padding: 25px;
+      border-left: 4px solid;
+      transition: transform 0.3s ease;
+    }
+
+    .pollutant-card:hover {
+      transform: translateY(-5px);
+    }
+
+    .pollutant-card.ozone {
+      border-left-color: #3b82f6;
+    }
+
+    .pollutant-card.nitrogen {
+      border-left-color: #ef4444;
+    }
+
+    .pollutant-card.formaldehyde {
+      border-left-color: #10b981;
+    }
+
+    .pollutant-header {
+      display: flex;
+      align-items: center;
+      margin-bottom: 15px;
+    }
+
+    .pollutant-icon {
+      font-size: 1.8rem;
+      margin-right: 15px;
+    }
+
+    .pollutant-title {
+      font-size: 1.4rem;
+      font-weight: 600;
+      color: #f9fafb;
+    }
+
+    .pollutant-formula {
+      font-size: 1.1rem;
+      color: #9ca3af;
+      margin-left: 10px;
+    }
+
+    .pollutant-source {
+      background: rgba(255, 255, 255, 0.05);
+      padding: 12px;
+      border-radius: 8px;
+      margin: 15px 0;
+      font-style: italic;
+    }
+
+    .health-effects {
+      margin-top: 20px;
+    }
+
+    .health-title {
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: #f9fafb;
+      margin-bottom: 10px;
+    }
+
+    .health-list {
+      list-style-type: none;
+    }
+
+    .health-list li {
+      padding: 8px 0;
+      color: #d1d5db;
+      line-height: 1.5;
+      display: flex;
+      align-items: flex-start;
+    }
+
+    .health-list li::before {
+      content: '•';
+      color: #60a5fa;
+      font-weight: bold;
+      margin-right: 10px;
+    }
+
+    .nasa-source {
+      text-align: center;
+      color: #9ca3af;
+      font-size: 0.9rem;
+      margin-top: 30px;
+      font-style: italic;
+    }
+
+    /* Stats Grid */
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 30px;
+      margin-bottom: 80px;
+    }
+
+    .stat-card {
+      background: rgba(30, 41, 59, 0.6);
+      border-radius: 16px;
+      padding: 30px;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+      text-align: center;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      backdrop-filter: blur(10px);
+    }
+
+    .stat-card:hover {
+      transform: translateY(-10px);
+      box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
+    }
+
+    .stat-number {
+      font-size: 3rem;
+      font-weight: 700;
+      color: #84cc16;
+      margin-bottom: 10px;
+      text-shadow: 0 0 10px rgba(132, 204, 22, 0.3);
+    }
+
+    .stat-label {
+      font-size: 1rem;
+      color: #d1d5db;
+      line-height: 1.5;
+    }
+
+    .content-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 40px;
+      margin-bottom: 80px;
+    }
+
+    .content-card {
+      background: rgba(30, 41, 59, 0.6);
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      backdrop-filter: blur(10px);
+    }
+
+    .content-card:hover {
+      transform: translateY(-10px);
+      box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
+    }
+
+    .card-image {
+      height: 200px;
+      width: 100%;
+      object-fit: cover;
+    }
+
+    .card-content {
+      padding: 25px;
+    }
+
+    .card-title {
+      font-size: 1.3rem;
+      font-weight: 600;
+      margin-bottom: 15px;
+      color: #f9fafb;
+    }
+
+    .card-text {
+      color: #d1d5db;
+      line-height: 1.6;
+    }
+
+    .chart-container {
+      background: rgba(30, 41, 59, 0.6);
+      border-radius: 16px;
+      padding: 40px;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+      margin-bottom: 80px;
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      backdrop-filter: blur(10px);
+    }
+
+    .chart-title {
+      font-size: 1.5rem;
+      font-weight: 600;
+      margin-bottom: 30px;
+      color: #f9fafb;
+      text-align: center;
+    }
+
+    .chart-wrapper {
+      height: 400px;
+      position: relative;
+    }
+
+    .health-tips {
+      background: rgba(30, 41, 59, 0.8);
+      border-radius: 16px;
+      padding: 50px;
+      margin-bottom: 80px;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      backdrop-filter: blur(10px);
+    }
+
+    .tips-title {
+      font-size: 1.8rem;
+      font-weight: 600;
+      margin-bottom: 30px;
+      color: #f9fafb;
+      text-align: center;
+    }
+
+    .tips-list {
+      list-style-type: none;
+    }
+
+    .tips-list li {
+      padding: 20px 0;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      display: flex;
+      align-items: flex-start;
+    }
+
+    .tips-list li:last-child {
+      border-bottom: none;
+    }
+
+    .tip-icon {
+      color: #84cc16;
+      margin-right: 15px;
+      font-size: 1.5rem;
+      flex-shrink: 0;
+    }
+
+    .tip-text {
+      color: #d1d5db;
+      line-height: 1.6;
+      font-size: 1.1rem;
+    }
+
+    /* Footer */
+    footer {
+      background: #0f172a;
+      color: white;
+      padding: 80px 20px 40px;
+      text-align: center;
+    }
+
+    .footer-content {
+      max-width: 800px;
+      margin: 0 auto;
+    }
+
+    .footer-logo {
+      height: 60px;
+      margin-bottom: 20px;
+    }
+
+    .footer-text {
+      color: #9ca3af;
+      margin-bottom: 40px;
+      line-height: 1.6;
+      font-size: 1.1rem;
+    }
+
+    .footer-links {
+      display: flex;
+      justify-content: center;
+      gap: 40px;
+      margin-bottom: 40px;
+      flex-wrap: wrap;
+    }
+
+    .footer-links a {
+      color: #d1d5db;
+      text-decoration: none;
+      transition: color 0.3s;
+      font-weight: 500;
+    }
+
+    .footer-links a:hover {
+      color: #60a5fa; /* Blue hover color */
+    }
+
+    .copyright {
+      color: #6b7280;
+      font-size: 0.9rem;
+    }
+
+    /* Media Queries for Responsive Design */
+    @media (max-width: 1024px) {
+      .container {
+        padding: 10px 15px;
+      }
+
+      header nav a {
+        margin: 0 6px;
+        font-size: 0.8rem;
+      }
+
+      .hero h1 {
+        font-size: 3rem;
+      }
+
+      .pollutant-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 768px) {
+      header {
+        padding: 10px 15px;
+      }
+
+      .container {
+        border-radius: 50px;
+        padding: 8px 15px;
+      }
+
+      header .logo img {
+        height: 35px;
+      }
+
+      header nav {
+        display: none;
+      }
+
+      .mobile-menu-toggle {
+        display: block;
+      }
+
+      .hero {
+        padding: 120px 20px 40px;
+        min-height: 500px;
+      }
+
+      .hero h1 {
+        font-size: 2.5rem;
+      }
+
+      .hero p {
+        font-size: 1.1rem;
+      }
+
+      .mobile-nav {
+        width: 85%;
+      }
+
+      .mobile-nav a {
+        padding: 14px 16px;
+        font-size: 0.95rem;
+      }
+
+      .section {
+        padding: 80px 20px;
+      }
+
+      .section-title {
+        font-size: 2rem;
+      }
+
+      .nasa-section {
+        padding: 30px;
+      }
+
+      .stats-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .health-tips {
+        padding: 30px;
+      }
+    }
+
+    @media (max-width: 480px) {
+      header {
+        padding: 8px 10px;
+      }
+
+      .container {
+        padding: 6px 12px;
+        border-radius: 40px;
+      }
+
+      header .logo img {
+        height: 30px;
+      }
+
+      .hero {
+        padding: 100px 15px 30px;
+        min-height: 450px;
+      }
+
+      .hero h1 {
+        font-size: 2rem;
+      }
+
+      .hero p {
+        font-size: 1rem;
+        margin-bottom: 25px;
+      }
+
+      .mobile-nav {
+        width: 90%;
+        padding: 20px;
+        border-radius: 20px;
+      }
+
+      .mobile-nav a {
+        padding: 12px 14px;
+        font-size: 0.9rem;
+        margin: 6px 0;
+      }
+
+      .section {
+        padding: 60px 15px;
+      }
+
+      .section-title {
+        font-size: 1.8rem;
+      }
+
+      .nasa-section {
+        padding: 20px;
+      }
+
+      .chart-container {
+        padding: 20px;
+      }
+
+      .health-tips {
+        padding: 25px;
+      }
+
+      .footer-links {
+        gap: 20px;
+      }
+    }
+
+    /* Animation for menu items */
+    @keyframes slideIn {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .mobile-nav.active a {
+      animation: slideIn 0.4s ease forwards;
+    }
+
+    .mobile-nav.active a:nth-child(1) { animation-delay: 0.1s; }
+    .mobile-nav.active a:nth-child(2) { animation-delay: 0.15s; }
+    .mobile-nav.active a:nth-child(3) { animation-delay: 0.2s; }
+    .mobile-nav.active a:nth-child(4) { animation-delay: 0.25s; }
+    .mobile-nav.active a:nth-child(5) { animation-delay: 0.3s; }
+    .mobile-nav.active a:nth-child(6) { animation-delay: 0.35s; }
+  </style>
+</head>
+<body dir="ltr">
+  <header>
+    <div class="container">
+      <a href="Index.html">
+        <div class="logo">
+          <img src="StratosX_logo.png" alt="StratosX Logo">
+        </div>
+      </a>
+      <nav>
+        <a href="Index.html" data-en="Home" data-ar="الرئيسية">Home</a>
+        <a href="ForcastModel.html" data-en="Forecast" data-ar="التوقعات">Forecast</a>
+        <a href="#" data-en="Health" data-ar="الصحة">Health</a>
+        <a href="#" data-en="Tips" data-ar="النصائح">Tips</a>
+        <a href="#" data-en="Future Impact" data-ar="التأثير المستقبلي">Future Impact</a>
+      </nav>
+      <div style="display: flex; align-items: center;">
+        <a href="HeatmapModel.html" class="cta" data-en="Get Started" data-ar="ابدأ الآن">Get Started</a>
+        <button class="lang-toggle" id="langToggle" data-lang="en">العربية</button>
+        <button class="mobile-menu-toggle" id="mobileMenuToggle">☰</button>
+      </div>
+    </div>
+    <div class="mobile-nav" id="mobileNav">
+      <a href="Index.html" data-en="Home" data-ar="الرئيسية">Home</a>
+      <a href="ForcastModel.html" data-en="Forecast" data-ar="التوقعات">Forecast</a>
+      <a href="#" data-en="Health" data-ar="الصحة">Health</a>
+      <a href="#" data-en="Tips" data-ar="النصائح">Tips</a>
+      <a href="#" data-en="Future Impact" data-ar="التأثير المستقبلي">Future Impact</a>
+    </div>
+    <div class="mobile-overlay" id="mobileOverlay"></div>
+  </header>
+
+  <section class="hero">
+    <div class="hero-content">
+      <h1 data-en="Health & Air Quality" data-ar="الصحة وجودة الهواء">
+        Health & Air Quality
+      </h1>
+      <p data-en="Understanding the critical connection between the air we breathe and our overall health and wellbeing." data-ar="فهم العلاقة الحرجة بين الهواء الذي نتنفسه وصحتنا ورفاهيتنا العامة.">
+        Understanding the critical connection between the air we breathe and our overall health and wellbeing.
+      </p>
+    </div>
+    <div class="scroll-indicator">↓</div>
+  </section>
+
+  <section class="section" id="impact-section">
+    <h2 class="section-title" data-en="The Impact of Air Quality on Health" data-ar="تأثير جودة الهواء على الصحة">The Impact of Air Quality on Health</h2>
+    <p class="section-subtitle" data-en="Air pollution is one of the greatest environmental risks to health. According to WHO, 99% of the world's population breathes air that exceeds WHO guideline limits." data-ar="تلوث الهواء هو أحد أكبر المخاطر البيئية على الصحة. وفقًا لمنظمة الصحة العالمية، يتنفس 99٪ من سكان العالم هواءً يتجاوز الحدود الإرشادية لمنظمة الصحة العالمية.">
+      Air pollution is one of the greatest environmental risks to health. According to WHO, 99% of the world's population breathes air that exceeds WHO guideline limits.
+    </p>
+
+    <!-- NASA TEMPO Section -->
+    <div class="nasa-section">
+      <div class="nasa-header">
+        <h3 data-en="NASA TEMPO Mission: Monitoring Air Pollution" data-ar="مهمة ناسا TEMPO: مراقبة تلوث الهواء">NASA TEMPO Mission: Monitoring Air Pollution</h3>
+        <p class="section-subtitle" data-en="NASA's TEMPO mission provides high-precision, hourly measurements of major air pollutants across North America" data-ar="توفر مهمة ناسا TEMPO قياسات عالية الدقة كل ساعة للملوثات الهوائية الرئيسية عبر أمريكا الشمالية">
+          NASA's TEMPO mission provides high-precision, hourly measurements of major air pollutants across North America
+        </p>
+      </div>
+
+      <div class="pollutant-grid">
+        <!-- Ozone Card -->
+        <div class="pollutant-card ozone">
+          <div class="pollutant-header">
+            <div class="pollutant-icon">🌫️</div>
+            <div>
+              <div class="pollutant-title" data-en="Ground-Level Ozone" data-ar="الأوزون على مستوى الأرض">Ground-Level Ozone</div>
+              <div class="pollutant-formula">O₃</div>
+            </div>
+          </div>
+
+          <div class="pollutant-source" data-en="Forms when sunlight reacts with nitrogen oxides (NO₂) and volatile organic compounds (VOCs)" data-ar="يتشكل عندما يتفاعل ضوء الشمس مع أكاسيد النيتروجين (NO₂) والمركبات العضوية المتطايرة (VOCs)">
+            Forms when sunlight reacts with nitrogen oxides (NO₂) and volatile organic compounds (VOCs)
+          </div>
+
+          <div class="health-effects">
+            <div class="health-title" data-en="Health Effects:" data-ar="التأثيرات الصحية:">Health Effects:</div>
+            <ul class="health-list">
+              <li data-en="Causes inflammation and irritation of the airways" data-ar="يسبب التهاب وتهيج المسالك الهوائية">Causes inflammation and irritation of the airways</li>
+              <li data-en="Reduces lung function, especially in children and the elderly" data-ar="يقلل من وظائف الرئة، خاصة عند الأطفال وكبار السن">Reduces lung function, especially in children and the elderly</li>
+              <li data-en="Worsens asthma and chronic obstructive pulmonary disease (COPD)" data-ar="يزيد من سوء الربو ومرض الانسداد الرئوي المزمن (COPD)">Worsens asthma and chronic obstructive pulmonary disease (COPD)</li>
+              <li data-en="Can lead to reduced physical performance and premature death" data-ar="يمكن أن يؤدي إلى انخفاض الأداء البدني والوفاة المبكرة">Can lead to reduced physical performance and premature death</li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- Nitrogen Dioxide Card -->
+        <div class="pollutant-card nitrogen">
+          <div class="pollutant-header">
+            <div class="pollutant-icon">🏭</div>
+            <div>
+              <div class="pollutant-title" data-en="Nitrogen Dioxide" data-ar="ثاني أكسيد النيتروجين">Nitrogen Dioxide</div>
+              <div class="pollutant-formula">NO₂</div>
+            </div>
+          </div>
+
+          <div class="pollutant-source" data-en="Produced from fuel combustion in vehicles, power plants, and industrial facilities" data-ar="ينتج من احتراق الوقود في المركبات ومحطات الطاقة والمنشآت الصناعية">
+            Produced from fuel combustion in vehicles, power plants, and industrial facilities
+          </div>
+
+          <div class="health-effects">
+            <div class="health-title" data-en="Health Effects:" data-ar="التأثيرات الصحية:">Health Effects:</div>
+            <ul class="health-list">
+              <li data-en="Long-term exposure causes severe inflammation of the lungs" data-ar="التعرض طويل الأمد يسبب التهاب شديد في الرئتين">Long-term exposure causes severe inflammation of the lungs</li>
+              <li data-en="Increases risk of respiratory infections" data-ar="يزيد من خطر التهابات الجهاز التنفسي">Increases risk of respiratory infections</li>
+              <li data-en="Main component of smog that reduces visibility" data-ar="المكون الرئيسي للضباب الدخاني الذي يقلل الرؤية">Main component of smog that reduces visibility</li>
+              <li data-en="Contributes to acid rain formation" data-ar="يساهم في تكوين المطر الحمضي">Contributes to acid rain formation</li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- Formaldehyde Card -->
+        <div class="pollutant-card formaldehyde">
+          <div class="pollutant-header">
+            <div class="pollutant-icon">🧪</div>
+            <div>
+              <div class="pollutant-title" data-en="Formaldehyde" data-ar="الفورمالديهايد">Formaldehyde</div>
+              <div class="pollutant-formula">HCHO</div>
+            </div>
+          </div>
+
+          <div class="pollutant-source" data-en="Released from industrial processes, vehicle emissions, and chemical production" data-ar="ينطلق من العمليات الصناعية وعوادم المركبات والإنتاج الكيميائي">
+            Released from industrial processes, vehicle emissions, and chemical production
+          </div>
+
+          <div class="health-effects">
+            <div class="health-title" data-en="Health Effects:" data-ar="التأثيرات الصحية:">Health Effects:</div>
+            <ul class="health-list">
+              <li data-en="Known carcinogen linked to certain cancers" data-ar="مادة مسرطنة معروفة مرتبطة ببعض أنواع السرطان">Known carcinogen linked to certain cancers</li>
+              <li data-en="Causes eye, nose, and throat irritation" data-ar="يسبب تهيج العين والأنف والحلق">Causes eye, nose, and throat irritation</li>
+              <li data-en="Can trigger asthma attacks and allergic reactions" data-ar="يمكن أن يسبب نوبات الربو وردود الفعل التحسسية">Can trigger asthma attacks and allergic reactions</li>
+              <li data-en="Neurological effects with prolonged exposure" data-ar="تأثيرات عصبية مع التعرض المطول">Neurological effects with prolonged exposure</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="nasa-source" data-en="Source: NASA Earthdata & WHO" data-ar="المصدر: ناسا إيرث داتا ومنظمة الصحة العالمية">Source: NASA Earthdata & WHO</div>
+    </div>
+
+    <div class="stats-grid">
+      <div class="stat-card">
+        <div class="stat-number">7</div>
+        <div class="stat-label" data-en="Million premature deaths annually" data-ar="مليون حالة وفاة مبكرة سنويًا">Million premature deaths annually</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-number">91%</div>
+        <div class="stat-label" data-en="Of these deaths occur in low- and middle-income countries" data-ar="من هذه الوفيات تحدث في البلدان المنخفضة والمتوسطة الدخل">Of these deaths occur in low- and middle-income countries</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-number">2.4</div>
+        <div class="stat-label" data-en="Billion people exposed to dangerous household air pollution" data-ar="مليار شخص يتعرضون لتلوث الهواء المنزلي الخطير">Billion people exposed to dangerous household air pollution</div>
+      </div>
+    </div>
+
+    <div class="chart-container">
+      <h3 class="chart-title" data-en="Global Burden of Disease from Air Pollution" data-ar="العبء العالمي للأمراض الناجمة عن تلوث الهواء">Global Burden of Disease from Air Pollution</h3>
+      <div class="chart-wrapper">
+        <canvas id="diseaseBurdenChart"></canvas>
+      </div>
+    </div>
+
+    <div class="content-grid">
+      <div class="content-card">
+        <img src="lung.webp" alt="Respiratory Health" class="card-image">
+        <div class="card-content">
+          <h3 class="card-title" data-en="Respiratory Health" data-ar="صحة الجهاز التنفسي">Respiratory Health</h3>
+          <p class="card-text" data-en="Air pollution can cause or worsen asthma, bronchitis, emphysema, and other respiratory diseases." data-ar="يمكن أن يسبب تلوث الهواء أو يزيد من سوء الربو والتهاب الشعب الهوائية وانتفاخ الرئة وأمراض الجهاز التنفسي الأخرى.">
+            Air pollution can cause or worsen asthma, bronchitis, emphysema, and other respiratory diseases.
+          </p>
+        </div>
+      </div>
+      <div class="content-card">
+        <img src="heart.jpg" alt="Cardiovascular Health" class="card-image">
+        <div class="card-content">
+          <h3 class="card-title" data-en="Cardiovascular Health" data-ar="صحة القلب والأوعية الدموية">Cardiovascular Health</h3>
+          <p class="card-text" data-en="Poor air quality increases the risk of heart attacks, strokes, and other cardiovascular problems." data-ar="تزيد جودة الهواء الرديئة من خطر الإصابة بالنوبات القلبية والسكتات الدماغية ومشاكل القلب والأوعية الدموية الأخرى.">
+            Poor air quality increases the risk of heart attacks, strokes, and other cardiovascular problems.
+          </p>
+        </div>
+      </div>
+      <div class="content-card">
+        <img src="children.jpg" alt="Children's Health" class="card-image">
+        <div class="card-content">
+          <h3 class="card-title" data-en="Children's Health" data-ar="صحة الأطفال">Children's Health</h3>
+          <p class="card-text" data-en="Children are particularly vulnerable to air pollution, which can affect lung development and increase respiratory infections." data-ar="الأطفال معرضون بشكل خاص لتلوث الهواء، الذي يمكن أن يؤثر على تطور الرئة ويزيد من التهابات الجهاز التنفسي.">
+            Children are particularly vulnerable to air pollution, which can affect lung development and increase respiratory infections.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <div class="chart-container">
+      <h3 class="chart-title" data-en="PM2.5 Concentrations in Major Cities (WHO Data)" data-ar="تركيزات PM2.5 في المدن الرئيسية (بيانات منظمة الصحة العالمية)">PM2.5 Concentrations in Major Cities (WHO Data)</h3>
+      <div class="chart-wrapper">
+        <canvas id="cityPollutionChart"></canvas>
+      </div>
+    </div>
+
+    <div class="health-tips">
+      <h3 class="tips-title" data-en="Protecting Your Health from Air Pollution" data-ar="حماية صحتك من تلوث الهواء">Protecting Your Health from Air Pollution</h3>
+      <ul class="tips-list">
+        <li>
+          <span class="tip-icon">✓</span>
+          <span class="tip-text" data-en="Check daily air quality forecasts and limit outdoor activities when pollution levels are high." data-ar="تحقق من توقعات جودة الهواء اليومية وقلل الأنشطة الخارجية عندما تكون مستويات التلوث مرتفعة.">
+            Check daily air quality forecasts and limit outdoor activities when pollution levels are high.
+          </span>
+        </li>
+        <li>
+          <span class="tip-icon">✓</span>
+          <span class="tip-text" data-en="Use air purifiers at home, especially in bedrooms." data-ar="استخدم أجهزة تنقية الهواء في المنزل، خاصة في غرف النوم.">
+            Use air purifiers at home, especially in bedrooms.
+          </span>
+        </li>
+        <li>
+          <span class="tip-icon">✓</span>
+          <span class="tip-text" data-en="Wear N95 or FFP2 masks when air quality is poor, especially if you have respiratory conditions." data-ar="ارتدِ أقنعة N95 أو FFP2 عندما تكون جودة الهواء رديئة، خاصة إذا كنت تعاني من حالات تنفسية.">
+            Wear N95 or FFP2 masks when air quality is poor, especially if you have respiratory conditions.
+          </span>
+        </li>
+        <li>
+          <span class="tip-icon">✓</span>
+          <span class="tip-text" data-en="Keep windows closed during high pollution days and use air conditioning with clean filters." data-ar="أغلق النوافذ خلال أيام التلوث المرتفع واستخدم مكيفات الهواء مع فلاتر نظيفة.">
+            Keep windows closed during high pollution days and use air conditioning with clean filters.
+          </span>
+        </li>
+        <li>
+          <span class="tip-icon">✓</span>
+          <span class="tip-text" data-en="Avoid exercising near high-traffic areas where pollution levels are typically higher." data-ar="تجنب ممارسة الرياضة بالقرب من مناطق المرور الكثيف حيث تكون مستويات التلوث أعلى عادة.">
+            Avoid exercising near high-traffic areas where pollution levels are typically higher.
+          </span>
+        </li>
+      </ul>
+    </div>
+  </section>
+
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      const langToggle = document.getElementById('langToggle');
+      const mobileMenuToggle = document.getElementById('mobileMenuToggle');
+      const mobileNav = document.getElementById('mobileNav');
+      const mobileOverlay = document.getElementById('mobileOverlay');
+      let currentLang = 'en';
+      let isMenuOpen = false;
+
+      function toggleLanguage() {
+        currentLang = currentLang === 'en' ? 'ar' : 'en';
+
+        // Update all text elements
+        document.querySelectorAll('[data-en]').forEach(element => {
+          element.textContent = element.getAttribute(currentLang === 'en' ? 'data-en' : 'data-ar');
+        });
+
+        // Update toggle button text
+        langToggle.textContent = currentLang === 'en' ? 'العربية' : 'English';
+
+        // Set direction
+        document.body.dir = currentLang === 'en' ? 'ltr' : 'rtl';
+      }
+
+      function toggleMobileMenu() {
+        isMenuOpen = !isMenuOpen;
+
+        if (isMenuOpen) {
+          mobileNav.classList.add('active');
+          mobileOverlay.classList.add('active');
+          mobileMenuToggle.classList.add('active');
+          mobileMenuToggle.innerHTML = '✕';
+          document.body.style.overflow = 'hidden';
+        } else {
+          mobileNav.classList.remove('active');
+          mobileOverlay.classList.remove('active');
+          mobileMenuToggle.classList.remove('active');
+          mobileMenuToggle.innerHTML = '☰';
+          document.body.style.overflow = '';
+        }
+      }
+
+      function closeMobileMenu() {
+        if (isMenuOpen) {
+          toggleMobileMenu();
+        }
+      }
+
+      langToggle.addEventListener('click', function (e) {
+        e.preventDefault();
+        toggleLanguage();
+      });
+
+      mobileMenuToggle.addEventListener('click', function (e) {
+        e.preventDefault();
+        toggleMobileMenu();
+      });
+
+      mobileOverlay.addEventListener('click', closeMobileMenu);
+
+      // Close mobile menu when clicking on menu items
+      mobileNav.querySelectorAll('a').forEach(link => {
+        link.addEventListener('click', closeMobileMenu);
+      });
+
+      // Close mobile menu when clicking outside
+      document.addEventListener('click', function(event) {
+        if (isMenuOpen &&
+            !event.target.closest('.container') &&
+            !event.target.closest('.mobile-nav') &&
+            !event.target.closest('.mobile-menu-toggle')) {
+          closeMobileMenu();
+        }
+      });
+
+      // Close mobile menu on escape key
+      document.addEventListener('keydown', function(event) {
+        if (event.key === 'Escape' && isMenuOpen) {
+          closeMobileMenu();
+        }
+      });
+
+      // Initialize charts
+      initializeCharts();
+
+      // Scroll reveal animation
+      initScrollReveal();
+    });
+
+    function initializeCharts() {
+      // Disease Burden Chart
+      const diseaseBurdenCtx = document.getElementById('diseaseBurdenChart').getContext('2d');
+      const diseaseBurdenChart = new Chart(diseaseBurdenCtx, {
+        type: 'bar',
+        data: {
+          labels: ['Stroke', 'Ischemic Heart Disease', 'COPD', 'Lung Cancer', 'Acute Respiratory Infections'],
+          datasets: [{
+            label: 'Deaths (millions per year)',
+            data: [1.4, 2.4, 1.8, 0.4, 0.5],
+            backgroundColor: [
+              'rgba(96, 165, 250, 0.7)',
+              'rgba(132, 204, 22, 0.7)',
+              'rgba(251, 191, 36, 0.7)',
+              'rgba(248, 113, 113, 0.7)',
+              'rgba(167, 139, 250, 0.7)'
+            ],
+            borderColor: [
+              'rgba(96, 165, 250, 1)',
+              'rgba(132, 204, 22, 1)',
+              'rgba(251, 191, 36, 1)',
+              'rgba(248, 113, 113, 1)',
+              'rgba(167, 139, 250, 1)'
+            ],
+            borderWidth: 1
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          animation: {
+            duration: 2000,
+            easing: 'easeOutQuart'
+          },
+          scales: {
+            y: {
+              beginAtZero: true,
+              title: {
+                display: true,
+                text: 'Deaths (millions per year)',
+                color: '#d1d5db'
+              },
+              grid: {
+                color: 'rgba(255, 255, 255, 0.1)'
+              },
+              ticks: {
+                color: '#9ca3af'
+              }
+            },
+            x: {
+              grid: {
+                color: 'rgba(255, 255, 255, 0.1)'
+              },
+              ticks: {
+                color: '#9ca3af'
+              }
+            }
+          },
+          plugins: {
+            title: {
+              display: true,
+              text: 'Annual Deaths Attributable to Air Pollution (WHO Data)',
+              color: '#f9fafb',
+              font: {
+                size: 16
+              }
+            },
+            legend: {
+              display: false
+            }
+          }
+        }
+      });
+
+      // City Pollution Chart
+      const cityPollutionCtx = document.getElementById('cityPollutionChart').getContext('2d');
+      const cityPollutionChart = new Chart(cityPollutionCtx, {
+        type: 'bar',
+        data: {
+          labels: ['Delhi', 'Cairo', 'Beijing', 'Moscow', 'London', 'New York'],
+          datasets: [{
+            label: 'PM2.5 (μg/m³)',
+            data: [98, 79, 73, 22, 15, 14],
+            backgroundColor: [
+              'rgba(248, 113, 113, 0.7)',
+              'rgba(251, 191, 36, 0.7)',
+              'rgba(96, 165, 250, 0.7)',
+              'rgba(132, 204, 22, 0.7)',
+              'rgba(167, 139, 250, 0.7)',
+              'rgba(45, 212, 191, 0.7)'
+            ],
+            borderColor: [
+              'rgba(248, 113, 113, 1)',
+              'rgba(251, 191, 36, 1)',
+              'rgba(96, 165, 250, 1)',
+              'rgba(132, 204, 22, 1)',
+              'rgba(167, 139, 250, 1)',
+              'rgba(45, 212, 191, 1)'
+            ],
+            borderWidth: 1
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          animation: {
+            duration: 2000,
+            easing: 'easeOutQuart'
+          },
+          scales: {
+            y: {
+              beginAtZero: true,
+              title: {
+                display: true,
+                text: 'PM2.5 Concentration (μg/m³)',
+                color: '#d1d5db'
+              },
+              grid: {
+                color: 'rgba(255, 255, 255, 0.1)'
+              },
+              ticks: {
+                color: '#9ca3af'
+              }
+            },
+            x: {
+              grid: {
+                color: 'rgba(255, 255, 255, 0.1)'
+              },
+              ticks: {
+                color: '#9ca3af'
+              }
+            }
+          },
+          plugins: {
+            title: {
+              display: true,
+              text: 'Average Annual PM2.5 Concentrations in Major Cities (WHO Guidelines: 5 μg/m³)',
+              color: '#f9fafb',
+              font: {
+                size: 16
+              }
+            },
+            legend: {
+              display: false
+            }
+          }
+        }
+      });
+    }
+
+    function initScrollReveal() {
+      const sections = document.querySelectorAll('.section');
+
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('visible');
+          }
+        });
+      }, {
+        threshold: 0.1,
+        rootMargin: '0px 0px -50px 0px'
+      });
+
+      sections.forEach(section => {
+        observer.observe(section);
+      });
+    }
+  </script>
+</body>
+</html>
