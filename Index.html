@@ -21,6 +21,15 @@
       transition: all 0.3s ease;
     }
 
+    body[dir="rtl"] .hero-content {
+  text-align: right !important;
+}
+
+body[dir="ltr"] .hero-content {
+  text-align: left !important;
+}
+
+
     /* Header */
     header {
       display: flex;
@@ -176,18 +185,7 @@
       box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
     }
 
-    /* RTL Hero Fix */
-    body[dir="rtl"] .hero {
-      justify-content: flex-end;
-    }
 
-    body[dir="rtl"] .hero-content {
-      text-align: right;
-    }
-
-    body[dir="ltr"] .hero-content {
-      text-align: left;
-    }
   </style>
 </head>
 <body dir="ltr">
@@ -252,3 +250,4 @@
   </script>
 </body>
 </html>
+
