@@ -1,71 +1,76 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en" dir="ltr">
 <head>
-  <meta charset="utf-8"/>
-  <meta name="viewport" content="width=device-width,initial-scale=1"/>
-  <title>Air Coach — Global Heatmap</title>
-  <script src="https://unpkg.com/three@0.150.0/build/three.min.js"></script>
-  <script src="https://unpkg.com/globe.gl"></script>
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
-
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>StratosX – Air Coach</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="icon" type="image/png" href="StratosX_logo.png">
   <style>
-    :root {
-      --neon: #00d9ff;
-    }
-
     * {
       margin: 0;
       padding: 0;
       box-sizing: border-box;
+      font-family: 'Poppins', sans-serif;
     }
 
     body {
-      font-family: 'Inter', Arial, sans-serif;
-      background: #050615;
-      color: #fff;
+      background: #f9fafb;
+      color: #111827;
       overflow-x: hidden;
+      transition: all 0.3s ease;
     }
 
-    /* Navbar - Using your exact styling */
+    body[dir="rtl"] .hero-content {
+  text-align: right !important;
+}
+
+body[dir="ltr"] .hero-content {
+  text-align: left !important;
+}
+
+
+    /* Header */
     header {
       display: flex;
-      justify-content: center;
+      justify-content: space-between;
+      align-items: center;
       padding: 10px 40px;
-      position: fixed;
-      top: 10px;
+      position: absolute;
+      top: 10px; /* 10px top margin */
       left: 0;
       width: 100%;
-      z-index: 20;
+      z-index: 10;
     }
 
     .container {
       max-width: 1000px;
+      margin: 0 auto;
       width: 100%;
       border-radius: 100px;
       padding: 12px 30px;
       display: flex;
       justify-content: space-between;
       align-items: center;
+      position: relative;
       background: rgba(255, 255, 255, 0.15);
       backdrop-filter: blur(10px);
       -webkit-backdrop-filter: blur(10px);
       border: 1px solid rgba(255, 255, 255, 0.2);
       box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
-      font-family: 'Poppins', sans-serif;
     }
 
-    .logo img {
-      height: 50px;
+    header .logo img {
+      height: 50px; /* Smaller logo */
       width: auto;
     }
 
-    nav {
+    header nav {
       display: flex;
       align-items: center;
     }
 
-    nav a {
+    header nav a {
       margin: 0 10px;
       text-decoration: none;
       color: #f9fafb;
@@ -75,8 +80,26 @@
       padding: 5px 0;
     }
 
-    nav a:hover {
+    header nav a:hover {
       color: #84cc16;
+    }
+
+    header .cta {
+      background: #000;
+      color: #fff;
+      padding: 8px 20px;
+      border-radius: 30px;
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 0.8rem;
+      transition: 0.4s;
+      margin-left: 10px;
+    }
+
+    header .cta:hover {
+      background: linear-gradient(270deg, #2563eb, #9333ea, #2563eb);
+      background-size: 600% 600%;
+      animation: gradientFlow 4s ease infinite;
     }
 
     .lang-toggle {
@@ -96,350 +119,136 @@
       background: rgba(255, 255, 255, 0.3);
     }
 
-    /* Main Layout */
-    #globeViz {
-      position: fixed;
+    @keyframes gradientFlow {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    /* Hero Section */
+    .hero {
+      position: relative;
+      height: 100vh;
+      background: url('https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=1600&q=80') no-repeat center/cover;
+      display: flex;
+      align-items: center;
+      justify-content: flex-start;
+      padding: 200px 80px 60px 80px;
+    }
+
+    .overlay {
+      position: absolute;
       top: 0;
       left: 0;
       width: 100%;
       height: 100%;
-      z-index: 0;
+      background: rgba(0, 0, 0, 0.55);
     }
 
-    .content-wrapper {
+    .hero-content {
       position: relative;
       z-index: 2;
-      margin-top: 120px; /* Space for navbar + margin */
-      padding: 20px;
-      display: flex;
-      gap: 20px;
-      pointer-events: none;
-    }
-
-    .cards-container {
-      display: flex;
-      flex-direction: column;
-      gap: 16px;
-      width: 360px;
-      pointer-events: auto;
-    }
-
-    .card {
-      background: rgba(255, 255, 255, 0.03);
-      backdrop-filter: blur(6px);
-      border-radius: 12px;
-      padding: 16px;
-      border: 1px solid rgba(255, 255, 255, 0.03);
-    }
-
-    h3 {
-      margin: 0 0 12px;
-      color: var(--neon);
-      font-size: 16px;
-    }
-
-    input,
-    select,
-    button {
-      padding: 10px;
-      border-radius: 10px;
-      border: none;
-    }
-
-    input, select {
-      flex: 1;
+      max-width: 650px;
       color: #fff;
     }
 
-    input {
-      background: rgba(255, 255, 255, 0.04);
-    }
-
-    /* ✅ Dark select styling */
-    select {
-      background-color: #222;
-      color: #fff;
-      border: 1px solid #444;
-      appearance: none;
-      -webkit-appearance: none;
-      -moz-appearance: none;
-      background-image: url('data:image/svg+xml;utf8,<svg fill="white" height="10" viewBox="0 0 24 24" width="10" xmlns="http://www.w3.org/2000/svg"><path d="M7 10l5 5 5-5z"/></svg>');
-      background-repeat: no-repeat;
-      background-position: right 10px center;
-      background-size: 10px;
-      cursor: pointer;
-    }
-
-    button {
-      background: linear-gradient(90deg, var(--neon), #6ea8ff);
-      color: #001;
+    .hero h1 {
+      font-size: 4.2rem;
       font-weight: 700;
-      cursor: pointer;
+      margin-bottom: 25px;
+      line-height: 1.15;
+      letter-spacing: -1px;
     }
 
-    .kpi-row {
-      display: flex;
-      gap: 8px;
-      flex-wrap: wrap;
-      margin-top: 12px;
+    .hero p {
+      font-size: 1.25rem;
+      margin-bottom: 35px;
+      opacity: 0.9;
+      line-height: 1.6;
     }
 
-    .kpi {
-      flex: 1;
-      min-width: 100px;
-      padding: 8px;
-      border-radius: 8px;
-      background: rgba(255, 255, 255, 0.02);
-      text-align: center;
+    .hero .btn {
+      background: #84cc16;
+      color: #fff;
+      padding: 16px 42px;
+      border-radius: 40px;
+      font-weight: 600;
+      text-decoration: none;
+      font-size: 1.05rem;
+      transition: 0.3s;
+      display: inline-block;
     }
 
-    .num {
-      font-weight: 800;
-      font-size: 18px;
-      color: var(--neon);
+    .hero .btn:hover {
+      background: #65a30d;
+      transform: translateY(-3px);
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
     }
 
-    .small {
-      font-size: 13px;
-      color: #bfeff6;
-    }
 
-    .chart-wrap {
-      height: 160px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-
-    #status {
-      font-size: 13px;
-      color: #bfeff6;
-      margin-top: 8px;
-    }
-
-    .footer {
-      position: fixed;
-      left: 16px;
-      bottom: 12px;
-      color: #9adbe8;
-      font-size: 13px;
-      z-index: 2;
-    }
   </style>
 </head>
-
-<body>
-
-<header>
-  <div class="container">
-    <div class="logo">
-      <img src="StratosX_logo.png" alt="StratosX Logo">
-    </div>
-    <nav>
-      <a href="#" data-en="Home" data-ar="الرئيسية">Home</a>
-      <a href="#" data-en="Forecast" data-ar="التوقعات">Forecast</a>
-      <a href="#" data-en="Health" data-ar="الصحة">Health</a>
-      <a href="#" data-en="Tips" data-ar="النصائح">Tips</a>
-      <a href="#" data-en="Alerts" data-ar="التنبيهات">Alerts</a>
-      <a href="#" data-en="Future Impact" data-ar="التأثير المستقبلي">Future Impact</a>
-    </nav>
-    <button class="lang-toggle" id="langToggle" data-lang="en">العربية</button>
-  </div>
-</header>
-
-<div id="globeViz"></div>
-
-<div class="content-wrapper">
-  <div class="cards-container">
-    <div class="card">
-      <h3>Search City</h3>
-      <div style="display:flex;gap:8px;align-items:center">
-        <input id="cityInput" type="text" placeholder="e.g. Cairo, London, New York">
-        <button id="checkBtn">Check</button>
+<body dir="ltr">
+  <header>
+    <div class="container">
+      <a href="Index.html">
+      <div class="logo">
+        <img src="StratosX_logo.png" alt="StratosX Logo">
       </div>
-      <div style="display:flex;gap:8px;margin-top:8px">
-        <select id="ageSelect">
-          <option value="adult">Adult</option>
-          <option value="child">Child</option>
-          <option value="elderly">Elderly</option>
-          <option value="infant">Infant</option>
-        </select>
-        <select id="healthSelect">
-          <option value="healthy">Healthy</option>
-          <option value="asthma">Asthma</option>
-          <option value="allergy">Allergy</option>
-          <option value="lung">Lung disease</option>
-          <option value="heart">Heart condition</option>
-        </select>
+        </a>
+      <nav>
+        <a href="Index.html" data-en="Home" data-ar="الرئيسية">Home</a>
+        <a href="#" data-en="Forecast" data-ar="التوقعات">Forecast</a>
+        <a href="#" data-en="Health" data-ar="الصحة">Health</a>
+        <a href="#" data-en="Tips" data-ar="النصائح">Tips</a>
+        <a href="#" data-en="Alerts" data-ar="التنبيهات">Alerts</a>
+        <a href="#" data-en="Future Impact" data-ar="التأثير المستقبلي">Future Impact</a>
+      </nav>
+      <div style="display: flex; align-items: center;">
+        <a href="#" class="cta" data-en="Get Started" data-ar="ابدأ الآن">Get Started</a>
+        <button class="lang-toggle" id="langToggle" data-lang="en">العربية</button>
       </div>
-
-      <div class="kpi-row">
-        <div class="kpi"><div class="num" id="kpiAqi">—</div><div class="small">Current AQI</div></div>
-        <div class="kpi"><div class="num" id="kpiCity">—</div><div class="small">City</div></div>
-        <div class="kpi"><div class="num" id="kpiTime">—</div><div class="small">Last update</div></div>
-      </div>
-
-      <div id="status" class="small">Loading global heatmap data...</div>
     </div>
+  </header>
 
-    <div class="card">
-      <h3>Overview</h3>
-      <div class="chart-wrap"><canvas id="aqiDonut" width="220" height="160"></canvas></div>
-      <div id="adviceText" style="margin-top:8px;color:#e8fbff">Advice will appear here when you check a city.</div>
+  <section class="hero">
+    <div class="overlay"></div>
+    <div class="hero-content">
+      <h1 data-en="Air Coach – Your Smart Air Companion" data-ar="Air Coach – مدربك الذكي للهواء">
+        Air Coach – Your Smart Air Companion
+      </h1>
+      <p data-en="Air Quality Forecast – Personalized Health Tips – Real-time Alerts to Protect You Anywhere." data-ar="توقع جودة الهواء – نصائح صحية مخصصة – تنبيهات لحمايتك في كل مكان.">
+        Air Quality Forecast – Personalized Health Tips – Real-time Alerts to Protect You Anywhere.
+      </p>
+      <a href="#" class="btn" data-en="Check Air Quality Now" data-ar="شوف جودة الهواء الآن">Check Air Quality Now</a>
     </div>
-  </div>
-</div>
+  </section>
 
-<div class="footer">Powered by OpenWeather • API key embedded</div>
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      const langToggle = document.getElementById('langToggle');
+      let currentLang = 'en';
 
-<!-- JavaScript Logic -->
-<script>
-  const API_KEY = "1a0ee291bbd28c6d16b9d6ab5192ea5d";
-  function mapIndexToNumeric(i) {
-    return { 1: 50, 2: 100, 3: 150, 4: 200, 5: 320 }[i] || 0;
-  }
-  function getAQIColor(a) {
-    if (a <= 50) return "#00e400";
-    if (a <= 100) return "#ffeb00";
-    if (a <= 150) return "#ff8c00";
-    if (a <= 200) return "#ff2e2e";
-    if (a <= 300) return "#8f3f97";
-    return "#7e0023";
-  }
-  function getAQILabel(a) {
-    if (a <= 50) return "Excellent";
-    if (a <= 100) return "Good";
-    if (a <= 150) return "Moderate";
-    if (a <= 200) return "Unhealthy";
-    if (a <= 300) return "Very Unhealthy";
-    return "Hazardous";
-  }
-  function buildAdvice(a, age, health) {
-    let out = getAQILabel(a) + ": ";
-    if (a <= 50) out += "Safe for all activities.";
-    else if (a <= 100) out += "Good — avoid very intense outdoor exercise.";
-    else if (a <= 150) out += "Moderate — sensitive groups should limit time outside.";
-    else if (a <= 200) out += "Unhealthy — wear N95/FFP2 and avoid long exposure.";
-    else if (a <= 300) out += "Very Unhealthy — stay indoors when possible.";
-    else out += "Hazardous — avoid going outside.";
-    if (age !== 'adult') out += " Extra caution for " + age + ".";
-    if (health !== 'healthy') out += " Condition: " + health + ".";
-    return out;
-  }
+      function toggleLanguage() {
+        currentLang = currentLang === 'en' ? 'ar' : 'en';
 
-  const CITY_LIST = [
-    { name: "Cairo, Egypt", lat: 30.0444, lon: 31.2357 },
-    { name: "London, UK", lat: 51.5074, lon: -0.1278 },
-    { name: "New York, USA", lat: 40.7128, lon: -74.0060 },
-    { name: "Tokyo, Japan", lat: 35.6895, lon: 139.6917 },
-    { name: "Paris, France", lat: 48.8566, lon: 2.3522 },
-    { name: "Beijing, China", lat: 39.9042, lon: 116.4074 },
-    { name: "Los Angeles, USA", lat: 34.0522, lon: -118.2437 },
-    { name: "São Paulo, Brazil", lat: -23.5505, lon: -46.6333 },
-    { name: "Moscow, Russia", lat: 55.7558, lon: 37.6173 },
-    { name: "Sydney, Australia", lat: -33.8688, lon: 151.2093 }
-  ];
-
-  let globeInstance = Globe()
-    (document.getElementById('globeViz'))
-    .globeImageUrl('https://unpkg.com/three-globe/example/img/earth-blue-marble.jpg')
-    .bumpImageUrl('https://unpkg.com/three-globe/example/img/earth-topology.png')
-    .showAtmosphere(true)
-    .atmosphereColor('#00c6ff')
-    .atmosphereAltitude(0.25)
-    .pointOfView({ lat: 20, lng: 0, altitude: 2 }, 0)
-    .pointsData([])
-    .pointColor('color')
-    .pointAltitude(0)
-    .pointRadius(0.25);
-
-  let heatPoints = [];
-
-  async function fetchGlobalAQI() {
-    const status = document.getElementById('status');
-    status.textContent = 'Fetching AQI for ' + CITY_LIST.length + ' cities...';
-    heatPoints = [];
-    for (const c of CITY_LIST) {
-      try {
-        const res = await fetch(`https://api.openweathermap.org/data/2.5/air_pollution?lat=${c.lat}&lon=${c.lon}&appid=${API_KEY}`);
-        const data = await res.json();
-        const idx = data.list[0].main.aqi;
-        const numeric = mapIndexToNumeric(idx);
-        heatPoints.push({
-          lat: c.lat, lng: c.lon,
-          size: 0.25,
-          color: getAQIColor(numeric),
-          name: c.name, aqi: numeric
+        // Update all text elements
+        document.querySelectorAll('[data-en]').forEach(element => {
+          element.textContent = element.getAttribute(currentLang === 'en' ? 'data-en' : 'data-ar');
         });
-      } catch (e) { console.log("err", e); }
-      await new Promise(r => setTimeout(r, 250));
-    }
-    globeInstance.pointsData(heatPoints);
-    status.textContent = 'Loaded ' + heatPoints.length + ' cities.';
-  }
 
-  function updateDonutAndAdvice(aqi, cityName, age, health) {
-    const ctx = document.getElementById('aqiDonut').getContext('2d');
-    if (window.donutChart) window.donutChart.destroy();
-    window.donutChart = new Chart(ctx, {
-      type: 'doughnut',
-      data: {
-        datasets: [{
-          data: [aqi, Math.max(300 - aqi, 0)],
-          backgroundColor: [getAQIColor(aqi), 'rgba(255,255,255,0.08)'],
-          borderWidth: 0
-        }]
-      },
-      options: {
-        cutout: '70%',
-        plugins: { legend: { display: false } }
+        // Update toggle button text
+        langToggle.textContent = currentLang === 'en' ? 'العربية' : 'English';
+
+        // Set direction
+        document.body.dir = currentLang === 'en' ? 'ltr' : 'rtl';
       }
+
+      langToggle.addEventListener('click', function (e) {
+        e.preventDefault();
+        toggleLanguage();
+      });
     });
-    document.getElementById('kpiAqi').textContent = aqi;
-    document.getElementById('kpiCity').textContent = cityName;
-    document.getElementById('kpiTime').textContent = new Date().toLocaleTimeString();
-    document.getElementById('adviceText').textContent = buildAdvice(aqi, age, health);
-  }
-
-  async function geocodeAndZoom(city, age, health) {
-    const gres = await fetch(`https://api.openweathermap.org/geo/1.0/direct?q=${encodeURIComponent(city)}&limit=1&appid=${API_KEY}`);
-    const gdata = await gres.json();
-    if (!gdata || !gdata.length) return alert("City not found");
-    const lat = gdata[0].lat, lon = gdata[0].lon;
-    const res = await fetch(`https://api.openweathermap.org/data/2.5/air_pollution?lat=${lat}&lon=${lon}&appid=${API_KEY}`);
-    const data = await res.json();
-    const numeric = mapIndexToNumeric(data.list[0].main.aqi);
-    heatPoints = heatPoints.filter(p => !p.isSearchMarker);
-    heatPoints.push({ lat, lng: lon, size: 0.35, color: getAQIColor(numeric), name: city, aqi: numeric, isSearchMarker: true });
-    globeInstance.pointsData(heatPoints);
-    globeInstance.pointOfView({ lat: lat, lng: lon, altitude: 0.35 }, 1200);
-    updateDonutAndAdvice(numeric, gdata[0].name, age, health);
-  }
-
-  document.getElementById('checkBtn').onclick = () => {
-    const city = document.getElementById('cityInput').value.trim();
-    const age = document.getElementById('ageSelect').value;
-    const health = document.getElementById('healthSelect').value;
-    if (!city) return;
-    geocodeAndZoom(city, age, health);
-  }
-
-  fetchGlobalAQI();
-  setInterval(fetchGlobalAQI, 60000);
-
-  // Language toggle
-  const langToggle = document.getElementById('langToggle');
-  let currentLang = 'en';
-
-  langToggle.addEventListener('click', () => {
-    currentLang = currentLang === 'en' ? 'ar' : 'en';
-    document.body.dir = currentLang === 'en' ? 'ltr' : 'rtl';
-    document.querySelectorAll('nav a').forEach(link => {
-      link.textContent = link.getAttribute(currentLang === 'en' ? 'data-en' : 'data-ar');
-    });
-    langToggle.textContent = currentLang === 'en' ? 'العربية' : 'English';
-  });
-</script>
-
+  </script>
 </body>
 </html>
