@@ -1,0 +1,1347 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Air Coach - Health Tips</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="icon" type="image/png" href="Xfavicon.png">
+    <style>
+        :root{
+          --bg1:#00030a;
+          --bg2:#001022;
+          --card: rgba(255,255,255,0.04);
+          --accent1:#60a5fa;
+          --accent2:#2563eb;
+          --green:#21c07a;
+          --yellow:#f5c84b;
+          --red:#ff6b6b;
+          --muted:#9fb7d9;
+          --glass: rgba(255,255,255,0.03);
+          --dark-card: rgba(0, 5, 15, 0.85);
+        }
+        *{box-sizing:border-box}
+        html,body{height:100%;margin:0;padding:0;font-family:"Poppins", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;color:#eaf6ff}
+        body{
+          background: radial-gradient(circle at 10% 10%, #02102a 0%, var(--bg1) 40%, var(--bg2) 100%);
+          overflow:auto;
+          -webkit-font-smoothing:antialiased;
+          padding:28px;
+        }
+
+        /* Header */
+        header {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          padding: 10px 20px;
+          position: absolute;
+          top: 10px;
+          left: 0;
+          width: 100%;
+          z-index: 10;
+        }
+
+        .container {
+          max-width: 1000px;
+          margin: 0 auto;
+          width: 100%;
+          border-radius: 100px;
+          padding: 12px 20px;
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          position: relative;
+          background: rgba(255, 255, 255, 0.15);
+          backdrop-filter: blur(10px);
+          -webkit-backdrop-filter: blur(10px);
+          border: 1px solid rgba(255, 255, 255, 0.2);
+          box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+        }
+
+        header .logo img {
+          height: 40px;
+          width: auto;
+        }
+
+        header nav {
+          display: flex;
+          align-items: center;
+        }
+
+        header nav a {
+          margin: 0 8px;
+          text-decoration: none;
+          color: #f9fafb;
+          font-weight: 500;
+          font-size: 0.85rem;
+          transition: color 0.3s;
+          padding: 5px 0;
+        }
+
+        header nav a:hover {
+          color: #84cc16;
+        }
+
+        header .cta {
+          background: #000;
+          color: #fff;
+          padding: 8px 16px;
+          border-radius: 30px;
+          text-decoration: none;
+          font-weight: 600;
+          font-size: 0.8rem;
+          transition: 0.4s;
+          margin-left: 8px;
+        }
+
+        header .cta:hover {
+          background: linear-gradient(270deg, #2563eb, #9333ea, #2563eb);
+          background-size: 600% 600%;
+          animation: gradientFlow 4s ease infinite;
+        }
+
+        .lang-toggle {
+          background: rgba(255, 255, 255, 0.2);
+          color: #fff;
+          border: 1px solid rgba(255, 255, 255, 0.3);
+          padding: 6px 12px;
+          border-radius: 20px;
+          cursor: pointer;
+          font-weight: 500;
+          font-size: 0.8rem;
+          margin-left: 8px;
+          transition: all 0.3s ease;
+        }
+
+        .lang-toggle:hover {
+          background: rgba(255, 255, 255, 0.3);
+        }
+
+        /* Mobile Navigation */
+        .mobile-menu-toggle {
+          display: none;
+          background: transparent;
+          border: none;
+          color: white;
+          font-size: 1.5rem;
+          cursor: pointer;
+          margin-left: 10px;
+          transition: transform 0.3s ease;
+          z-index: 1000;
+        }
+
+        .mobile-menu-toggle.active {
+          transform: rotate(90deg);
+        }
+
+        .mobile-nav {
+          display: none;
+          position: absolute;
+          top: 100%;
+          left: 50%;
+          transform: translateX(-50%) translateY(-20px);
+          width: 90%;
+          max-width: 400px;
+          background: rgba(255, 255, 255, 0.15);
+          backdrop-filter: blur(20px);
+          -webkit-backdrop-filter: blur(20px);
+          border: 1px solid rgba(255, 255, 255, 0.2);
+          border-radius: 24px;
+          padding: 24px;
+          box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+          z-index: 999;
+          opacity: 0;
+          visibility: hidden;
+          transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .mobile-nav.active {
+          display: block;
+          opacity: 1;
+          visibility: visible;
+          transform: translateX(-50%) translateY(0);
+        }
+
+        .mobile-nav::before {
+          content: '';
+          position: absolute;
+          top: -10px;
+          left: 50%;
+          transform: translateX(-50%);
+          width: 0;
+          height: 0;
+          border-left: 10px solid transparent;
+          border-right: 10px solid transparent;
+          border-bottom: 10px solid rgba(255, 255, 255, 0.15);
+          filter: drop-shadow(0 -2px 2px rgba(0, 0, 0, 0.1));
+        }
+
+        .mobile-nav a {
+          display: block;
+          color: white;
+          text-decoration: none;
+          padding: 16px 20px;
+          margin: 8px 0;
+          border-radius: 16px;
+          font-weight: 500;
+          font-size: 1rem;
+          text-align: center;
+          transition: all 0.3s ease;
+          background: rgba(255, 255, 255, 0.1);
+          border: 1px solid rgba(255, 255, 255, 0.1);
+          position: relative;
+          overflow: hidden;
+        }
+
+        .mobile-nav a::before {
+          content: '';
+          position: absolute;
+          top: 0;
+          left: -100%;
+          width: 100%;
+          height: 100%;
+          background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+          transition: left 0.5s ease;
+        }
+
+        .mobile-nav a:hover::before {
+          left: 100%;
+        }
+
+        .mobile-nav a:hover {
+          background: rgba(255, 255, 255, 0.2);
+          border-color: rgba(255, 255, 255, 0.3);
+          transform: translateY(-2px);
+          box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+        }
+
+        .mobile-nav a:last-child {
+          margin-bottom: 0;
+        }
+
+        /* Overlay for mobile menu */
+        .mobile-overlay {
+          position: fixed;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100%;
+          background: rgba(0, 0, 0, 0.5);
+          backdrop-filter: blur(5px);
+          -webkit-backdrop-filter: blur(5px);
+          z-index: 998;
+          opacity: 0;
+          visibility: hidden;
+          transition: all 0.3s ease;
+        }
+
+        .mobile-overlay.active {
+          opacity: 1;
+          visibility: visible;
+        }
+
+        @keyframes gradientFlow {
+          0% { background-position: 0% 50%; }
+          50% { background-position: 100% 50%; }
+          100% { background-position: 0% 50%; }
+        }
+
+        /* stars */
+        .sky{position:fixed;inset:0;pointer-events:none;z-index:0;overflow:hidden}
+        .star{position:absolute;background:#fff;border-radius:50%;box-shadow:0 0 6px rgba(255,255,255,0.6);opacity:0.9}
+        @keyframes fall{from{transform:translateY(-130vh)} to{transform:translateY(130vh)}}
+
+        .wrap{position:relative;z-index:2;max-width:1100px;margin:0 auto;margin-top: 80px;}
+
+        .page-header {
+          margin-bottom: 24px;
+        }
+
+        h1{margin:0;font-size:24px;font-weight:700;margin-bottom:8px;}
+        .desc{color:var(--muted);font-size:16px;line-height:1.5;}
+
+        .controls.card{
+          display:flex;gap:12px;align-items:center;flex-wrap:wrap;padding:20px;margin-bottom:20px;
+          background: var(--card);
+          border-radius: 16px;
+          backdrop-filter: blur(6px);
+          box-shadow: 0 8px 30px rgba(2,6,23,0.6);
+        }
+
+        .search-container {
+          display: flex;
+          gap: 12px;
+          align-items: center;
+          flex-wrap: wrap;
+          flex: 1;
+        }
+
+        /* Enhanced Input Field */
+        input[type="text"]{
+          padding: 12px 16px;
+          border-radius: 16px; /* More rounded corners */
+          border: 1px solid rgba(255,255,255,0.1);
+          background: rgba(255,255,255,0.05);
+          color: #eaf6ff;
+          flex: 1;
+          min-width: 250px;
+          font-size: 14px;
+          transition: all 0.3s ease;
+          font-family: "Poppins", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+          box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        input[type="text"]:focus {
+          outline: none;
+          border-color: var(--accent1);
+          box-shadow: 0 0 0 2px rgba(96, 165, 250, 0.2), inset 0 2px 4px rgba(0, 0, 0, 0.1);
+          background: rgba(255,255,255,0.08);
+        }
+
+        input[type="text"]::placeholder {
+          color: var(--muted);
+          font-weight: 400;
+        }
+
+        .search-btn {
+          padding: 12px 24px;
+          border-radius: 12px;
+          border: none;
+          cursor: pointer;
+          background: #000;
+          color: white;
+          font-weight: 600;
+          font-size: 14px;
+          transition: all 0.4s ease;
+        }
+
+        .search-btn:hover {
+          background: linear-gradient(270deg, #2563eb, #9333ea, #2563eb);
+          background-size: 600% 600%;
+          animation: gradientFlow 4s ease infinite;
+          transform: translateY(-2px);
+          box-shadow: 0 6px 20px rgba(37, 99, 235, 0.4);
+        }
+
+        .clear-btn {
+          padding: 12px 20px;
+          border-radius: 12px;
+          border: 1px solid rgba(255,255,255,0.1);
+          cursor: pointer;
+          background: transparent;
+          color: var(--muted);
+          font-weight: 600;
+          font-size: 14px;
+          transition: all 0.3s ease;
+        }
+
+        .clear-btn:hover {
+          background: rgba(255,255,255,0.05);
+          color: #eaf6ff;
+        }
+
+        .small{font-size:13px;color:var(--muted)}
+
+        main{display:grid;grid-template-columns: 1fr 380px;gap:20px;align-items:start}
+        @media(max-width:980px){main{grid-template-columns:1fr}}
+
+        .panel.card{
+          background: var(--card);
+          padding: 20px;
+          border-radius: 16px;
+          backdrop-filter: blur(6px);
+          box-shadow: 0 8px 30px rgba(2,6,23,0.6);
+        }
+
+        .result-area .city{
+          font-weight:800;
+          font-size:20px;
+          margin-bottom: 16px;
+          color: #eaf6ff;
+        }
+
+        .grid{
+          display: grid;
+          grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+          gap: 16px;
+          margin-top: 16px;
+        }
+
+        .day{
+          padding: 16px;
+          border-radius: 12px;
+          background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+          border: 1px solid rgba(255,255,255,0.05);
+          transition: all 0.3s ease;
+        }
+
+        .day:hover {
+          transform: translateY(-4px);
+          box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .day small{
+          color: var(--muted);
+          display: block;
+          margin-bottom: 8px;
+          font-size: 12px;
+        }
+
+        .day-value {
+          font-size: 18px;
+          font-weight: 700;
+          margin: 8px 0;
+          color: #eaf6ff;
+        }
+
+        .bar{
+          height: 10px;
+          background: rgba(255,255,255,0.04);
+          border-radius: 8px;
+          overflow: hidden;
+          margin: 12px 0;
+        }
+
+        .bar .fill{
+          height: 100%;
+          background: linear-gradient(90deg, var(--accent1), var(--accent2));
+          border-radius: 8px;
+        }
+
+        .advice{
+          margin-top: 12px;
+          padding: 10px 12px;
+          border-radius: 8px;
+          font-weight: 600;
+          font-size: 13px;
+          line-height: 1.4;
+        }
+
+        .adv-green{
+          background: rgba(33,192,122,0.1);
+          color: var(--green);
+          border: 1px solid rgba(33,192,122,0.2);
+        }
+
+        .adv-yellow{
+          background: rgba(245,200,75,0.1);
+          color: var(--yellow);
+          border: 1px solid rgba(245,200,75,0.2);
+        }
+
+        .adv-red{
+          background: rgba(255,107,107,0.1);
+          color: var(--red);
+          border: 1px solid rgba(255,107,107,0.2);
+        }
+
+        /* sidebar */
+        .sidebar .card-title{
+          font-weight:800;
+          margin-bottom: 12px;
+          font-size: 18px;
+          color: #eaf6ff;
+        }
+
+        .chart{
+          height: 150px;
+          background: linear-gradient(180deg, rgba(255,255,255,0.01), rgba(255,255,255,0.02));
+          border-radius: 12px;
+          padding: 12px;
+          margin-bottom: 16px;
+        }
+
+        .explain{
+          font-size: 13px;
+          color: var(--muted);
+          line-height: 1.5;
+        }
+
+        footer{
+          margin-top: 24px;
+          color: var(--muted);
+          text-align: center;
+          font-size: 13px;
+          padding: 16px;
+        }
+
+        /* Health Tips Specific Styles */
+        .health-header {
+          text-align: center;
+          margin: 100px 0 40px;
+        }
+
+        .health-header h1 {
+          font-size: 2.5rem;
+          font-weight: 700;
+          color: #00e5ff;
+          text-shadow: 0 0 10px #00e5ff, 0 0 20px #00e5ff;
+          margin-bottom: 15px;
+        }
+
+        .health-header p {
+          color: var(--muted);
+          font-size: 1.1rem;
+          max-width: 600px;
+          margin: 0 auto;
+          line-height: 1.6;
+        }
+
+        .form-container {
+          background: var(--dark-card);
+          border-radius: 16px;
+          padding: 30px;
+          margin-bottom: 40px;
+          backdrop-filter: blur(6px);
+          box-shadow: 0 8px 30px rgba(2,6,23,0.6);
+          max-width: 600px;
+          margin-left: auto;
+          margin-right: auto;
+          border: 1px solid rgba(255,255,255,0.05);
+        }
+
+        .form-group {
+          margin-bottom: 20px;
+          position: relative;
+        }
+
+        label {
+          display: block;
+          margin-bottom: 8px;
+          font-weight: 600;
+          color: #ffffff;
+        }
+
+        .required::after {
+          content: " *";
+          color: var(--red);
+        }
+
+        input, select {
+          padding: 12px 16px;
+          width: 100%;
+          border-radius: 12px;
+          border: 1px solid rgba(255,255,255,0.1);
+          background: rgba(0, 10, 25, 0.7);
+          color: #ffffff;
+          font-size: 14px;
+          transition: all 0.3s ease;
+          font-family: "Poppins", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+        }
+
+        input:focus, select:focus {
+          outline: none;
+          border-color: var(--accent1);
+          box-shadow: 0 0 0 2px rgba(96, 165, 250, 0.2);
+          background: rgba(0, 15, 35, 0.8);
+        }
+
+        input.error, select.error {
+          border-color: var(--red);
+          box-shadow: 0 0 0 2px rgba(255, 107, 107, 0.2);
+        }
+
+        .error-message {
+          color: var(--red);
+          font-size: 12px;
+          margin-top: 5px;
+          display: none;
+        }
+
+        .error-message.show {
+          display: block;
+        }
+
+        .health-btn {
+          padding: 14px 24px;
+          border-radius: 12px;
+          border: none;
+          cursor: pointer;
+          background: #000;
+          color: white;
+          font-weight: 600;
+          font-size: 16px;
+          transition: all 0.4s ease;
+          width: 100%;
+          margin-top: 10px;
+        }
+
+        .health-btn:hover {
+          background: linear-gradient(270deg, #2563eb, #9333ea, #2563eb);
+          background-size: 600% 600%;
+          animation: gradientFlow 4s ease infinite;
+          transform: translateY(-2px);
+          box-shadow: 0 6px 20px rgba(37, 99, 235, 0.4);
+        }
+
+        .health-btn:disabled {
+          background: #333;
+          color: #888;
+          cursor: not-allowed;
+          transform: none;
+          box-shadow: none;
+        }
+
+        .health-btn:disabled:hover {
+          background: #333;
+          animation: none;
+        }
+
+        .tips-container {
+          display: flex;
+          flex-wrap: wrap;
+          justify-content: center;
+          gap: 25px;
+          margin-top: 40px;
+        }
+
+        .tip-card {
+          background: var(--dark-card);
+          border-radius: 16px;
+          padding: 25px;
+          width: 100%;
+          max-width: 350px;
+          color: #ffffff;
+          backdrop-filter: blur(6px);
+          box-shadow: 0 8px 30px rgba(2,6,23,0.6);
+          border: 1px solid rgba(255,255,255,0.05);
+          transition: transform 0.3s, box-shadow 0.3s;
+          opacity: 0;
+          transform: translateY(20px);
+        }
+
+        .tip-card.visible {
+          opacity: 1;
+          transform: translateY(0);
+        }
+
+        .tip-card:hover {
+          transform: translateY(-10px);
+          box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        .tip-card span {
+          font-weight: bold;
+          color: var(--green);
+          display: block;
+          margin-bottom: 10px;
+          font-size: 1.1rem;
+        }
+
+        .tip-card p {
+          line-height: 1.6;
+          color: #ffffff;
+        }
+
+        /* Media Queries for Responsive Design */
+        @media (max-width: 1024px) {
+          .container {
+            padding: 10px 15px;
+          }
+
+          header nav a {
+            margin: 0 6px;
+            font-size: 0.8rem;
+          }
+
+          .search-container {
+            width: 100%;
+          }
+
+          input[type="text"] {
+            min-width: 100%;
+          }
+        }
+
+        @media (max-width: 768px) {
+          header {
+            padding: 10px 15px;
+          }
+
+          .container {
+            border-radius: 50px;
+            padding: 8px 15px;
+          }
+
+          header .logo img {
+            height: 35px;
+          }
+
+          header nav {
+            display: none;
+          }
+
+          .mobile-menu-toggle {
+            display: block;
+          }
+
+          .mobile-nav {
+            width: 85%;
+          }
+
+          .mobile-nav a {
+            padding: 14px 16px;
+            font-size: 0.95rem;
+          }
+
+          .page-header {
+            flex-direction: column;
+            align-items: flex-start;
+          }
+
+          .grid {
+            grid-template-columns: 1fr;
+          }
+
+          .health-header {
+            margin: 80px 0 30px;
+          }
+
+          .health-header h1 {
+            font-size: 2rem;
+          }
+
+          .form-container {
+            padding: 20px;
+          }
+
+          .tip-card {
+            max-width: 100%;
+          }
+        }
+
+        @media (max-width: 480px) {
+          header {
+            padding: 8px 10px;
+          }
+
+          .container {
+            padding: 6px 12px;
+            border-radius: 40px;
+          }
+
+          header .logo img {
+            height: 30px;
+          }
+
+          .mobile-nav {
+            width: 90%;
+            padding: 20px;
+            border-radius: 20px;
+          }
+
+          .mobile-nav a {
+            padding: 12px 14px;
+            font-size: 0.9rem;
+            margin: 6px 0;
+          }
+
+          .controls.card {
+            padding: 16px;
+          }
+
+          .search-container {
+            gap: 8px;
+          }
+
+          .search-btn, .clear-btn {
+            padding: 10px 16px;
+            font-size: 13px;
+          }
+
+          .health-header {
+            margin: 70px 0 20px;
+          }
+
+          .health-header h1 {
+            font-size: 1.8rem;
+          }
+
+          .form-container {
+            padding: 15px;
+          }
+        }
+
+        /* Animation for menu items */
+        @keyframes slideIn {
+          from {
+            opacity: 0;
+            transform: translateY(20px);
+          }
+          to {
+            opacity: 1;
+            transform: translateY(0);
+          }
+        }
+
+        .mobile-nav.active a {
+          animation: slideIn 0.4s ease forwards;
+        }
+
+        .mobile-nav.active a:nth-child(1) { animation-delay: 0.1s; }
+        .mobile-nav.active a:nth-child(2) { animation-delay: 0.15s; }
+        .mobile-nav.active a:nth-child(3) { animation-delay: 0.2s; }
+        .mobile-nav.active a:nth-child(4) { animation-delay: 0.25s; }
+        .mobile-nav.active a:nth-child(5) { animation-delay: 0.3s; }
+        .mobile-nav.active a:nth-child(6) { animation-delay: 0.35s; }
+    </style>
+</head>
+<body dir="ltr">
+    <!-- Stars Background -->
+    <div class="sky">
+        <script>
+            const starsContainer = document.currentScript.parentElement;
+            for (let i = 0; i < 150; i++) {
+                let star = document.createElement('div');
+                star.className = 'star';
+                star.style.top = Math.random() * window.innerHeight + 'px';
+                star.style.left = Math.random() * window.innerWidth + 'px';
+                let size = Math.random() * 3 + 1;
+                star.style.width = star.style.height = size + 'px';
+                star.style.animation = 'fall ' + (30 + Math.random() * 60) + 's linear infinite';
+                star.style.animationDelay = (-Math.random() * 80) + 's';
+                starsContainer.appendChild(star);
+            }
+        </script>
+    </div>
+
+    <!-- Navbar -->
+   <header>
+    <div class="container">
+      <a href="Index.html">
+        <div class="logo">
+          <img src="StratosX_logo.png" alt="StratosX Logo">
+        </div>
+      </a>
+      <nav>
+        <a href="Index.html" data-en="Home" data-ar="الرئيسية">Home</a>
+        <a href="ForcastModel.html" data-en="Forecast" data-ar="التوقعات">Forecast</a>
+        <a href="Health.html" data-en="Health" data-ar="الصحة">Health</a>
+        <a href="Tips.html" data-en="Tips" data-ar="النصائح">Tips</a>
+        <a href="#" data-en="Future Impact" data-ar="التأثير المستقبلي">Future Impact</a>
+      </nav>
+      <div style="display: flex; align-items: center;">
+        <a href="HeatmapModel.html" class="cta" data-en="Get Started" data-ar="ابدأ الآن">Get Started</a>
+        <button class="lang-toggle" id="langToggle" data-lang="en">العربية</button>
+        <button class="mobile-menu-toggle" id="mobileMenuToggle">☰</button>
+      </div>
+    </div>
+    <div class="mobile-nav" id="mobileNav">
+      <a href="Index.html" data-en="Home" data-ar="الرئيسية">Home</a>
+      <a href="ForcastModel.html" data-en="Forecast" data-ar="التوقعات">Forecast</a>
+      <a href="Health.html" data-en="Health" data-ar="الصحة">Health</a>
+      <a href="Tips.html" data-en="Tips" data-ar="النصائح">Tips</a>
+      <a href="#" data-en="Future Impact" data-ar="التأثير المستقبلي">Future Impact</a>
+    </div>
+    <div class="mobile-overlay" id="mobileOverlay"></div>
+  </header>
+
+    <!-- Main Content -->
+    <div class="wrap">
+        <div class="health-header">
+     
+            <p data-en="Get personalized air quality tips based on your health condition and age" data-ar="احصل على نصائح مخصصة لجودة الهواء بناءً على حالتك الصحية وعمرك">Get personalized air quality tips based on your health condition and age</p>
+        </div>
+
+        <div class="form-container">
+            <div class="form-group">
+                <label for="age" class="required" data-en="Age" data-ar="العمر">Age</label>
+                <input type="number" id="age" min="0" max="120" placeholder="Enter your age" data-en-placeholder="Enter your age" data-ar-placeholder="أدخل عمرك" required>
+                <div class="error-message" id="ageError" data-en="Please enter your age" data-ar="يرجى إدخال عمرك">Please enter your age</div>
+            </div>
+
+            <div class="form-group">
+                <label for="health" class="required" data-en="Do you have asthma or allergies?" data-ar="هل لديك ربو أو حساسية؟">Do you have asthma or allergies?</label>
+                <select id="health" required>
+                    <option value="" data-en="Select an option" data-ar="اختر خيارًا">Select an option</option>
+                    <option value="no" data-en="No" data-ar="لا">No</option>
+                    <option value="yes" data-en="Yes" data-ar="نعم">Yes</option>
+                </select>
+                <div class="error-message" id="healthError" data-en="Please select an option" data-ar="يرجى اختيار خيار">Please select an option</div>
+            </div>
+
+            <div class="form-group">
+                <label for="active" class="required" data-en="Are you an athlete?" data-ar="هل أنت رياضي؟">Are you an athlete?</label>
+                <select id="active" required>
+                    <option value="" data-en="Select an option" data-ar="اختر خيارًا">Select an option</option>
+                    <option value="no" data-en="No" data-ar="لا">No</option>
+                    <option value="yes" data-en="Yes" data-ar="نعم">Yes</option>
+                </select>
+                <div class="error-message" id="activeError" data-en="Please select an option" data-ar="يرجى اختيار خيار">Please select an option</div>
+            </div>
+
+            <div class="form-group">
+                <label for="ageGroup" class="required" data-en="Your age group" data-ar="فئتك العمرية">Your age group</label>
+                <select id="ageGroup" required>
+                    <option value="" data-en="Select an option" data-ar="اختر خيارًا">Select an option</option>
+                    <option value="child" data-en="Child" data-ar="طفل">Child</option>
+                    <option value="adult" data-en="Adult" data-ar="بالغ">Adult</option>
+                    <option value="elder" data-en="Elderly" data-ar="كبير سن">Elderly</option>
+                </select>
+                <div class="error-message" id="ageGroupError" data-en="Please select an option" data-ar="يرجى اختيار خيار">Please select an option</div>
+            </div>
+
+            <button class="health-btn" onclick="validateForm()" data-en="Show Tips" data-ar="عرض النصائح">Show Tips</button>
+        </div>
+
+        <div class="tips-container" id="tipsContainer">
+            <!-- Tips will be inserted here -->
+        </div>
+    </div>
+
+    <script>
+        // Translation dictionary
+        const translations = {
+            en: {
+                // Header
+                "BE SAVE - Health Tips": "BE SAVE - Health Tips",
+                "Get personalized air quality tips based on your health condition and age": "Get personalized air quality tips based on your health condition and age",
+
+                // Navbar
+                "Home": "Home",
+                "Forecast": "Forecast",
+                "Health": "Health",
+                "Tips": "Tips",
+                "Future Impact": "Future Impact",
+                "Get Started": "Get Started",
+
+                // Form labels
+                "Age": "Age",
+                "Do you have asthma or allergies?": "Do you have asthma or allergies?",
+                "Are you an athlete?": "Are you an athlete?",
+                "Your age group": "Your age group",
+                "Show Tips": "Show Tips",
+
+                // Form options
+                "Select an option": "Select an option",
+                "No": "No",
+                "Yes": "Yes",
+                "Child": "Child",
+                "Adult": "Adult",
+                "Elderly": "Elderly",
+
+                // Error messages
+                "Please enter your age": "Please enter your age",
+                "Please select an option": "Please select an option",
+
+                // Tips
+                "Try to avoid going out between 2 PM and 5 PM if air quality is very poor.": "Try to avoid going out between 2 PM and 5 PM if air quality is very poor.",
+                "Subscribe to notifications or emails to continuously monitor air quality.": "Subscribe to notifications or emails to continuously monitor air quality.",
+                "Avoid intense physical activity outdoors when pollution is high.": "Avoid intense physical activity outdoors when pollution is high.",
+                "Use an N95 mask when going out for short distances.": "Use an N95 mask when going out for short distances.",
+                "Always keep your inhaler with you if you have asthma.": "Always keep your inhaler with you if you have asthma.",
+                "You can exercise outdoors for one hour if air quality is moderate.": "You can exercise outdoors for one hour if air quality is moderate.",
+                "Choose early morning for exercise when pollution levels are lower.": "Choose early morning for exercise when pollution levels are lower.",
+                "Try to do light physical activity at home to maintain your health.": "Try to do light physical activity at home to maintain your health.",
+                "Children are more sensitive to air pollution, so monitor outdoor activities carefully.": "Children are more sensitive to air pollution, so monitor outdoor activities carefully.",
+                "Use air purifiers in children's bedrooms.": "Use air purifiers in children's bedrooms.",
+                "Prefer staying indoors or using air purifiers during polluted days.": "Prefer staying indoors or using air purifiers during polluted days.",
+                "Avoid going out during peak hours when pollution levels are at their highest.": "Avoid going out during peak hours when pollution levels are at their highest.",
+                "Make sure to drink enough water to help flush toxins from your body.": "Make sure to drink enough water to help flush toxins from your body.",
+                "Visit your doctor regularly to monitor respiratory health as you age.": "Visit your doctor regularly to monitor respiratory health as you age.",
+
+                // Default tips
+                "Enter your information to get personalized air quality tips.": "Enter your information to get personalized air quality tips.",
+                "You can adjust your answers at any time to update the tips.": "You can adjust your answers at any time to update the tips.",
+                "Follow daily air quality forecasts to improve your respiratory health.": "Follow daily air quality forecasts to improve your respiratory health.",
+
+                // Footer
+                "StratosX is committed to helping you breathe cleaner air and live a healthier life": "StratosX is committed to helping you breathe cleaner air and live a healthier life",
+                "© 2023 StratosX. All rights reserved.": "© 2023 StratosX. All rights reserved."
+            },
+            ar: {
+                // Header
+                "BE SAVE - Health Tips": "BE SAVE - نصائح صحية",
+                "Get personalized air quality tips based on your health condition and age": "احصل على نصائح مخصصة لجودة الهواء بناءً على حالتك الصحية وعمرك",
+
+                // Navbar
+                "Home": "الرئيسية",
+                "Forecast": "التوقعات",
+                "Health": "الصحة",
+                "Tips": "النصائح",
+                "Future Impact": "التأثير المستقبلي",
+                "Get Started": "ابدأ الآن",
+
+                // Form labels
+                "Age": "العمر",
+                "Do you have asthma or allergies?": "هل لديك ربو أو حساسية؟",
+                "Are you an athlete?": "هل أنت رياضي؟",
+                "Your age group": "فئتك العمرية",
+                "Show Tips": "عرض النصائح",
+
+                // Form options
+                "Select an option": "اختر خيارًا",
+                "No": "لا",
+                "Yes": "نعم",
+                "Child": "طفل",
+                "Adult": "بالغ",
+                "Elderly": "كبير سن",
+
+                // Error messages
+                "Please enter your age": "يرجى إدخال عمرك",
+                "Please select an option": "يرجى اختيار خيار",
+
+                // Tips
+                "Try to avoid going out between 2 PM and 5 PM if air quality is very poor.": "حاول تجنب الخروج بين الساعة 2 و 5 عصرًا إذا كانت جودة الهواء سيئة جدًا.",
+                "Subscribe to notifications or emails to continuously monitor air quality.": "اشترك في الإشعارات أو الإيميلات لمتابعة جودة الهواء باستمرار.",
+                "Avoid intense physical activity outdoors when pollution is high.": "تجنب النشاط البدني المكثف في الهواء الطلق عند ارتفاع التلوث.",
+                "Use an N95 mask when going out for short distances.": "استخدم ماسك N95 عند الخروج لمسافات قصيرة.",
+                "Always keep your inhaler with you if you have asthma.": "احتفظ بجهاز الاستنشاق معك دائمًا إذا كنت تعاني من الربو.",
+                "You can exercise outdoors for one hour if air quality is moderate.": "يمكنك ممارسة الرياضة خارج المنزل لمدة ساعة إذا كانت جودة الهواء معتدلة.",
+                "Choose early morning for exercise when pollution levels are lower.": "اختر الصباح الباكر لممارسة الرياضة عندما تكون مستويات التلوث أقل.",
+                "Try to do light physical activity at home to maintain your health.": "حاول ممارسة نشاط بدني خفيف في المنزل للحفاظ على صحتك.",
+                "Children are more sensitive to air pollution, so monitor outdoor activities carefully.": "الأطفال أكثر حساسية لتلوث الهواء، لذا راقب الأنشطة الخارجية بعناية.",
+                "Use air purifiers in children's bedrooms.": "استخدم أجهزة تنقية الهواء في غرف نوم الأطفال.",
+                "Prefer staying indoors or using air purifiers during polluted days.": "يفضل البقاء في أماكن مغلقة أو استخدام أجهزة تنقية الهواء أثناء الأيام الملوثة.",
+                "Avoid going out during peak hours when pollution levels are at their highest.": "تجنب الخروج خلال ساعات الذروة عندما تكون مستويات التلوث في أعلى مستوياتها.",
+                "Make sure to drink enough water to help flush toxins from your body.": "تأكد من شرب كمية كافية من الماء للمساعدة في طرد السموم من الجسم.",
+                "Visit your doctor regularly to monitor respiratory health as you age.": "راجع طبيبك بانتظام لمراقبة صحة الجهاز التنفسي مع تقدم العمر.",
+
+                // Default tips
+                "Enter your information to get personalized air quality tips.": "أدخل معلوماتك للحصول على نصائح مخصصة لجودة الهواء.",
+                "You can adjust your answers at any time to update the tips.": "يمكنك تعديل إجاباتك في أي وقت لتحديث النصائح.",
+                "Follow daily air quality forecasts to improve your respiratory health.": "تابع توقعات جودة الهواء يوميًا لتحسين صحتك التنفسية.",
+
+                // Footer
+                "StratosX is committed to helping you breathe cleaner air and live a healthier life": "StratosX تلتزم بمساعدتك على تنفس هواء أنظف والعيش بحياة أكثر صحة",
+                "© 2023 StratosX. All rights reserved.": "© 2023 StratosX. جميع الحقوق محفوظة."
+            }
+        };
+
+        let currentLang = 'en';
+
+        // Mobile menu functionality
+        document.addEventListener('DOMContentLoaded', function () {
+            const mobileMenuToggle = document.getElementById('mobileMenuToggle');
+            const mobileNav = document.getElementById('mobileNav');
+            const mobileOverlay = document.getElementById('mobileOverlay');
+            let isMenuOpen = false;
+
+            function toggleMobileMenu() {
+                isMenuOpen = !isMenuOpen;
+
+                if (isMenuOpen) {
+                    mobileNav.classList.add('active');
+                    mobileOverlay.classList.add('active');
+                    mobileMenuToggle.classList.add('active');
+                    mobileMenuToggle.innerHTML = '✕';
+                    document.body.style.overflow = 'hidden';
+                } else {
+                    mobileNav.classList.remove('active');
+                    mobileOverlay.classList.remove('active');
+                    mobileMenuToggle.classList.remove('active');
+                    mobileMenuToggle.innerHTML = '☰';
+                    document.body.style.overflow = '';
+                }
+            }
+
+            function closeMobileMenu() {
+                if (isMenuOpen) {
+                    toggleMobileMenu();
+                }
+            }
+
+            mobileMenuToggle.addEventListener('click', function (e) {
+                e.preventDefault();
+                toggleMobileMenu();
+            });
+
+            mobileOverlay.addEventListener('click', closeMobileMenu);
+
+            // Close mobile menu when clicking on menu items
+            mobileNav.querySelectorAll('a').forEach(link => {
+                link.addEventListener('click', closeMobileMenu);
+            });
+
+            // Close mobile menu when clicking outside
+            document.addEventListener('click', function(event) {
+                if (isMenuOpen &&
+                    !event.target.closest('.container') &&
+                    !event.target.closest('.mobile-nav') &&
+                    !event.target.closest('.mobile-menu-toggle')) {
+                    closeMobileMenu();
+                }
+            });
+
+            // Close mobile menu on escape key
+            document.addEventListener('keydown', function(event) {
+                if (event.key === 'Escape' && isMenuOpen) {
+                    closeMobileMenu();
+                }
+            });
+
+            // Language toggle functionality
+            const langToggle = document.getElementById('langToggle');
+            langToggle.addEventListener('click', function() {
+                toggleLanguage();
+            });
+
+            // Initialize with default language
+            updateLanguage('en');
+
+            // Add real-time validation
+            document.getElementById('age').addEventListener('input', validateAge);
+            document.getElementById('health').addEventListener('change', validateHealth);
+            document.getElementById('active').addEventListener('change', validateActive);
+            document.getElementById('ageGroup').addEventListener('change', validateAgeGroup);
+
+            // Initialize with default tips
+            showDefaultTips();
+        });
+
+        function toggleLanguage() {
+            currentLang = currentLang === 'en' ? 'ar' : 'en';
+            updateLanguage(currentLang);
+
+            // Update toggle button text
+            const langToggle = document.getElementById('langToggle');
+            langToggle.textContent = currentLang === 'en' ? 'العربية' : 'English';
+
+            // Update body direction
+            document.body.dir = currentLang === 'en' ? 'ltr' : 'rtl';
+
+            // Update tips when language changes
+            const age = document.getElementById('age').value;
+            const health = document.getElementById('health').value;
+            const active = document.getElementById('active').value;
+            const ageGroup = document.getElementById('ageGroup').value;
+
+            if (age || health || active || ageGroup) {
+                // If form has data, regenerate tips
+                showTips();
+            } else {
+                // Otherwise show default tips
+                showDefaultTips();
+            }
+        }
+
+        function updateLanguage(lang) {
+            currentLang = lang;
+
+            // Update all elements with data attributes
+            document.querySelectorAll('[data-en]').forEach(element => {
+                const key = element.getAttribute('data-en');
+                if (translations[lang] && translations[lang][key]) {
+                    element.textContent = translations[lang][key];
+                }
+            });
+
+            // Update input placeholders
+            document.querySelectorAll('[data-en-placeholder]').forEach(input => {
+                const key = input.getAttribute('data-en-placeholder');
+                if (translations[lang] && translations[lang][key]) {
+                    input.placeholder = translations[lang][key];
+                }
+            });
+
+            // Update select options
+            document.querySelectorAll('select option').forEach(option => {
+                if (option.hasAttribute('data-en')) {
+                    const key = option.getAttribute('data-en');
+                    if (translations[lang] && translations[lang][key]) {
+                        option.textContent = translations[lang][key];
+                    }
+                }
+            });
+
+            // Update navbar links (both desktop and mobile)
+            updateNavbarLinks(lang);
+        }
+
+        function updateNavbarLinks(lang) {
+            // Update desktop navbar links
+            const desktopNavLinks = document.querySelectorAll('header nav a');
+            desktopNavLinks.forEach(link => {
+                const key = link.getAttribute('data-en');
+                if (translations[lang] && translations[lang][key]) {
+                    link.textContent = translations[lang][key];
+                }
+            });
+
+            // Update mobile navbar links
+            const mobileNavLinks = document.querySelectorAll('.mobile-nav a');
+            mobileNavLinks.forEach(link => {
+                const key = link.getAttribute('data-en');
+                if (translations[lang] && translations[lang][key]) {
+                    link.textContent = translations[lang][key];
+                }
+            });
+
+            // Update CTA button
+            const ctaButton = document.querySelector('header .cta');
+            const ctaKey = ctaButton.getAttribute('data-en');
+            if (translations[lang] && translations[lang][ctaKey]) {
+                ctaButton.textContent = translations[lang][ctaKey];
+            }
+        }
+
+        // Validation functions
+        function validateAge() {
+            const ageInput = document.getElementById('age');
+            const ageError = document.getElementById('ageError');
+            const age = parseInt(ageInput.value);
+
+            if (!ageInput.value || age < 0 || age > 120) {
+                ageInput.classList.add('error');
+                ageError.classList.add('show');
+                return false;
+            } else {
+                ageInput.classList.remove('error');
+                ageError.classList.remove('show');
+                return true;
+            }
+        }
+
+        function validateHealth() {
+            const healthSelect = document.getElementById('health');
+            const healthError = document.getElementById('healthError');
+
+            if (!healthSelect.value) {
+                healthSelect.classList.add('error');
+                healthError.classList.add('show');
+                return false;
+            } else {
+                healthSelect.classList.remove('error');
+                healthError.classList.remove('show');
+                return true;
+            }
+        }
+
+        function validateActive() {
+            const activeSelect = document.getElementById('active');
+            const activeError = document.getElementById('activeError');
+
+            if (!activeSelect.value) {
+                activeSelect.classList.add('error');
+                activeError.classList.add('show');
+                return false;
+            } else {
+                activeSelect.classList.remove('error');
+                activeError.classList.remove('show');
+                return true;
+            }
+        }
+
+        function validateAgeGroup() {
+            const ageGroupSelect = document.getElementById('ageGroup');
+            const ageGroupError = document.getElementById('ageGroupError');
+
+            if (!ageGroupSelect.value) {
+                ageGroupSelect.classList.add('error');
+                ageGroupError.classList.add('show');
+                return false;
+            } else {
+                ageGroupSelect.classList.remove('error');
+                ageGroupError.classList.remove('show');
+                return true;
+            }
+        }
+
+        function validateForm() {
+            const isAgeValid = validateAge();
+            const isHealthValid = validateHealth();
+            const isActiveValid = validateActive();
+            const isAgeGroupValid = validateAgeGroup();
+
+            if (isAgeValid && isHealthValid && isActiveValid && isAgeGroupValid) {
+                showTips();
+            } else {
+                // Scroll to first error
+                const firstError = document.querySelector('.error');
+                if (firstError) {
+                    firstError.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                }
+            }
+        }
+
+        // Health tips functionality
+        function showTips() {
+            const age = parseInt(document.getElementById('age').value);
+            const health = document.getElementById('health').value;
+            const active = document.getElementById('active').value;
+            const ageGroup = document.getElementById('ageGroup').value;
+
+            let tips = [];
+
+            // Always show these tips
+            tips.push(translations[currentLang]["Try to avoid going out between 2 PM and 5 PM if air quality is very poor."]);
+            tips.push(translations[currentLang]["Subscribe to notifications or emails to continuously monitor air quality."]);
+
+            // Health-specific tips
+            if (health === "yes") {
+                tips.push(translations[currentLang]["Avoid intense physical activity outdoors when pollution is high."]);
+                tips.push(translations[currentLang]["Use an N95 mask when going out for short distances."]);
+                tips.push(translations[currentLang]["Always keep your inhaler with you if you have asthma."]);
+            }
+
+            // Activity-specific tips
+            if (active === "yes") {
+                tips.push(translations[currentLang]["You can exercise outdoors for one hour if air quality is moderate."]);
+                tips.push(translations[currentLang]["Choose early morning for exercise when pollution levels are lower."]);
+            } else {
+                tips.push(translations[currentLang]["Try to do light physical activity at home to maintain your health."]);
+            }
+
+            // Age-specific tips
+            if (ageGroup === "child") {
+                tips.push(translations[currentLang]["Children are more sensitive to air pollution, so monitor outdoor activities carefully."]);
+                tips.push(translations[currentLang]["Use air purifiers in children's bedrooms."]);
+            } else if (ageGroup === "elder") {
+                tips.push(translations[currentLang]["Prefer staying indoors or using air purifiers during polluted days."]);
+                tips.push(translations[currentLang]["Avoid going out during peak hours when pollution levels are at their highest."]);
+            }
+
+            // Age-specific additional tips
+            if (age < 18) {
+                tips.push(translations[currentLang]["Make sure to drink enough water to help flush toxins from your body."]);
+            } else if (age > 60) {
+                tips.push(translations[currentLang]["Visit your doctor regularly to monitor respiratory health as you age."]);
+            }
+
+            const container = document.getElementById('tipsContainer');
+            container.innerHTML = "";
+
+            tips.forEach((tip, index) => {
+                setTimeout(() => {
+                    const div = document.createElement('div');
+                    div.className = "tip-card";
+                    const tipNumber = currentLang === 'en' ? `Tip ${index + 1}:` : `نصيحة ${index + 1}:`;
+                    div.innerHTML = `<span>${tipNumber}</span><p>${tip}</p>`;
+                    container.appendChild(div);
+
+                    // Add visible class after a short delay for animation
+                    setTimeout(() => {
+                        div.classList.add('visible');
+                    }, 50);
+                }, index * 300);
+            });
+
+            // Scroll to tips after generation
+            setTimeout(() => {
+                container.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }, tips.length * 300 + 100);
+        }
+
+        // Show default tips
+        function showDefaultTips() {
+            const container = document.getElementById('tipsContainer');
+            container.innerHTML = "";
+
+            const defaultTips = [
+                translations[currentLang]["Enter your information to get personalized air quality tips."],
+                translations[currentLang]["You can adjust your answers at any time to update the tips."],
+                translations[currentLang]["Follow daily air quality forecasts to improve your respiratory health."]
+            ];
+
+            defaultTips.forEach((tip, index) => {
+                const div = document.createElement('div');
+                div.className = "tip-card visible";
+                const tipNumber = currentLang === 'en' ? `Info ${index + 1}:` : `معلومة ${index + 1}:`;
+                div.innerHTML = `<span>${tipNumber}</span><p>${tip}</p>`;
+                container.appendChild(div);
+            });
+        }
+    </script>
+</body>
+</html>
