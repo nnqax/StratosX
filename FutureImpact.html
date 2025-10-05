@@ -1,0 +1,1261 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>StratosX – Future Impact</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="icon" type="image/png" href="Xfavicon.png">
+  <style>
+    /* Previous CSS remains the same */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Poppins', sans-serif;
+    }
+
+    body {
+      background: #0a0f1c;
+      color: #e5e7eb;
+      overflow-x: hidden;
+      transition: all 0.3s ease;
+    }
+
+    body[dir="rtl"] .hero-content {
+      text-align: right !important;
+    }
+
+    body[dir="ltr"] .hero-content {
+      text-align: left !important;
+    }
+
+    /* Header */
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px 20px;
+      position: fixed;
+      top: 10px;
+      left: 0;
+      width: 100%;
+      z-index: 1000;
+    }
+
+    .container {
+      max-width: 1000px;
+      margin: 0 auto;
+      width: 100%;
+      border-radius: 100px;
+      padding: 12px 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: relative;
+      background: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(15px);
+      -webkit-backdrop-filter: blur(15px);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+    }
+
+    header .logo img {
+      height: 40px;
+      width: auto;
+    }
+
+    header nav {
+      display: flex;
+      align-items: center;
+    }
+
+    header nav a {
+      margin: 0 8px;
+      text-decoration: none;
+      color: #e5e7eb;
+      font-weight: 500;
+      font-size: 0.85rem;
+      transition: color 0.3s;
+      padding: 5px 0;
+    }
+
+    header nav a:hover {
+      color: #84cc16;
+    }
+
+    header .cta {
+      background: #000;
+      color: #fff;
+      padding: 8px 16px;
+      border-radius: 30px;
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 0.8rem;
+      transition: 0.4s;
+      margin-left: 8px;
+    }
+
+    header .cta:hover {
+      background: linear-gradient(270deg, #2563eb, #9333ea, #2563eb);
+      background-size: 600% 600%;
+      animation: gradientFlow 4s ease infinite;
+    }
+
+    .lang-toggle {
+      background: rgba(255, 255, 255, 0.1);
+      color: #e5e7eb;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      padding: 6px 12px;
+      border-radius: 20px;
+      cursor: pointer;
+      font-weight: 500;
+      font-size: 0.8rem;
+      margin-left: 8px;
+      transition: all 0.3s ease;
+    }
+
+    .lang-toggle:hover {
+      background: rgba(255, 255, 255, 0.2);
+    }
+
+    /* Mobile Navigation */
+    .mobile-menu-toggle {
+      display: none;
+      background: transparent;
+      border: none;
+      color: white;
+      font-size: 1.5rem;
+      cursor: pointer;
+      margin-left: 10px;
+      transition: transform 0.3s ease;
+      z-index: 1000;
+    }
+
+    .mobile-menu-toggle.active {
+      transform: rotate(90deg);
+    }
+
+    .mobile-nav {
+      display: none;
+      position: absolute;
+      top: 100%;
+      left: 50%;
+      transform: translateX(-50%) translateY(-20px);
+      width: 90%;
+      max-width: 400px;
+      background: rgba(255, 255, 255, 0.15);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      border-radius: 24px;
+      padding: 24px;
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+      z-index: 999;
+      opacity: 0;
+      visibility: hidden;
+      transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .mobile-nav.active {
+      display: block;
+      opacity: 1;
+      visibility: visible;
+      transform: translateX(-50%) translateY(0);
+    }
+
+    .mobile-nav::before {
+      content: '';
+      position: absolute;
+      top: -10px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 0;
+      height: 0;
+      border-left: 10px solid transparent;
+      border-right: 10px solid transparent;
+      border-bottom: 10px solid rgba(255, 255, 255, 0.15);
+    }
+
+    .mobile-nav a {
+      display: block;
+      color: white;
+      text-decoration: none;
+      padding: 16px 20px;
+      margin: 8px 0;
+      border-radius: 16px;
+      font-weight: 500;
+      font-size: 1rem;
+      text-align: center;
+      transition: all 0.3s ease;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.05);
+    }
+
+    .mobile-nav a:hover {
+      background: rgba(255, 255, 255, 0.1);
+      transform: translateY(-2px);
+      color: #84cc16;
+    }
+
+    .mobile-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.7);
+      backdrop-filter: blur(5px);
+      z-index: 998;
+      opacity: 0;
+      visibility: hidden;
+      transition: all 0.3s ease;
+    }
+
+    .mobile-overlay.active {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    @keyframes gradientFlow {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    /* Full Screen Hero Section */
+    .hero {
+      position: relative;
+      height: 100vh;
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      overflow: hidden;
+    }
+
+    .hero-bg {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background:
+        linear-gradient(rgba(10, 15, 28, 0.7), rgba(10, 15, 28, 0.8)),
+        url('https://images.unsplash.com/photo-1446776653964-20c1d3a81b06?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2071&q=80');
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      background-attachment: fixed;
+      z-index: -1;
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 2;
+      max-width: 800px;
+      padding: 0 20px;
+      color: #fff;
+      width: 100%;
+    }
+
+    .hero h1 {
+      font-size: 4rem;
+      font-weight: 700;
+      margin-bottom: 20px;
+      line-height: 1.2;
+      text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+      animation: fadeInUp 1s ease-out;
+    }
+
+    .hero p {
+      font-size: 1.4rem;
+      margin-bottom: 40px;
+      opacity: 0.9;
+      line-height: 1.5;
+      text-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
+      animation: fadeInUp 1s ease-out 0.2s both;
+    }
+
+    .scroll-indicator {
+      position: absolute;
+      bottom: 30px;
+      left: 50%;
+      transform: translateX(-50%);
+      color: rgba(255, 255, 255, 0.7);
+      font-size: 1.2rem;
+      animation: bounce 2s infinite;
+      cursor: pointer;
+    }
+
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes bounce {
+      0%, 20%, 50%, 80%, 100% {
+        transform: translateX(-50%) translateY(0);
+      }
+      40% {
+        transform: translateX(-50%) translateY(-10px);
+      }
+      60% {
+        transform: translateX(-50%) translateY(-5px);
+      }
+    }
+
+    /* Main Content */
+    .main-content {
+      position: relative;
+      background: #0a0f1c;
+      padding-top: 80px;
+    }
+
+    /* Comparison Section */
+    .comparison {
+      padding: 100px 20px;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .comparison-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 40px;
+      margin-top: 50px;
+    }
+
+    @media (max-width: 768px) {
+      .comparison-grid {
+        grid-template-columns: 1fr;
+        gap: 30px;
+      }
+    }
+
+    .breathing-card {
+      background: rgba(30, 41, 59, 0.8);
+      border-radius: 20px;
+      padding: 40px;
+      text-align: center;
+      transition: transform 0.3s ease;
+      border: 2px solid transparent;
+      backdrop-filter: blur(10px);
+      opacity: 0;
+      transform: translateY(30px);
+      transition: all 0.6s ease;
+    }
+
+    .breathing-card.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .breathing-card.good {
+      border-color: #84cc16;
+    }
+
+    .breathing-card.bad {
+      border-color: #ef4444;
+    }
+
+    .breathing-card:hover {
+      transform: translateY(-10px);
+    }
+
+    .breathing-icon {
+      font-size: 4rem;
+      margin-bottom: 20px;
+    }
+
+    .good .breathing-icon {
+      color: #84cc16;
+    }
+
+    .bad .breathing-icon {
+      color: #ef4444;
+    }
+
+    .breathing-title {
+      font-size: 1.8rem;
+      font-weight: 700;
+      margin-bottom: 20px;
+      color: #f9fafb;
+    }
+
+    .breathing-list {
+      list-style: none;
+      text-align: left;
+      margin-top: 25px;
+    }
+
+    .breathing-list li {
+      padding: 12px 0;
+      color: #d1d5db;
+      display: flex;
+      align-items: flex-start;
+      line-height: 1.5;
+    }
+
+    .good .breathing-list li::before {
+      content: '✓';
+      color: #84cc16;
+      font-weight: bold;
+      margin-right: 12px;
+      font-size: 1.2rem;
+    }
+
+    .bad .breathing-list li::before {
+      content: '✗';
+      color: #ef4444;
+      font-weight: bold;
+      margin-right: 12px;
+      font-size: 1.2rem;
+    }
+
+    /* Stats Section */
+    .stats {
+      padding: 100px 20px;
+      background: rgba(30, 41, 59, 0.5);
+    }
+
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 30px;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .stat-card {
+      background: rgba(255, 255, 255, 0.05);
+      border-radius: 16px;
+      padding: 30px;
+      text-align: center;
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      transition: transform 0.3s ease;
+      opacity: 0;
+      transform: translateY(30px);
+      transition: all 0.6s ease;
+    }
+
+    .stat-card.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .stat-card:hover {
+      transform: translateY(-5px);
+    }
+
+    .stat-number {
+      font-size: 3rem;
+      font-weight: 700;
+      color: #84cc16;
+      margin-bottom: 10px;
+    }
+
+    .stat-label {
+      color: #d1d5db;
+      font-size: 1.1rem;
+      line-height: 1.4;
+    }
+
+    /* Future Impact Section */
+    .future-impact {
+      padding: 100px 20px;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .future-impact h2 {
+      font-size: 2.5rem;
+      font-weight: 700;
+      margin-bottom: 50px;
+      text-align: center;
+      color: #f9fafb;
+    }
+
+    .impact-categories {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 30px;
+      margin-bottom: 60px;
+    }
+
+    .impact-category {
+      background: rgba(30, 41, 59, 0.8);
+      border-radius: 16px;
+      padding: 30px;
+      backdrop-filter: blur(10px);
+      border-left: 4px solid #84cc16;
+      opacity: 0;
+      transform: translateY(30px);
+      transition: all 0.6s ease;
+    }
+
+    .impact-category.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .impact-category:hover {
+      transform: translateY(-5px);
+    }
+
+    .category-header {
+      display: flex;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+
+    .category-icon {
+      font-size: 2.5rem;
+      margin-right: 15px;
+    }
+
+    .category-title {
+      font-size: 1.4rem;
+      font-weight: 600;
+      color: #f9fafb;
+    }
+
+    .category-source {
+      font-size: 0.8rem;
+      color: #9ca3af;
+      margin-bottom: 15px;
+      font-style: italic;
+    }
+
+    .impact-list {
+      list-style: none;
+    }
+
+    .impact-list li {
+      padding: 12px 0;
+      color: #d1d5db;
+      display: flex;
+      align-items: flex-start;
+      line-height: 1.5;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    }
+
+    .impact-list li:last-child {
+      border-bottom: none;
+    }
+
+    .impact-list li::before {
+      content: '•';
+      color: #84cc16;
+      font-weight: bold;
+      margin-right: 12px;
+      font-size: 1.2rem;
+    }
+
+    /* Comparison Table */
+    .comparison-table {
+      background: rgba(30, 41, 59, 0.8);
+      border-radius: 16px;
+      padding: 40px;
+      backdrop-filter: blur(10px);
+      margin-top: 50px;
+      opacity: 0;
+      transform: translateY(30px);
+      transition: all 0.6s ease;
+    }
+
+    .comparison-table.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .comparison-table h3 {
+      font-size: 1.8rem;
+      font-weight: 700;
+      margin-bottom: 30px;
+      text-align: center;
+      color: #f9fafb;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    th, td {
+      padding: 15px;
+      text-align: left;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    th {
+      color: #84cc16;
+      font-weight: 600;
+    }
+
+    tr:last-child td {
+      border-bottom: none;
+    }
+
+    .negative {
+      color: #ef4444;
+    }
+
+    .positive {
+      color: #84cc16;
+    }
+
+    @media (max-width: 768px) {
+      table {
+        display: block;
+        overflow-x: auto;
+      }
+    }
+
+    /* Solution Section */
+    .solution {
+      padding: 100px 20px;
+      max-width: 1200px;
+      margin: 0 auto;
+      text-align: center;
+    }
+
+    .solution h2 {
+      font-size: 2.5rem;
+      font-weight: 700;
+      margin-bottom: 20px;
+      color: #f9fafb;
+    }
+
+    .solution > p {
+      font-size: 1.2rem;
+      color: #9ca3af;
+      max-width: 700px;
+      margin: 0 auto 50px;
+      line-height: 1.6;
+    }
+
+    .solution-cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 30px;
+      margin-top: 50px;
+    }
+
+    .solution-card {
+      background: rgba(30, 41, 59, 0.8);
+      border-radius: 16px;
+      padding: 30px;
+      text-align: center;
+      transition: transform 0.3s ease;
+      border-left: 4px solid #84cc16;
+      backdrop-filter: blur(10px);
+      opacity: 0;
+      transform: translateY(30px);
+      transition: all 0.6s ease;
+    }
+
+    .solution-card.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .solution-card:hover {
+      transform: translateY(-5px);
+    }
+
+    .solution-icon {
+      font-size: 3rem;
+      color: #84cc16;
+      margin-bottom: 20px;
+    }
+
+    .solution-title {
+      font-size: 1.4rem;
+      font-weight: 600;
+      margin-bottom: 15px;
+      color: #f9fafb;
+    }
+
+    .solution-text {
+      color: #d1d5db;
+      line-height: 1.6;
+    }
+
+    /* CTA Section */
+    .cta-section {
+      text-align: center;
+      padding: 100px 20px;
+      background: rgba(30, 41, 59, 0.8);
+    }
+
+    .cta-title {
+      font-size: 2.5rem;
+      font-weight: 700;
+      margin-bottom: 20px;
+      color: #f9fafb;
+    }
+
+    .cta-text {
+      font-size: 1.2rem;
+      margin-bottom: 30px;
+      color: #d1d5db;
+      max-width: 600px;
+      margin-left: auto;
+      margin-right: auto;
+      line-height: 1.6;
+    }
+
+    .cta-btn {
+      background: #84cc16;
+      color: #fff;
+      padding: 16px 40px;
+      border-radius: 40px;
+      font-weight: 600;
+      text-decoration: none;
+      font-size: 1.1rem;
+      transition: 0.3s;
+      display: inline-block;
+    }
+
+    .cta-btn:hover {
+      background: #65a30d;
+      transform: translateY(-3px);
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+    }
+
+    /* Footer */
+    footer {
+      background: #0f172a;
+      color: white;
+      padding: 60px 20px 30px;
+      text-align: center;
+    }
+
+    .footer-content {
+      max-width: 800px;
+      margin: 0 auto;
+    }
+
+    .footer-logo {
+      height: 50px;
+      margin-bottom: 20px;
+    }
+
+    .footer-text {
+      color: #9ca3af;
+      margin-bottom: 30px;
+      line-height: 1.6;
+    }
+
+    .footer-links {
+      display: flex;
+      justify-content: center;
+      gap: 30px;
+      margin-bottom: 30px;
+      flex-wrap: wrap;
+    }
+
+    .footer-links a {
+      color: #d1d5db;
+      text-decoration: none;
+      transition: color 0.3s;
+    }
+
+    .footer-links a:hover {
+      color: #84cc16;
+    }
+
+    .copyright {
+      color: #6b7280;
+      font-size: 0.9rem;
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      .hero h1 {
+        font-size: 2.5rem;
+      }
+
+      .hero p {
+        font-size: 1.1rem;
+      }
+
+      .mobile-menu-toggle {
+        display: block;
+      }
+
+      header nav {
+        display: none;
+      }
+
+      .cta-title {
+        font-size: 2rem;
+      }
+
+      .solution h2 {
+        font-size: 2rem;
+      }
+
+      .future-impact h2 {
+        font-size: 2rem;
+      }
+    }
+  </style>
+</head>
+<body dir="ltr">
+  <header>
+    <div class="container">
+      <a href="Index.html">
+        <div class="logo">
+          <img src="StratosX_logo.png" alt="StratosX Logo">
+        </div>
+      </a>
+      <nav>
+        <a href="Index.html" data-en="Home" data-ar="الرئيسية">Home</a>
+        <a href="ForcastModel.html" data-en="Forecast" data-ar="التوقعات">Forecast</a>
+        <a href="Health.html" data-en="Health" data-ar="الصحة">Health</a>
+        <a href="Tips.html" data-en="Tips" data-ar="النصائح">Tips</a>
+        <a href="FutureImpact.html" data-en="Future Impact" data-ar="التأثير المستقبلي">Future Impact</a>
+      </nav>
+      <div style="display: flex; align-items: center;">
+        <a href="HeatmapModel.html" class="cta" data-en="Get Started" data-ar="ابدأ الآن">Get Started</a>
+        <button class="lang-toggle" id="langToggle" data-lang="en">العربية</button>
+        <button class="mobile-menu-toggle" id="mobileMenuToggle">☰</button>
+      </div>
+    </div>
+    <div class="mobile-nav" id="mobileNav">
+      <a href="Index.html" data-en="Home" data-ar="الرئيسية">Home</a>
+      <a href="ForcastModel.html" data-en="Forecast" data-ar="التوقعات">Forecast</a>
+      <a href="Health.html" data-en="Health" data-ar="الصحة">Health</a>
+      <a href="Tips.html" data-en="Tips" data-ar="النصائح">Tips</a>
+      <a href="#" data-en="Future Impact" data-ar="التأثير المستقبلي">Future Impact</a>
+    </div>
+    <div class="mobile-overlay" id="mobileOverlay"></div>
+  </header>
+
+  <section class="hero">
+    <div class="hero-bg"></div>
+    <div class="hero-content">
+      <h1 data-en="The Air We Breathe Defines Our Future" data-ar="الهواء الذي نتنفسه يحدد مستقبلنا">
+        The Air We Breathe Defines Our Future
+      </h1>
+      <p data-en="Clean air isn't just about comfort - it's about life quality, health, and the future we're building for the next generation." data-ar="الهواء النظيف ليس مجرد راحة - إنه يتعلق بجودة الحياة والصحة والمستقبل الذي نبنيها للجيل القادم.">
+        Clean air isn't just about comfort - it's about life quality, health, and the future we're building for the next generation.
+      </p>
+    </div>
+    <div class="scroll-indicator" onclick="scrollToContent()">↓</div>
+  </section>
+
+  <section class="stats">
+    <div class="stats-grid">
+      <div class="stat-card">
+        <div class="stat-number">7M</div>
+        <div class="stat-label" data-en="Premature deaths yearly from air pollution" data-ar="وفاة مبكرة سنويًا بسبب تلوث الهواء">Premature deaths yearly from air pollution</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-number">91%</div>
+        <div class="stat-label" data-en="Of people breathe polluted air" data-ar="من الناس يتنفسون هواءً ملوثًا">Of people breathe polluted air</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-number">2X</div>
+        <div class="stat-label" data-en="Higher risk of lung cancer in polluted areas" data-ar="خطر أعلى للإصابة بسرطان الرئة في المناطق الملوثة">Higher risk of lung cancer in polluted areas</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-number">30%</div>
+        <div class="stat-label" data-en="Of strokes linked to air pollution" data-ar="من السكتات الدماغية مرتبطة بتلوث الهواء">Of strokes linked to air pollution</div>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- Future Impact of Air Pollution Section -->
+  <section class="future-impact">
+    <h2 data-en="Future Impact of Air Pollution" data-ar="التأثيرات المستقبلية لتلوث الهواء">Future Impact of Air Pollution</h2>
+
+    <div class="impact-categories">
+      <!-- Health Impacts -->
+      <div class="impact-category">
+        <div class="category-header">
+          <div class="category-icon">🏥</div>
+          <h3 class="category-title" data-en="Health Impacts" data-ar="التأثيرات الصحية">Health Impacts</h3>
+        </div>
+        <div class="category-source" data-en="Source: WHO, JAMA Network" data-ar="المصدر: منظمة الصحة العالمية، شبكة JAMA">Source: WHO, JAMA Network</div>
+        <ul class="impact-list">
+          <li data-en="WHO predicts 7-9 million premature deaths annually by 2050" data-ar="منظمة الصحة العالمية تتوقع 7-9 ملايين وفاة مبكرة سنويًا بحلول عام 2050">WHO predicts 7-9 million premature deaths annually by 2050</li>
+          <li data-en="40% increase in asthma, pneumonia, and respiratory diseases in highly polluted areas" data-ar="زيادة 40% في حالات الربو والالتهاب الرئوي وأمراض الجهاز التنفسي في المناطق شديدة التلوث">40% increase in asthma, pneumonia, and respiratory diseases in highly polluted areas</li>
+          <li data-en="Children and elderly are most vulnerable" data-ar="الأطفال وكبار السن هم الأكثر عرضة للخطر">Children and elderly are most vulnerable</li>
+          <li data-en="World Bank estimates reduced global life expectancy by 1.5-2 years" data-ar="البنك الدولي يقدر انخفاض متوسط العمر المتوقع عالميًا بمقدار 1.5-2 سنة">World Bank estimates reduced global life expectancy by 1.5-2 years</li>
+          <li data-en="Harvard and Yale research indicates chronic exposure reduces concentration and cognitive abilities" data-ar="أبحاث من هارفارد وييل تشير إلى أن التعرض المزمن يقلل التركيز والقدرات الإدراكية">Harvard and Yale research indicates chronic exposure reduces concentration and cognitive abilities</li>
+        </ul>
+      </div>
+
+      <!-- Climate Impacts -->
+      <div class="impact-category">
+        <div class="category-header">
+          <div class="category-icon">🌡️</div>
+          <h3 class="category-title" data-en="Climate Impacts" data-ar="التأثيرات المناخية">Climate Impacts</h3>
+        </div>
+        <div class="category-source" data-en="Source: NASA, Nature, UNEP" data-ar="المصدر: ناسا، نيتشر، برنامج الأمم المتحدة للبيئة">Source: NASA, Nature, UNEP</div>
+        <ul class="impact-list">
+          <li data-en="NASA predicts continued pollution could raise global temperature by 0.5°C by mid-century" data-ar="ناسا تتوقع أن استمرار التلوث قد يرفع حرارة الكوكب 0.5 درجة مئوية إضافية بحلول منتصف القرن">NASA predicts continued pollution could raise global temperature by 0.5°C by mid-century</li>
+          <li data-en="Increased heatwaves, droughts, and wildfires due to polluted air and warmer climate" data-ar="زيادة موجات الحر والجفاف والحرائق البرية بسبب الهواء الملوث والمناخ الأكثر دفئًا">Increased heatwaves, droughts, and wildfires due to polluted air and warmer climate</li>
+          <li data-en="Black particles deposited on ice accelerate melting, threatening coastal cities" data-ar="الجسيمات السوداء تترسب على الجليد وتسرّع الذوبان، مما يهدد المدن الساحلية">Black particles deposited on ice accelerate melting, threatening coastal cities</li>
+        </ul>
+      </div>
+
+      <!-- Agricultural Impacts -->
+      <div class="impact-category">
+        <div class="category-header">
+          <div class="category-icon">🌾</div>
+          <h3 class="category-title" data-en="Agricultural Impacts" data-ar="التأثيرات الزراعية">Agricultural Impacts</h3>
+        </div>
+        <div class="category-source" data-en="Source: Royal Society, UNEP" data-ar="المصدر: الجمعية الملكية، برنامج الأمم المتحدة للبيئة">Source: Royal Society, UNEP</div>
+        <ul class="impact-list">
+          <li data-en="Ground-level ozone reduces plant photosynthesis by 15-30%" data-ar="الأوزون الأرضي يقلل عملية التمثيل الضوئي للنباتات بنسبة 15-30%">Ground-level ozone reduces plant photosynthesis by 15-30%</li>
+          <li data-en="Potential global decline in wheat, rice, and corn production" data-ar="انخفاض محتمل في إنتاج القمح والأرز والذرة عالميًا">Potential global decline in wheat, rice, and corn production</li>
+          <li data-en="Acid rain from pollution destroys soil and alters pH, affecting fertility" data-ar="الأمطار الحمضية الناتجة عن التلوث تدمر التربة وتغيّر درجة حموضتها، مما يؤثر على خصوبتها">Acid rain from pollution destroys soil and alters pH, affecting fertility</li>
+          <li data-en="World Bank warns of increased global food prices by 2050" data-ar="البنك الدولي يحذر من زيادة أسعار الغذاء عالميًا بحلول 2050">World Bank warns of increased global food prices by 2050</li>
+        </ul>
+      </div>
+
+      <!-- Environmental Impacts -->
+      <div class="impact-category">
+        <div class="category-header">
+          <div class="category-icon">🌍</div>
+          <h3 class="category-title" data-en="Environmental Impacts" data-ar="التأثيرات البيئية">Environmental Impacts</h3>
+        </div>
+        <div class="category-source" data-en="Source: UNEP, EPA, Royal Society" data-ar="المصدر: برنامج الأمم المتحدة للبيئة، وكالة حماية البيئة الأمريكية، الجمعية الملكية">Source: UNEP, EPA, Royal Society</div>
+        <ul class="impact-list">
+          <li data-en="Extinction of some animal and plant species due to pollutant accumulation" data-ar="انقراض بعض الأنواع الحيوانية والنباتية بسبب تراكم الملوثات">Extinction of some animal and plant species due to pollutant accumulation</li>
+          <li data-en="Destruction of forests and water bodies from toxic substance deposition" data-ar="تدمير الغابات والمسطحات المائية من ترسيب المواد السامة">Destruction of forests and water bodies from toxic substance deposition</li>
+          <li data-en="Disruption of ecological balance affecting bees and pollinators" data-ar="اضطراب التوازن البيئي المؤثر على النحل والملقحات">Disruption of ecological balance affecting bees and pollinators</li>
+        </ul>
+      </div>
+
+      <!-- Economic Impacts -->
+      <div class="impact-category">
+        <div class="category-header">
+          <div class="category-icon">💸</div>
+          <h3 class="category-title" data-en="Economic Impacts" data-ar="التأثيرات الاقتصادية">Economic Impacts</h3>
+        </div>
+        <div class="category-source" data-en="Source: World Bank, WHO" data-ar="المصدر: البنك الدولي، منظمة الصحة العالمية">Source: World Bank, WHO</div>
+        <ul class="impact-list">
+          <li data-en="Estimated global losses exceeding $5 trillion annually by 2050" data-ar="تقدير الخسائر العالمية بأكثر من 5 تريليونات دولار سنويًا بحلول 2050">Estimated global losses exceeding $5 trillion annually by 2050</li>
+          <li data-en="Increased poverty and environmental migration" data-ar="زيادة الفقر والهجرة البيئية">Increased poverty and environmental migration</li>
+          <li data-en="High healthcare costs for treating pollution-related diseases" data-ar="تكاليف صحية مرتفعة لعلاج الأمراض المرتبطة بالتلوث">High healthcare costs for treating pollution-related diseases</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Comparison Table -->
+    <div class="comparison-table">
+      <h3 data-en="Air Quality Impact Comparison" data-ar="مقارنة تأثير جودة الهواء">Air Quality Impact Comparison</h3>
+      <table>
+        <thead>
+          <tr>
+            <th data-en="Domain" data-ar="المجال">Domain</th>
+            <th data-en="Negative Impact (If Pollution Continues)" data-ar="التأثير السلبي (إذا استمر التلوث)">Negative Impact (If Pollution Continues)</th>
+            <th data-en="Positive Impact (If Pollution Decreases)" data-ar="التأثير الإيجابي (إذا قل التلوث)">Positive Impact (If Pollution Decreases)</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td data-en="Health" data-ar="الصحة">Health</td>
+            <td class="negative" data-en="Increased deaths and diseases" data-ar="زيادة الوفيات والأمراض">Increased deaths and diseases</td>
+            <td class="positive" data-en="50% improvement in health and reduced mortality" data-ar="تحسين الصحة وانخفاض الوفيات 50%">50% improvement in health and reduced mortality</td>
+          </tr>
+          <tr>
+            <td data-en="Climate" data-ar="المناخ">Climate</td>
+            <td class="negative" data-en="Temperature rise +0.5°C" data-ar="ارتفاع الحرارة +0.5°C">Temperature rise +0.5°C</td>
+            <td class="positive" data-en="Stabilized temperatures" data-ar="استقرار درجات الحرارة">Stabilized temperatures</td>
+          </tr>
+          <tr>
+            <td data-en="Agriculture" data-ar="الزراعة">Agriculture</td>
+            <td class="negative" data-en="30% production decline" data-ar="انخفاض الإنتاج 30%">30% production decline</td>
+            <td class="positive" data-en="Increased soil fertility and production" data-ar="زيادة خصوبة التربة والإنتاج">Increased soil fertility and production</td>
+          </tr>
+          <tr>
+            <td data-en="Environment" data-ar="البيئة">Environment</td>
+            <td class="negative" data-en="Loss of biodiversity" data-ar="فقدان التنوع الحيوي">Loss of biodiversity</td>
+            <td class="positive" data-en="Restored ecosystems" data-ar="استعادة النظم البيئية">Restored ecosystems</td>
+          </tr>
+          <tr>
+            <td data-en="Economy" data-ar="الاقتصاد">Economy</td>
+            <td class="negative" data-en="Losses in billions of dollars" data-ar="خسائر بمليارات الدولارات">Losses in billions of dollars</td>
+            <td class="positive" data-en="Economic and health gains" data-ar="مكاسب اقتصادية وصحية">Economic and health gains</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+
+  <section class="comparison">
+    <div class="comparison-grid">
+      <!-- Good Breathing -->
+      <div class="breathing-card good">
+        <div class="breathing-icon">😊</div>
+        <h2 class="breathing-title" data-en="Breathing Clean Air" data-ar="تنفس هواء نقي">Breathing Clean Air</h2>
+        <p data-en="When you breathe clean air every day:" data-ar="عندما تتنفس هواءً نقيًا كل يوم:">When you breathe clean air every day:</p>
+        <ul class="breathing-list">
+          <li data-en="Better lung development in children" data-ar="تطور رئوي أفضل عند الأطفال">Better lung development in children</li>
+          <li data-en="Reduced risk of asthma and allergies" data-ar="انخفاض خطر الإصابة بالربو والحساسية">Reduced risk of asthma and allergies</li>
+          <li data-en="Lower chances of heart disease" data-ar="فرص أقل للإصابة بأمراض القلب">Lower chances of heart disease</li>
+          <li data-en="Improved brain function and focus" data-ar="تحسين وظائف الدماغ والتركيز">Improved brain function and focus</li>
+          <li data-en="Longer, healthier life expectancy" data-ar="متوسط عمر أطول وأكثر صحة">Longer, healthier life expectancy</li>
+          <li data-en="Better sleep quality" data-ar="نوعية نوم أفضل">Better sleep quality</li>
+          <li data-en="More energy for daily activities" data-ar="المزيد من الطاقة للأنشطة اليومية">More energy for daily activities</li>
+        </ul>
+      </div>
+
+      <!-- Bad Breathing -->
+      <div class="breathing-card bad">
+        <div class="breathing-icon">😷</div>
+        <h2 class="breathing-title" data-en="Breathing Polluted Air" data-ar="تنفس هواء ملوث">Breathing Polluted Air</h2>
+        <p data-en="When you breathe polluted air regularly:" data-ar="عندما تتنفس هواءً ملوثًا بانتظام:">When you breathe polluted air regularly:</p>
+        <ul class="breathing-list">
+          <li data-en="Stunted lung growth in children" data-ar="توقف نمو الرئة عند الأطفال">Stunted lung growth in children</li>
+          <li data-en="Higher asthma and COPD rates" data-ar="معدلات أعلى للربو ومرض الانسداد الرئوي المزمن">Higher asthma and COPD rates</li>
+          <li data-en="Increased heart attack risk" data-ar="زيادة خطر الإصابة بالنوبات القلبية">Increased heart attack risk</li>
+          <li data-en="Memory problems and reduced IQ" data-ar="مشاكل في الذاكرة وانخفاض معدل الذكاء">Memory problems and reduced IQ</li>
+          <li data-en="Shorter lifespan by 2-3 years" data-ar="تقصير العمر المتوقع بمقدار 2-3 سنوات">Shorter lifespan by 2-3 years</li>
+          <li data-en="Sleep disorders and fatigue" data-ar="اضطرابات النوم والتعب">Sleep disorders and fatigue</li>
+          <li data-en="Reduced physical performance" data-ar="انخفاض الأداء البدني">Reduced physical performance</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- Future Impact of Clean Air Section -->
+  <section class="future-impact" style="background: rgba(30, 41, 59, 0.5); padding: 100px 20px;">
+    <h2 data-en="Future Impact of Clean Air" data-ar="التأثيرات المستقبلية للهواء النقي">Future Impact of Clean Air</h2>
+
+    <div class="impact-categories">
+      <!-- Health Benefits -->
+      <div class="impact-category">
+        <div class="category-header">
+          <div class="category-icon">🧠</div>
+          <h3 class="category-title" data-en="Health Benefits" data-ar="التأثيرات الصحية الإيجابية">Health Benefits</h3>
+        </div>
+        <div class="category-source" data-en="Source: WHO, Harvard, JAMA, EPA" data-ar="المصدر: منظمة الصحة العالمية، هارفارد، JAMA، وكالة حماية البيئة الأمريكية">Source: WHO, Harvard, JAMA, EPA</div>
+        <ul class="impact-list">
+          <li data-en="WHO: Clean air could reduce premature deaths by 40-50% globally" data-ar="منظمة الصحة العالمية: الهواء النظيف يمكن أن يقلل الوفيات المبكرة بنسبة 40-50٪ عالميًا">WHO: Clean air could reduce premature deaths by 40-50% globally</li>
+          <li data-en="Harvard study: Reducing PM2.5 lowers heart and lung disease risk" data-ar="دراسة هارفارد: تقليل الجسيمات الدقيقة يقلل خطر أمراض القلب والرئة">Harvard study: Reducing PM2.5 lowers heart and lung disease risk</li>
+          <li data-en="EPA: Clean air improves lung function, reduces asthma attacks in children by 30%" data-ar="وكالة حماية البيئة الأمريكية: الهواء النظيف يحسن وظائف الرئة ويقلل نوبات الربو لدى الأطفال بنسبة 30٪">EPA: Clean air improves lung function, reduces asthma attacks in children by 30%</li>
+          <li data-en="Yale research: Lower pollution increases mental performance and productivity" data-ar="بحث ييل: انخفاض التلوث يزيد الأداء العقلي والإنتاجية">Yale research: Lower pollution increases mental performance and productivity</li>
+        </ul>
+      </div>
+
+      <!-- Climate Benefits -->
+      <div class="impact-category">
+        <div class="category-header">
+          <div class="category-icon">🌍</div>
+          <h3 class="category-title" data-en="Climate Benefits" data-ar="التأثيرات المناخية الإيجابية">Climate Benefits</h3>
+        </div>
+        <div class="category-source" data-en="Source: NASA, UNEP, IPCC" data-ar="المصدر: ناسا، برنامج الأمم المتحدة للبيئة، الهيئة الحكومية الدولية المعنية بتغير المناخ">Source: NASA, UNEP, IPCC</div>
+        <ul class="impact-list">
+          <li data-en="NASA & UNEP: Reducing short-lived pollutants could lower global warming by 0.5°C by 2050" data-ar="ناسا وبرنامج الأمم المتحدة للبيئة: تقليل الملوثات قصيرة العمر يمكن أن يخفض الاحترار العالمي بمقدار 0.5 درجة مئوية بحلول 2050">NASA & UNEP: Reducing short-lived pollutants could lower global warming by 0.5°C by 2050</li>
+          <li data-en="Stabilized weather patterns, fewer heatwaves and dust storms" data-ar="استقرار أنماط الطقس، موجات حر وعواصف ترابية أقل">Stabilized weather patterns, fewer heatwaves and dust storms</li>
+          <li data-en="Improved water cycle and ecological balance" data-ar="تحسين دورة المياه والتوازن البيئي">Improved water cycle and ecological balance</li>
+        </ul>
+      </div>
+
+      <!-- Agricultural Benefits -->
+      <div class="impact-category">
+        <div class="category-header">
+          <div class="category-icon">🌾</div>
+          <h3 class="category-title" data-en="Agricultural Benefits" data-ar="التأثيرات الزراعية الإيجابية">Agricultural Benefits</h3>
+        </div>
+        <div class="category-source" data-en="Source: Royal Society, UNEP, World Bank" data-ar="المصدر: الجمعية الملكية، برنامج الأمم المتحدة للبيئة، البنك الدولي">Source: Royal Society, UNEP, World Bank</div>
+        <ul class="impact-list">
+          <li data-en="Plants with cleaner air increase photosynthesis by 10-25%" data-ar="النباتات مع هواء أنظف تزيد التمثيل الضوئي بنسبة 10-25٪">Plants with cleaner air increase photosynthesis by 10-25%</li>
+          <li data-en="World Bank: Good air quality enhances food security and agricultural income" data-ar="البنك الدولي: جودة الهواء الجيدة تعزز الأمن الغذائي وتزيد الدخل الزراعي">World Bank: Good air quality enhances food security and agricultural income</li>
+          <li data-en="Improved soil fertility with reduced acid rain" data-ar="تحسين خصوبة التربة مع انخفاض الأمطار الحمضية">Improved soil fertility with reduced acid rain</li>
+          <li data-en="UNEP: Air quality improvement helps restore forests by 20% in polluted areas" data-ar="برنامج الأمم المتحدة للبيئة: تحسين جودة الهواء يساعد في استعادة الغابات بنسبة 20٪ في المناطق الملوثة">UNEP: Air quality improvement helps restore forests by 20% in polluted areas</li>
+        </ul>
+      </div>
+
+      <!-- Environmental Benefits -->
+      <div class="impact-category">
+        <div class="category-header">
+          <div class="category-icon">🐝</div>
+          <h3 class="category-title" data-en="Environmental Benefits" data-ar="التأثيرات البيئية الإيجابية">Environmental Benefits</h3>
+        </div>
+        <div class="category-source" data-en="Source: UNEP, EPA, NASA" data-ar="المصدر: برنامج الأمم المتحدة للبيئة، وكالة حماية البيئة الأمريكية، ناسا">Source: UNEP, EPA, NASA</div>
+        <ul class="impact-list">
+          <li data-en="Increased biodiversity with reduced environmental toxins" data-ar="زيادة التنوع البيولوجي مع انخفاض السموم البيئية">Increased biodiversity with reduced environmental toxins</li>
+          <li data-en="Improved water quality in rivers and lakes" data-ar="تحسين جودة المياه في الأنهار والبحيرات">Improved water quality in rivers and lakes</li>
+          <li data-en="Return of locally extinct plant and animal species" data-ar="عودة الأنواع النباتية والحيوانية المنقرضة محليًا">Return of locally extinct plant and animal species</li>
+        </ul>
+      </div>
+
+      <!-- Economic Benefits -->
+      <div class="impact-category">
+        <div class="category-header">
+          <div class="category-icon">💰</div>
+          <h3 class="category-title" data-en="Economic Benefits" data-ar="التأثيرات الاقتصادية الإيجابية">Economic Benefits</h3>
+        </div>
+        <div class="category-source" data-en="Source: World Bank, WHO" data-ar="المصدر: البنك الدولي، منظمة الصحة العالمية">Source: World Bank, WHO</div>
+        <ul class="impact-list">
+          <li data-en="World Bank: Reducing air pollution could save over $5 trillion annually in healthcare costs" data-ar="البنك الدولي: تقليل تلوث الهواء يمكن أن يوفر أكثر من 5 تريليونات دولار سنويًا في تكاليف الرعاية الصحية">World Bank: Reducing air pollution could save over $5 trillion annually in healthcare costs</li>
+          <li data-en="Improved quality of life and productivity" data-ar="تحسين جودة الحياة والإنتاجية">Improved quality of life and productivity</li>
+          <li data-en="More equitable and sustainable future" data-ar="مستقبل أكثر عدلًا واستدامة">More equitable and sustainable future</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- Solution Section -->
+  <section class="solution">
+    <h2 data-en="Our Solution" data-ar="حلولنا">Our Solution</h2>
+    <p data-en="StratosX provides innovative tools to monitor, predict, and improve air quality for a healthier future." data-ar="توفر StratosX أدوات مبتكرة لمراقبة جودة الهواء والتنبؤ بها وتحسينها من أجل مستقبل أكثر صحة.">
+      StratosX provides innovative tools to monitor, predict, and improve air quality for a healthier future.
+    </p>
+    <div class="solution-cards">
+      <div class="solution-card">
+        <div class="solution-icon">📊</div>
+        <h3 class="solution-title" data-en="Real-time Monitoring" data-ar="المراقبة في الوقت الحقيقي">Real-time Monitoring</h3>
+        <p class="solution-text" data-en="Track air quality levels in your area with our advanced monitoring system." data-ar="تتبع مستويات جودة الهواء في منطقتك مع نظام المراقبة المتقدم لدينا.">
+          Track air quality levels in your area with our advanced monitoring system.
+        </p>
+      </div>
+      <div class="solution-card">
+        <div class="solution-icon">🔮</div>
+        <h3 class="solution-title" data-en="Future Predictions" data-ar="التنبؤات المستقبلية">Future Predictions</h3>
+        <p class="solution-text" data-en="Get accurate air quality forecasts to plan your activities and protect your health." data-ar="احصل على توقعات دقيقة لجودة الهواء لتخطيط أنشطتك وحماية صحتك.">
+          Get accurate air quality forecasts to plan your activities and protect your health.
+        </p>
+      </div>
+      <div class="solution-card">
+        <div class="solution-icon">💡</div>
+        <h3 class="solution-title" data-en="Actionable Insights" data-ar="رؤى قابلة للتنفيذ">Actionable Insights</h3>
+        <p class="solution-text" data-en="Receive personalized recommendations to improve your indoor and outdoor air quality." data-ar="تلقي توصيات مخصصة لتحسين جودة الهواء الداخلي والخارجي الخاص بك.">
+          Receive personalized recommendations to improve your indoor and outdoor air quality.
+        </p>
+      </div>
+    </div>
+  </section>
+
+
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      const langToggle = document.getElementById('langToggle');
+      const mobileMenuToggle = document.getElementById('mobileMenuToggle');
+      const mobileNav = document.getElementById('mobileNav');
+      const mobileOverlay = document.getElementById('mobileOverlay');
+      let currentLang = 'en';
+      let isMenuOpen = false;
+
+      function toggleLanguage() {
+        currentLang = currentLang === 'en' ? 'ar' : 'en';
+
+        // Update all text elements
+        document.querySelectorAll('[data-en]').forEach(element => {
+          element.textContent = element.getAttribute(currentLang === 'en' ? 'data-en' : 'data-ar');
+        });
+
+        // Update toggle button text
+        langToggle.textContent = currentLang === 'en' ? 'العربية' : 'English';
+
+        // Set direction
+        document.body.dir = currentLang === 'en' ? 'ltr' : 'rtl';
+      }
+
+      function toggleMobileMenu() {
+        isMenuOpen = !isMenuOpen;
+
+        if (isMenuOpen) {
+          mobileNav.classList.add('active');
+          mobileOverlay.classList.add('active');
+          mobileMenuToggle.classList.add('active');
+          mobileMenuToggle.innerHTML = '✕';
+          document.body.style.overflow = 'hidden';
+        } else {
+          mobileNav.classList.remove('active');
+          mobileOverlay.classList.remove('active');
+          mobileMenuToggle.classList.remove('active');
+          mobileMenuToggle.innerHTML = '☰';
+          document.body.style.overflow = '';
+        }
+      }
+
+      function closeMobileMenu() {
+        if (isMenuOpen) {
+          toggleMobileMenu();
+        }
+      }
+
+      langToggle.addEventListener('click', function (e) {
+        e.preventDefault();
+        toggleLanguage();
+      });
+
+      mobileMenuToggle.addEventListener('click', function (e) {
+        e.preventDefault();
+        toggleMobileMenu();
+      });
+
+      mobileOverlay.addEventListener('click', closeMobileMenu);
+
+      // Close mobile menu when clicking on menu items
+      mobileNav.querySelectorAll('a').forEach(link => {
+        link.addEventListener('click', closeMobileMenu);
+      });
+
+      // Close mobile menu when clicking outside
+      document.addEventListener('click', function(event) {
+        if (isMenuOpen &&
+            !event.target.closest('.container') &&
+            !event.target.closest('.mobile-nav') &&
+            !event.target.closest('.mobile-menu-toggle')) {
+          closeMobileMenu();
+        }
+      });
+
+      // Close mobile menu on escape key
+      document.addEventListener('keydown', function(event) {
+        if (event.key === 'Escape' && isMenuOpen) {
+          closeMobileMenu();
+        }
+      });
+
+      // Scroll reveal animation
+      initScrollReveal();
+    });
+
+    function scrollToContent() {
+      document.querySelector('.stats').scrollIntoView({
+        behavior: 'smooth'
+      });
+    }
+
+    function initScrollReveal() {
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('visible');
+          }
+        });
+      }, {
+        threshold: 0.1,
+        rootMargin: '0px 0px -50px 0px'
+      });
+
+      // Observe all cards for animation
+      document.querySelectorAll('.breathing-card, .stat-card, .solution-card, .impact-category, .comparison-table').forEach(card => {
+        observer.observe(card);
+      });
+    }
+  </script>
+</body>
+</html>
